@@ -2,25 +2,16 @@
   <div class="container">
     <header class="jumbotron">
       <h3>
-        <strong>{{currentUser.username}}</strong> Profile
+        <strong>{{currentUserUsername}}</strong> Profile
       </h3>
+      <h2>
+        <strong>{{currentUserFirstName}} {{currentUserLastName}}</strong> (First Name, Last Name)
+      </h2>
     </header>
     <p>
       <strong>Token:</strong>
-      {{currentUser.accessToken.substring(0, 20)}} ... {{currentUser.accessToken.substr(currentUser.accessToken.length - 20)}}
+      {{currentUserToken.substring(0, 20)}} ... {{currentUserToken.substr(currentUserToken.length - 20)}}
     </p>
-    <p>
-      <strong>Id:</strong>
-      {{currentUser.id}}
-    </p>
-    <p>
-      <strong>Email:</strong>
-      {{currentUser.email}}
-    </p>
-    <strong>Authorities:</strong>
-    <ul>
-      <li v-for="role in currentUser.roles" :key="role">{{role}}</li>
-    </ul>
   </div>
 </template>
 
@@ -30,11 +21,31 @@ export default {
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
+    },
+    currentUserUsername() {
+      const user = this.currentUser;
+      return user === (undefined || null) ? "???" : user.username;
+    },
+    currentUserFirstName() {
+      const user = this.currentUser;
+      return user === (undefined || null) ? "???" : user.firstName;
+    },
+    currentUserLastName() {
+      const user = this.currentUser;
+      return user === (undefined || null) ? "???" : user.lastName;
+    },
+    currentUserToken() {
+      const user = this.currentUser;
+      return user === (undefined || null) ? "???" : user.accessToken;
     }
   },
   mounted() {
+    console.log("loading mounted");
     if (!this.currentUser) {
+      console.log("no one logged in");
       this.$router.push('/login');
+    } else {
+      console.log(this.currentUserUsername + " is logged in");
     }
   }
 };

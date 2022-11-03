@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import UserService from "../services/user.service";
+// import UserService from "../services/user.service";
 export default {
   name: "HomeView",
   data() {
@@ -16,19 +16,26 @@ export default {
     };
   },
   mounted() {
-    UserService.getPublicContent().then(
-      (response) => {
-        this.content = response.data;
-      },
-      (error) => {
-        this.content =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-      }
-    );
+    console.log("loading mounted");
+    if (!this.currentUser) {
+      console.log("no one logged in");
+      this.$router.push('/login');
+    } else {
+      console.log(this.$store.state.auth.user + " is logged in");
+    }
+    // UserService.getPublicContent().then(
+    //   (response) => {
+    //     this.content = response.data;
+    //   },
+    //   (error) => {
+    //     this.content =
+    //       (error.response &&
+    //         error.response.data &&
+    //         error.response.data.message) ||
+    //       error.message ||
+    //       error.toString();
+    //   }
+    // );
   },
 };
 </script>

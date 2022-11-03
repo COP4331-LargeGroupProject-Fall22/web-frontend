@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <div class="container">
       <header class="jumbotron">
         <h3>{{ content }}</h3>
@@ -31,4 +31,4 @@
       );
     },
   };
-  </script>
+  </script> -->
