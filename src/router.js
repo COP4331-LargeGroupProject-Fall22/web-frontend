@@ -31,25 +31,25 @@ const routes = [
     name: "profile",
     // lazy-loaded
     component: ProfileView,
-  },
-  {
-    path: "/admin",
-    name: "admin",
-    // lazy-loaded
-    component: BoardAdmin,
-  },
-  {
-    path: "/mod",
-    name: "moderator",
-    // lazy-loaded
-    component: BoardModerator,
-  },
-  {
-    path: "/user",
-    name: "user",
-    // lazy-loaded
-    component: BoardUser,
-  },
+  }
+  // {
+  //   path: "/admin",
+  //   name: "admin",
+  //   // lazy-loaded
+  //   component: BoardAdmin,
+  // },
+  // {
+  //   path: "/mod",
+  //   name: "moderator",
+  //   // lazy-loaded
+  //   component: BoardModerator,
+  // },
+  // {
+  //   path: "/user",
+  //   name: "user",
+  //   // lazy-loaded
+  //   component: BoardUser,
+  // },
 ];
 
 const router = createRouter({
