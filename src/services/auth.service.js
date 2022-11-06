@@ -3,7 +3,6 @@ import axios from 'axios';
 const API_PREFIX = process.env.VUE_APP_NODE_ENV === process.env.VUE_APP_DEV ?
                 process.env.VUE_APP_LOCAL_API_STRING
               : process.env.VUE_APP_REMOTE_API_STRING;
-console.log(API_PREFIX);
 
 class AuthService {
   login(user) {

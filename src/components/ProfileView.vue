@@ -19,6 +19,7 @@
 export default {
   name: 'ProfileView',
   computed: {
+    // TODO(nashirj): Fix this rendering; doesn't load until page is refreshed
     currentUser() {
       return this.$store.state.auth.user;
     },
