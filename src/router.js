@@ -4,9 +4,6 @@ import LoginView from "./components/LoginView.vue";
 import RegisterView from "./components/RegisterView.vue";
 // lazy-loaded
 const ProfileView = () => import("./components/ProfileView.vue")
-const BoardAdmin = () => import("./components/BoardAdmin.vue")
-const BoardModerator = () => import("./components/BoardModerator.vue")
-const BoardUser = () => import("./components/BoardUser.vue")
 
 const routes = [
   {
@@ -32,24 +29,6 @@ const routes = [
     // lazy-loaded
     component: ProfileView,
   }
-  // {
-  //   path: "/admin",
-  //   name: "admin",
-  //   // lazy-loaded
-  //   component: BoardAdmin,
-  // },
-  // {
-  //   path: "/mod",
-  //   name: "moderator",
-  //   // lazy-loaded
-  //   component: BoardModerator,
-  // },
-  // {
-  //   path: "/user",
-  //   name: "user",
-  //   // lazy-loaded
-  //   component: BoardUser,
-  // },
 ];
 
 const router = createRouter({
