@@ -19,34 +19,27 @@
 export default {
   name: 'ProfileView',
   computed: {
-    // TODO(nashirj): Fix this rendering; doesn't load until page is refreshed
     currentUser() {
       return this.$store.state.auth.user;
     },
     currentUserUsername() {
-      const user = this.currentUser;
-      return user === (undefined || null) ? "???" : user.username;
+      return this.currentUser?.username;
     },
     currentUserFirstName() {
-      const user = this.currentUser;
-      return user === (undefined || null) ? "???" : user.firstName;
+      return this.currentUser?.firstName;
     },
     currentUserLastName() {
-      const user = this.currentUser;
-      return user === (undefined || null) ? "???" : user.lastName;
+      return this.currentUser?.lastName;
     },
     currentUserToken() {
-      const user = this.currentUser;
-      return user === (undefined || null) ? "???" : user.accessToken;
+      return this.currentUser ? this.currentUser.accessToken : "";
     }
   },
   mounted() {
-    console.log("loading mounted");
     if (!this.currentUser) {
-      console.log("no one logged in");
       this.$router.push('/login');
     } else {
-      console.log(this.currentUserUsername + " is logged in");
+      console.log("Current user: " + JSON.stringify(this.currentUser));
     }
   }
 };

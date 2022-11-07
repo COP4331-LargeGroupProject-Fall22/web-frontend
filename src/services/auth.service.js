@@ -6,12 +6,8 @@ const API_PREFIX = process.env.VUE_APP_NODE_ENV === process.env.VUE_APP_DEV ?
 
 class AuthService {
   login(user) {
-    var params = new URLSearchParams();
-    params.append('username', user.username);
-    params.append('password', user.password);
-
     return axios
-      .post(API_PREFIX + 'auth/login', params)
+      .post(API_PREFIX + 'auth/login', user)
       .then(response => {
         const token = response.data.data.accessToken;
         if (!token) {
@@ -23,9 +19,9 @@ class AuthService {
           .then(response => {
             let userData = response.data.data;
             userData['accessToken'] = token;
-            localStorage.setItem('user', JSON.stringify(response.data.data));
+            localStorage.setItem('user', JSON.stringify(userData));
 
-            return response.data;
+            return userData;
           });
       });
   }
@@ -35,14 +31,7 @@ class AuthService {
   }
 
   register(user) {
-    var params = new URLSearchParams();
-    params.append('firstName', user.firstName);
-    params.append('lastName', user.lastName);
-    params.append('username', user.username);
-    params.append('email', user.email);
-    params.append('password', user.password);
-
-    return axios.post(API_PREFIX + 'auth/register', params);
+    return axios.post(API_PREFIX + 'auth/register', user);
   }
 }
 
