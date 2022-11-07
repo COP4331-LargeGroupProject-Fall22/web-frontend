@@ -9,6 +9,16 @@
       <Form @submit="handleRegister" :validation-schema="schema">
         <div v-if="!successful">
           <div class="form-group">
+            <label for="firstName">First Name</label>
+            <Field name="firstName" type="text" class="form-control" />
+            <ErrorMessage name="firstName" class="error-feedback" />
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <Field name="lastName" type="text" class="form-control" />
+            <ErrorMessage name="lastName" class="error-feedback" />
+          </div>
+          <div class="form-group">
             <label for="username">Username</label>
             <Field name="username" type="text" class="form-control" />
             <ErrorMessage name="username" class="error-feedback" />
@@ -105,6 +115,7 @@ export default {
           this.message = data.message;
           this.successful = true;
           this.loading = false;
+          this.$router.push("/login");
         },
         (error) => {
           this.message =

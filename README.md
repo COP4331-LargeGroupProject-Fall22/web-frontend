@@ -2,6 +2,8 @@
 
 This frontend code is based on [this tutorial](https://www.bezkoder.com/vue-3-authentication-jwt/), source code [here](https://github.com/bezkoder/vue-3-authentication-jwt)
 
+We wrap the vue code with a simple express server to allow running the project with `node server.js`.
+
 ## Project setup
 ```
 npm install
