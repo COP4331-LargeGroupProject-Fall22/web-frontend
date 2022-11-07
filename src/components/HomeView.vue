@@ -19,7 +19,7 @@ export default {
     console.log("loading mounted");
     if (!this.currentUser) {
       console.log("no one logged in");
-      this.$router.push('/login');
+      this.$router.push("/login");
     } else {
       console.log(this.$store.state.auth.user + " is logged in");
     }
