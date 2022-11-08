@@ -1,60 +1,68 @@
 <template>
-  <div class="col-md-12">
-    <div class="card card-container">
-      <img
-        id="profile-img"
-        src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-        class="profile-img-card"
-      />
-      <Form @submit="handleRegister" :validation-schema="schema">
-        <div v-if="!successful">
-          <div class="form-group">
-            <label for="firstName">First Name</label>
-            <Field name="firstName" type="text" class="form-control" />
-            <ErrorMessage name="firstName" class="error-feedback" />
-          </div>
-          <div class="form-group">
-            <label for="lastName">Last Name</label>
-            <Field name="lastName" type="text" class="form-control" />
-            <ErrorMessage name="lastName" class="error-feedback" />
-          </div>
-          <div class="form-group">
-            <label for="username">Username</label>
-            <Field name="username" type="text" class="form-control" />
-            <ErrorMessage name="username" class="error-feedback" />
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <Field name="email" type="email" class="form-control" />
-            <ErrorMessage name="email" class="error-feedback" />
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <Field name="password" type="password" class="form-control" />
-            <ErrorMessage name="password" class="error-feedback" />
-          </div>
+  <div class="row">
+    <div class="col-md">
+      <div class="card card-container">
+        <img
+          id="profile-img"
+          src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+          class="profile-img-card"
+        />
+        <Form @submit="handleRegister" :validation-schema="schema">
+          <div v-if="!successful">
+            <div class="form-group">
+              <label for="firstName">First Name</label>
+              <Field name="firstName" type="text" class="form-control" />
+              <ErrorMessage name="firstName" class="error-feedback" />
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name</label>
+              <Field name="lastName" type="text" class="form-control" />
+              <ErrorMessage name="lastName" class="error-feedback" />
+            </div>
+            <div class="form-group">
+              <label for="username">Username</label>
+              <Field name="username" type="text" class="form-control" />
+              <ErrorMessage name="username" class="error-feedback" />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <Field name="email" type="email" class="form-control" />
+              <ErrorMessage name="email" class="error-feedback" />
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <Field name="password" type="password" class="form-control" />
+              <ErrorMessage name="password" class="error-feedback" />
+            </div>
 
-          <div class="form-group">
-            <button class="btn btn-primary btn-block" :disabled="loading">
-              <span
-                v-show="loading"
-                class="spinner-border spinner-border-sm"
-              ></span>
-              Sign Up
-            </button>
+            <div class="form-group">
+              <button class="btn btn-primary btn-block" :disabled="loading">
+                <span
+                  v-show="loading"
+                  class="spinner-border spinner-border-sm"
+                ></span>
+                Sign Up
+              </button>
+            </div>
           </div>
+        </Form>
+
+        <div
+          v-if="message"
+          class="alert"
+          :class="successful ? 'alert-success' : 'alert-danger'"
+        >
+          {{ message }}
         </div>
-      </Form>
-
-      <div
-        v-if="message"
-        class="alert"
-        :class="successful ? 'alert-success' : 'alert-danger'"
-      >
-        {{ message }}
       </div>
     </div>
+    <!-- TODO: animate the banner to move to the other side when login is pushed
+    (idk if this is possible because they are on seperate pages) -->
+    <div class="col-md">
+      <div class="banner"></div>
+    </div>
   </div>
+  
 </template>
 
 <script>
@@ -133,6 +141,9 @@ export default {
 };
 </script>
 
+<!-- TODO: the login/register view have the exact same style section
+should combine for no repetition -->
+
 <style scoped>
 label {
   display: block;
@@ -140,21 +151,23 @@ label {
 }
 
 .card-container.card {
-  max-width: 350px !important;
-  padding: 40px 40px;
+  /* TODO: this padding has a direct influence on the size of the page
+  this extends the cards height which increases the size parameters for the picture
+  would like to make it the size of the page if possible*/
+  padding: 70px 25%;
+  height: 100%;
 }
 
 .card {
-  background-color: #f7f7f7;
-  padding: 20px 25px 30px;
-  margin: 0 auto 25px;
-  margin-top: 50px;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  margin: 0px;
+  margin-top: 0px;
+  background-color: white;
+  border: 0;
+  border-radius: 0;
+}
+
+.col-md{
+  padding: 0;
 }
 
 .profile-img-card {
@@ -169,5 +182,31 @@ label {
 
 .error-feedback {
   color: red;
+}
+
+.row{
+  margin: 0;
+}
+
+.banner{
+  height: 100%;
+  width: 100%;
+  background-image: url("../assets/food.png");
+}
+
+.btn-primary{
+  background-color: #008600;
+  border-color: #008600;
+}
+
+.btn-primary:hover, .btn-primary.focus, .btn-primary:focus{
+  background-color: #006600;
+  border-color: #005600;
+}
+
+
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle{
+  background-color: #006600;
+  border-color: #005600;
 }
 </style>
