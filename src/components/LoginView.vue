@@ -101,74 +101,7 @@ export default {
 };
 </script>
 
-<!-- TODO: the login/register view have the exact same style section
-should combine for no repetition -->
-
 <style scoped>
-label {
-  display: block;
-  margin-top: 10px;
-}
-
-.card-container.card {
-  /* TODO: this padding has a direct influence on the size of the page
-  this extends the cards height which increases the size parameters for the picture
-  would like to make it the size of the page if possible*/
-  padding: 70px 25%;
-  height: 100%;
-}
-
-.card {
-  margin: 0px;
-  margin-top: 0px;
-  background-color: white;
-  border: 0;
-  border-radius: 0;
-}
-
-.col-md{
-  padding: 0;
-  box-sizing:initial;
-}
-
-.profile-img-card {
-  width: 96px;
-  height: 96px;
-  margin: 0 auto 10px;
-  display: block;
-  -moz-border-radius: 50%;
-  -webkit-border-radius: 50%;
-  border-radius: 50%;
-}
-
-.error-feedback {
-  color: red;
-}
-
-.row{
-  margin: 0;
-}
-
-.banner{
-  height: 100%;
-  width: 100%;
-  background-image: url("../assets/food.png");
-}
-
-.btn-primary{
-  background-color: #008600;
-  border-color: #008600;
-}
-
-.btn-primary:hover, .btn-primary.focus, .btn-primary:focus{
-  background-color: #006600;
-  border-color: #005600;
-}
-
-
-.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle{
-  background-color: #006600;
-  border-color: #005600;
-}
+@import 'css/LoginRegisterForm.css';
 
 </style>
