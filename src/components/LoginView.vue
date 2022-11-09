@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row">
-      <!-- TODO: animate the banner to move to the other side when register is pushed -->
+      <!-- TODO(#8): Animate the banner to move to the other side when register is pushed -->
       <div class="col-md-6 no-float">
         <div class="banner">
           <div class="d-flex justify-content-center fill">
@@ -10,8 +10,6 @@
             >
               <h1>Don't have an account?</h1>
               <router-link to="/register" class="nav-link">
-                <!-- TODO: Fix button to be same width as button above -->
-                <!-- <font-awesome-icon icon="user-plus" /> Sign Up -->
                 <button class="btn btn-secondary btn-block">Register</button>
               </router-link>
             </div>

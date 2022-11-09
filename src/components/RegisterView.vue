@@ -56,8 +56,7 @@
         </div>
       </div>
     </div>
-    <!-- TODO: animate the banner to move to the other side when login is pushed
-    (idk if this is possible because they are on seperate pages) -->
+    <!-- TODO(#8): Animate the banner to move to the other side when register is pushed -->
     <div class="col-md-6">
       <div class="banner">
         <div class="d-flex justify-content-center fill">
