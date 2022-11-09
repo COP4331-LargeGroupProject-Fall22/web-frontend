@@ -1,45 +1,51 @@
 <template>
-  <div class="row">
-    <!-- TODO: animate the banner to move to the other side when register is pushed
-    (idk if this is possible because they are on seperate pages) -->
-    <div class="col-md">
-      <div class="banner"></div>
-    </div>
-    <div class="col-md">
-      <div class="card card-container">
-        <img
-          id="profile-img"
-          src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-          class="profile-img-card"
-        />
-        <Form @submit="handleLogin" :validation-schema="schema">
-          <div class="form-group">
-            <label for="username">Username</label>
-            <Field name="username" type="text" class="form-control" />
-            <ErrorMessage name="username" class="error-feedback" />
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <Field name="password" type="password" class="form-control" />
-            <ErrorMessage name="password" class="error-feedback" />
-          </div>
-
-          <div class="form-group">
-            <button class="btn btn-primary btn-block" :disabled="loading">
-              <span
-                v-show="loading"
-                class="spinner-border spinner-border-sm"
-              ></span>
-              <span>Login</span>
-            </button>
-          </div>
-
-          <div class="form-group">
-            <div v-if="message" class="alert alert-danger" role="alert">
-              {{ message }}
+  <div class="container">
+    <div class="row">
+      <!-- TODO: animate the banner to move to the other side when register is pushed -->
+      <div class="col-md no-float">
+        <div class="banner"></div>
+      </div>
+      <div class="col-md no-float">
+        <div class="card card-container">
+          <img
+            id="profile-img"
+            src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+            class="profile-img-card"
+          />
+          <Form @submit="handleLogin" :validation-schema="schema">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <Field name="username" type="text" class="form-control" />
+              <ErrorMessage name="username" class="error-feedback" />
             </div>
-          </div>
-        </Form>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <Field name="password" type="password" class="form-control" />
+              <ErrorMessage name="password" class="error-feedback" />
+            </div>
+
+            <div class="form-group">
+              <button class="btn btn-primary btn-block" :disabled="loading">
+                <span
+                  v-show="loading"
+                  class="spinner-border spinner-border-sm"
+                ></span>
+                <span>Login</span>
+              </button>
+            </div>
+
+            <div class="form-group">
+              <div v-if="message" class="alert alert-danger" role="alert">
+                {{ message }}
+              </div>
+            </div>
+          </Form>
+          <router-link to="/register" class="nav-link">
+            <!-- TODO: Fix button to be same width as button above -->
+            <!-- <font-awesome-icon icon="user-plus" /> Sign Up -->
+            <button class="btn btn-secondary btn-block">Register</button>
+          </router-link>
+        </div>
       </div>
     </div>
   </div>
@@ -102,6 +108,5 @@ export default {
 </script>
 
 <style scoped>
-@import 'css/LoginRegisterForm.css';
-
+@import "css/LoginRegisterForm.css";
 </style>

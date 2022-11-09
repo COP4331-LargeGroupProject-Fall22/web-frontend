@@ -46,6 +46,10 @@
             </div>
           </div>
         </Form>
+        <router-link to="/login" class="nav-link">
+          <!-- TODO: Fix button to be same width as button above -->
+          <button class="btn btn-secondary btn-block">Login</button>
+        </router-link>
 
         <div
           v-if="message"
@@ -62,7 +66,6 @@
       <div class="banner"></div>
     </div>
   </div>
-  
 </template>
 
 <script>
@@ -142,5 +145,5 @@ export default {
 </script>
 
 <style scoped>
-@import 'css/LoginRegisterForm.css';
+@import "css/LoginRegisterForm.css";
 </style>
