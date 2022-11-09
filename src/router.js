@@ -4,6 +4,10 @@ import LoginView from "./components/LoginView.vue";
 import RegisterView from "./components/RegisterView.vue";
 // lazy-loaded
 const ProfileView = () => import("./components/ProfileView.vue")
+const IngredientFeed = () => import("./components/IngredientFeed.vue")
+const RecipeFeed = () => import("./components/RecipeFeed.vue")
+const ShoppingListFeed = () => import("./components/ShoppingListFeed.vue")
+const RecipeView = () => import("./components/RecipeView.vue")
 
 const routes = [
   {
@@ -28,7 +32,31 @@ const routes = [
     name: "profile",
     // lazy-loaded
     component: ProfileView,
-  }
+  },
+  {
+    path: "/ingredients",
+    name: "ingredients",
+    // lazy-loaded
+    component: IngredientFeed,
+  },
+  {
+    path: "/recipes",
+    name: "recipes",
+    // lazy-loaded
+    component: RecipeFeed,
+  },
+  {
+    path: "/shopping-list",
+    name: "shopping list",
+    // lazy-loaded
+    component: ShoppingListFeed,
+  },
+  {
+    path: "/recipes/:id",
+    name: "Individual recipe page",
+    // lazy-loaded
+    component: RecipeView,
+  },
 ];
 
 const router = createRouter({
