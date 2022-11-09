@@ -11,6 +11,27 @@
             <font-awesome-icon icon="home" /> Home
           </router-link>
         </li>
+
+        <!-- TODO(#9): replace this icon with the ones we're using in the figma diagrams -->
+        <li class="nav-item">
+          <router-link to="/recipes" class="nav-link">
+            <font-awesome-icon icon="hamburger" /> Recipes
+          </router-link>
+        </li>
+
+        <!-- TODO(#9): replace this icon with the ones we're using in the figma diagrams -->
+        <li class="nav-item">
+          <router-link to="/ingredients" class="nav-link">
+            <font-awesome-icon icon="carrot" /> Ingredients
+          </router-link>
+        </li>
+
+        <!-- TODO(#9): replace this icon with the ones we're using in the figma diagrams -->
+        <li class="nav-item">
+          <router-link to="/shopping-list" class="nav-link">
+            <font-awesome-icon icon="shopping-cart" /> Shopping List
+          </router-link>
+        </li>
       </div>
 
       <div v-if="!currentUser" class="navbar-nav ml-auto">
