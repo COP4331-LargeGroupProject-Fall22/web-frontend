@@ -12,19 +12,21 @@
           </router-link>
         </li>
 
-        <!-- TODO: replace these icons with the ones we're using in the figma diagrams -->
+        <!-- TODO(#9): replace this icon with the ones we're using in the figma diagrams -->
         <li class="nav-item">
           <router-link to="/recipes" class="nav-link">
             <font-awesome-icon icon="hamburger" /> Recipes
           </router-link>
         </li>
 
+        <!-- TODO(#9): replace this icon with the ones we're using in the figma diagrams -->
         <li class="nav-item">
           <router-link to="/ingredients" class="nav-link">
             <font-awesome-icon icon="carrot" /> Ingredients
           </router-link>
         </li>
 
+        <!-- TODO(#9): replace this icon with the ones we're using in the figma diagrams -->
         <li class="nav-item">
           <router-link to="/shopping-list" class="nav-link">
             <font-awesome-icon icon="shopping-cart" /> Shopping List
