@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-md">
+    <div class="col-md-6">
       <div class="card card-container">
         <img
           id="profile-img"
@@ -58,7 +58,7 @@
     </div>
     <!-- TODO: animate the banner to move to the other side when login is pushed
     (idk if this is possible because they are on seperate pages) -->
-    <div class="col-md">
+    <div class="col-md-6">
       <div class="banner">
         <div class="d-flex justify-content-center fill">
           <div

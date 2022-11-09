@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <!-- TODO: animate the banner to move to the other side when register is pushed -->
-      <div class="col-md no-float">
+      <div class="col-md-6 no-float">
         <div class="banner">
           <div class="d-flex justify-content-center fill">
             <div
@@ -18,7 +18,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md no-float">
+      <div class="col-md-6 no-float">
         <div class="card card-container">
           <img
             id="profile-img"
