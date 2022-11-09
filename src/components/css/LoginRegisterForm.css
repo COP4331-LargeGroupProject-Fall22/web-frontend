@@ -69,13 +69,20 @@ body,
 
 .content_center {
     top: 25%;
-    padding-top: 10px;
-    padding-right: 50px;
-    padding-bottom: 10px;
-    padding-left: 50px;
-    background: #0da312;
+    padding: 40px;
+    width: 80%;
+    height: fit-content;
+    background: #004002e6;
+    border-radius: 15px;
     color: white;
-    border: 3px solid black;
+    border: 3px solid white;
+}
+
+h1{
+    padding: 5%;
+    padding-bottom: 10%;
+    font-size: 2.0rem !important;
+    text-align: center;
 }
 
 .banner {
@@ -96,6 +103,20 @@ body,
 .btn-primary:focus,
 .btn-primary:not(:disabled):not(.disabled).active,
 .show>.btn-primary.dropdown-toggle {
-    background-color: #006600;
-    border-color: #005600;
+    background-color: #006600 !important;
+    border-color: #005600 !important;
+}
+
+.btn-secondary{
+    color: #008600 !important;
+    background-color: white !important;
+    border-color: white !important;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus,
+.btn-secondary:not(:disabled):not(.disabled).active,
+.show>.btn-secondary.dropdown-toggle {
+    background-color: lightgrey !important;
+    border-color: lightgrey !important;
 }
