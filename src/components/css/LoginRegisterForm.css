@@ -9,18 +9,23 @@ body,
     height: 100%;
 }
 
+.fill {
+    min-height: 100%;
+    height: 100%;
+}
+
 .container {
     display: table;
     width: 100%;
     margin-top: -50px;
     padding: 50px 0 0 0;
-    /*set left/right padding according to needs*/
     box-sizing: border-box;
 }
 
 .row {
     height: 100%;
     display: table-row;
+    margin: 0 !important;
 }
 
 .row .no-float {
@@ -29,9 +34,6 @@ body,
 }
 
 .card-container.card {
-    /* TODO: this padding has a direct influence on the size of the page
-    this extends the cards height which increases the size parameters for the picture
-    would like to make it the size of the page if possible*/
     padding: 70px 25%;
     height: 100%;
     border: none;
@@ -64,8 +66,22 @@ body,
     color: red;
 }
 
+.content_center {
+    top: 25%;
+    padding-top: 10px;
+    padding-right: 50px;
+    padding-bottom: 10px;
+    padding-left: 50px;
+    background: #0da312;
+    color: white;
+    border: 3px solid black;
+}
+
 .banner {
-    height: 100%;
+    width: 100%;
+    height: calc(100vh);
+    display: table;
+    table-layout: fixed;
     width: 100%;
     background-image: url("../../assets/food.png");
 }

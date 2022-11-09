@@ -3,7 +3,20 @@
     <div class="row">
       <!-- TODO: animate the banner to move to the other side when register is pushed -->
       <div class="col-md no-float">
-        <div class="banner"></div>
+        <div class="banner">
+          <div class="d-flex justify-content-center fill">
+            <div
+              class="content_center my-class position-absolute top-50 start-50 translate-middle"
+            >
+              <h1>Don't have an account?</h1>
+              <router-link to="/register" class="nav-link">
+                <!-- TODO: Fix button to be same width as button above -->
+                <!-- <font-awesome-icon icon="user-plus" /> Sign Up -->
+                <button class="btn btn-secondary btn-block">Register</button>
+              </router-link>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="col-md no-float">
         <div class="card card-container">
@@ -40,11 +53,6 @@
               </div>
             </div>
           </Form>
-          <router-link to="/register" class="nav-link">
-            <!-- TODO: Fix button to be same width as button above -->
-            <!-- <font-awesome-icon icon="user-plus" /> Sign Up -->
-            <button class="btn btn-secondary btn-block">Register</button>
-          </router-link>
         </div>
       </div>
     </div>
