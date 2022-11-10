@@ -63,7 +63,7 @@
           <div
             class="content_center my-class position-absolute top-50 start-50 translate-middle"
           >
-            <h1>Already have an account?</h1>
+            <h2>Already have an account?</h2>
             <router-link to="/login" class="nav-link">
               <!-- TODO: Fix button to be same width as button above -->
               <!-- <font-awesome-icon icon="user-plus" /> Sign Up -->
