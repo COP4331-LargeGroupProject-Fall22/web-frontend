@@ -1,16 +1,16 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand navbar-dark bg-dark">
-      <a href="/" id="logoNavBar">
+      <a href="/home" id="logoNavBar">
         <img id="logo-img" src="@/assets/smart-chef-logo1.png" class="logo" />
       </a>
-      <a href="/" class="navbar-brand">Smart Chef</a>
+      <a href="/home" class="navbar-brand">Smart Chef</a>
       <div v-if="currentUser" class="navbar-nav mr-auto">
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <router-link to="/home" class="nav-link">
             <font-awesome-icon icon="home" /> Home
           </router-link>
-        </li>
+        </li> -->
 
         <!-- TODO(#9): replace this icon with the ones we're using in the figma diagrams -->
         <li class="nav-item">
