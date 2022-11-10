@@ -8,7 +8,7 @@
             <div
               class="content_center my-class position-absolute top-50 start-50 translate-middle"
             >
-              <h1>Don't have an account?</h1>
+              <h2>Don't have an account?</h2>
               <router-link to="/register" class="nav-link">
                 <button class="btn btn-secondary btn-block">Register</button>
               </router-link>
