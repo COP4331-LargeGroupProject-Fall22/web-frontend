@@ -20,8 +20,6 @@ export default {
   mounted() {
     if (!this.currentUser) {
       this.$router.push("/login");
-    } else {
-      console.log("Current user: " + JSON.stringify(this.currentUser));
     }
   },
 };

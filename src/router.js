@@ -12,48 +12,47 @@ const RecipeView = () => import("./components/RecipeView.vue")
 const routes = [
   {
     path: "/",
-    name: "home",
-    component: HomeView,
-  },
-  {
-    path: "/home",
+    name: "SmartChef",
+    alias: ["/home"],
     component: HomeView,
   },
   {
     path: "/login",
+    name: "Login",
     component: LoginView,
   },
   {
     path: "/register",
+    name: "Register",
     component: RegisterView,
   },
   {
     path: "/profile",
-    name: "profile",
+    name: "User profile",
     // lazy-loaded
     component: ProfileView,
   },
   {
     path: "/ingredients",
-    name: "ingredients",
+    name: "Ingredients",
     // lazy-loaded
     component: IngredientFeed,
   },
   {
     path: "/recipes",
-    name: "recipes",
+    name: "Recipes",
     // lazy-loaded
     component: RecipeFeed,
   },
   {
     path: "/shopping-list",
-    name: "shopping list",
+    name: "Shopping list",
     // lazy-loaded
     component: ShoppingListFeed,
   },
   {
     path: "/recipes/:id",
-    name: "Individual recipe page",
+    name: "Recipe",
     // lazy-loaded
     component: RecipeView,
   },
@@ -62,6 +61,22 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  // const publicPages = ['/login', '/register', '/home'];
+  // const authRequired = !publicPages.includes(to.path);
+  // const loggedIn = localStorage.getItem('user');
+
+  // trying to access a restricted page + not logged in
+  // redirect to login page
+  // if (authRequired && !loggedIn) {
+  //   next('/login');
+  // } else {
+  //   next();
+  // }
+  document.title = to.name;
+  next();
 });
 
 // router.beforeEach((to, from, next) => {
