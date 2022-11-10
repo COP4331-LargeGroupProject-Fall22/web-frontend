@@ -133,4 +133,8 @@ export default {
   width: 30px;
   margin-left: 15px;
 }
+
+#app {
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+}
 </style>
