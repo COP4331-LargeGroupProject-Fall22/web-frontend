@@ -13,11 +13,23 @@
             {{ tab }}
           </button> -->
           <button @click="currentTab = 'IngredientFeed'">
-            <font-awesome-icon icon="carrot" style="margin-right: 10px; font-size: 20px"/>My Ingredients</button>
+            <font-awesome-icon
+              icon="carrot"
+              style="margin-right: 10px; font-size: 20px"
+            />My Ingredients
+          </button>
           <button @click="currentTab = 'RecipeFeed'">
-            <font-awesome-icon icon="hamburger" style="margin-right: 10px; font-size: 20px"/>Recipes</button>
+            <font-awesome-icon
+              icon="hamburger"
+              style="margin-right: 10px; font-size: 20px"
+            />Recipes
+          </button>
           <button @click="currentTab = 'ShoppingListFeed'">
-            <font-awesome-icon icon="shopping-cart" style="margin-right: 10px; font-size: 20px"/>Shopping Cart</button>
+            <font-awesome-icon
+              icon="shopping-cart"
+              style="margin-right: 10px; font-size: 20px"
+            />Shopping Cart
+          </button>
         </div>
       </nav>
     </div>
@@ -31,19 +43,19 @@
 
 <script>
 // import UserService from "../services/user.service";
-import IngredientFeed from '@/components/IngredientFeed.vue'
-import RecipeFeed from '@/components/RecipeFeed.vue'
-import ShoppingListFeed from '@/components/ShoppingListFeed.vue'
+import IngredientFeed from "@/components/IngredientFeed.vue";
+import RecipeFeed from "@/components/RecipeFeed.vue";
+import ShoppingListFeed from "@/components/ShoppingListFeed.vue";
 export default {
   name: "HomeView",
   components: {
     IngredientFeed,
     RecipeFeed,
-    ShoppingListFeed
+    ShoppingListFeed,
   },
   data() {
     return {
-      currentTab: 'IngredientFeed',
+      currentTab: "IngredientFeed",
       // tabs: ['IngredientFeed', 'RecipeFeed', 'ShoppingListFeed']
     };
   },
@@ -79,29 +91,30 @@ export default {
 <!-- TODO(#9): replace this icon with the ones we're using in the figma diagrams -->
 
 <style scoped>
-
-.container{
+.container {
   padding: 0 !important;
   margin: 0 !important;
   max-width: 100%;
 }
-.col-md-2, .col-md-10{
+.col-md-2,
+.col-md-10 {
   padding: 0;
 }
 
-.list-group{
+.list-group {
   margin: 0 !important;
 }
 
-.sectionicons{
+.sectionicons {
   margin-right: 10px;
 }
-.pb-2, .py-2{
+.pb-2,
+.py-2 {
   padding: 1.5rem !important;
   margin: 0 !important;
 }
 
-button{
+button {
   width: 100%;
   padding: 20px;
   border: none;
@@ -109,7 +122,11 @@ button{
   text-align: left;
 }
 
-button.active, button:active, button:hover, button:focus, button:target{
+button.active,
+button:active,
+button:hover,
+button:focus,
+button:target {
   color: green;
   font-weight: bold;
 }
