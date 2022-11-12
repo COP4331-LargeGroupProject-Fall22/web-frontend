@@ -16,80 +16,31 @@
         </div>
       </div>
     </div>
-    <!-- TODO see if this can be done in a list -->
     <!-- TODO it automatically moves to a new row, 
       if we want a sidescroller we need to set up an overflow system, scroll bar or button -->
     <div class="row">
-      <div class="col-md-auto">
-        <button type="button" class="btn type-of-recipe">Favorite</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn type-of-recipe">Favorite</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn type-of-recipe">Favorite</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn type-of-recipe">Favorite</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn type-of-recipe">Favorite</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn type-of-recipe">Favorite</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn type-of-recipe">Favorite</button>
-      </div>
+      <li v-for="favrecipe in favrecipes" v-bind:key="favrecipe.id">
+        <div class="col-md-auto">
+          <button type="button" class="btn fav-recipe">
+            {{ favrecipe.favRecipeName }}
+          </button>
+        </div>
+      </li>
     </div>
     <div class="row">
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
+      <li v-for="recipe in recipes" v-bind:key="recipe.id">
+        <div class="col-md-auto">
+          <button type="button" class="btn recipe-item">
+            {{ recipe.recipeName }}
+          </button>
+        </div>
+      </li>
     </div>
   </div>
 </template>
 
 <script>
+import { ref } from "vue";
 export default {
   name: "RecipeFeed",
   computed: {
@@ -101,6 +52,82 @@ export default {
     if (!this.currentUser) {
       this.$router.push("/login");
     }
+  },
+  setup() {
+    const favrecipes = ref([
+      {
+        favRecipeName: "Fav1",
+      },
+      {
+        favRecipeName: "Fav2",
+      },
+      {
+        favRecipeName: "Fav3",
+      },
+      {
+        favRecipeName: "Fav4",
+      },
+      {
+        favRecipeName: "Fav5",
+      },
+    ]);
+    const recipes = ref([
+      {
+        recipeName: "Recipe1",
+      },
+      {
+        recipeName: "Recipe2",
+      },
+      {
+        recipeName: "Recipe3",
+      },
+      {
+        recipeName: "Recipe4",
+      },
+      {
+        recipeName: "Recipe5",
+      },
+      {
+        recipeName: "Recipe6",
+      },
+      {
+        recipeName: "Recipe7",
+      },
+      {
+        recipeName: "Recipe8",
+      },
+      {
+        recipeName: "Recipe9",
+      },
+      {
+        recipeName: "Recipe10",
+      },
+      {
+        recipeName: "Recipe11",
+      },
+      {
+        recipeName: "Recipe12",
+      },
+      {
+        recipeName: "Recipe13",
+      },
+      {
+        recipeName: "Recipe14",
+      },
+      {
+        recipeName: "Recipe15",
+      },
+      {
+        recipeName: "Recipe16",
+      },
+      {
+        recipeName: "Recipe17",
+      },
+    ]);
+    return {
+      favrecipes,
+      recipes,
+    };
   },
 };
 </script>
@@ -148,7 +175,7 @@ export default {
   align-self: center;
 }
 
-.type-of-recipe {
+.fav-recipe {
   width: 100px;
   height: 100px;
   border-radius: 15px;
@@ -178,5 +205,9 @@ export default {
 .col-md-auto {
   padding: 0;
   margin: 0;
+}
+
+li {
+  list-style: none;
 }
 </style>
