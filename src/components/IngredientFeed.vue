@@ -13,95 +13,85 @@
         <div class="form-outline">
           <input
             type="search"
-            id="form1"
+            id="searchIngredients"
             class="form-control"
             placeholder="Search Ingredients"
             aria-label="Search"
           />
         </div>
-        <!-- TODO replace with an actual material icon -->
+        <!-- TODO(#19) replace with an actual material icon -->
         <button type="button" class="btn btn-primary btn-floating">
           <i class="fas fa-plus"></i>
         </button>
       </div>
     </div>
-    <!-- TODO see if this can be done in a list -->
-    <!-- TODO it automatically moves to a new row, 
-      if we want a sidescroller we need to set up an overflow system, scroll bar or button -->
+    <!-- TODO(#20) set up a scroll button -->
     <div class="row">
-      <div class="col-md-auto">
-        <a href="#Dairy" class="btn type-of-food">Diary</a>
-      </div>
-      <div class="col-md-auto">
-        <a href="#Produce" class="btn type-of-food">Produce</a>
-      </div>
-      <div class="col-md-auto">
-        <a href="#Misc1" class="btn type-of-food">Misc1</a>
-      </div>
-      <div class="col-md-auto">
-        <a href="#Misc2" class="btn type-of-food">Misc2</a>
-      </div>
-      <div class="col-md-auto">
-        <a href="#Misc3" class="btn type-of-food">Misc3</a>
-      </div>
-      <div class="col-md-auto">
-        <a href="#Misc4" class="btn type-of-food">Misc4</a>
-      </div>
-      <div class="col-md-auto">
-        <a href="#Misc5" class="btn type-of-food">Misc5</a>
-      </div>
+      <ul>
+        <div class="col-md-auto">
+          <a href="#Dairy" class="btn type-of-food">Dairy</a>
+        </div>
+        <div class="col-md-auto">
+          <a href="#Produce" class="btn type-of-food">Produce</a>
+        </div>
+        <div class="col-md-auto">
+          <a href="#Vegetables" class="btn type-of-food">Vegetables</a>
+        </div>
+        <div class="col-md-auto">
+          <a href="#Fruits" class="btn type-of-food">Fruits</a>
+        </div>
+        <div class="col-md-auto">
+          <a href="#Misc1" class="btn type-of-food">Misc1</a>
+        </div>
+        <div class="col-md-auto">
+          <a href="#Misc2" class="btn type-of-food">Misc2</a>
+        </div>
+        <div class="col-md-auto">
+          <a href="#Misc3" class="btn type-of-food">Misc3</a>
+        </div>
+      </ul>
     </div>
     <div id="Dairy" class="row">
-      <h3>Diary</h3>
+      <h3>Dairy</h3>
     </div>
     <div class="row">
-      <div class="col-md-auto">
-        <button type="button" class="btn food-item">Food</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn food-item">Food</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn food-item">Food</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn food-item">Food</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn food-item">Food</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn food-item">Food</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn food-item">Food</button>
-      </div>
+      <ul>
+        <li v-for="dairy in dairys" v-bind:key="dairy.id">
+          <div class="col-md-auto">
+            <button type="button" class="btn food-item">
+              {{ dairy.foodName }}
+            </button>
+          </div>
+        </li>
+      </ul>
     </div>
     <div id="Produce" class="row">
       <h3>Produce</h3>
     </div>
     <div class="row">
-      <div class="col-md-auto">
-        <button type="button" class="btn food-item">Food</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn food-item">Food</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn food-item">Food</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn food-item">Food</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn food-item">Food</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn food-item">Food</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn food-item">Food</button>
-      </div>
+      <ul>
+        <li v-for="produce in produces" v-bind:key="produce.id">
+          <div class="col-md-auto">
+            <button type="button" class="btn food-item">
+              {{ produce.foodName }}
+            </button>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div id="Vegetables" class="row">
+      <h3>Vegetables</h3>
+    </div>
+    <div class="row">
+      <ul>
+        <li v-for="vegetable in vegetables" v-bind:key="vegetable.id">
+          <div class="col-md-auto">
+            <button type="button" class="btn food-item">
+              {{ vegetable.foodName }}
+            </button>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -109,6 +99,7 @@
 <script>
 // import ModalView from "@/components/ModalView";
 // import { MDBRow } from "mdb-vue-ui-kit";
+import { ref } from "vue";
 export default {
   name: "IngredientFeed",
   components: {
@@ -124,6 +115,83 @@ export default {
     if (!this.currentUser) {
       this.$router.push("/login");
     }
+  },
+  setup() {
+    const dairys = ref([
+      {
+        foodName: "Dairy1",
+      },
+      {
+        foodName: "Dairy2",
+      },
+      {
+        foodName: "Dairy3",
+      },
+      {
+        foodName: "Dairy4",
+      },
+      {
+        foodName: "Dairy5",
+      },
+      {
+        foodName: "Dairy6",
+      },
+      {
+        foodName: "Dairy7",
+      },
+    ]);
+    const produces = ref([
+      {
+        foodName: "Produce1",
+      },
+      {
+        foodName: "Produce2",
+      },
+      {
+        foodName: "Produce3",
+      },
+      {
+        foodName: "Produce4",
+      },
+      {
+        foodName: "Produce5",
+      },
+      {
+        foodName: "Produce6",
+      },
+      {
+        foodName: "Produce7",
+      },
+    ]);
+    const vegetables = ref([
+      {
+        foodName: "Veg1",
+      },
+      {
+        foodName: "Veg2",
+      },
+      {
+        foodName: "Veg3",
+      },
+      {
+        foodName: "Veg4",
+      },
+      {
+        foodName: "Veg5",
+      },
+      {
+        foodName: "Veg6",
+      },
+      {
+        foodName: "Veg7",
+      },
+    ]);
+
+    return {
+      dairys,
+      produces,
+      vegetables,
+    };
   },
 };
 </script>
@@ -201,5 +269,23 @@ export default {
 .col-md-auto {
   padding: 0;
   margin: 0;
+}
+
+li {
+  list-style: none;
+}
+
+ul {
+  margin: 0;
+  display: flex;
+  max-width: 80vw;
+  padding: 0;
+  overflow: auto;
+  overflow-y: hidden;
+}
+
+h3 {
+  padding-left: 15px;
+  padding-top: 15px;
 }
 </style>
