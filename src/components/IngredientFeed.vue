@@ -6,10 +6,14 @@
           @closeModal="showCreateModal = false"
           @saveChanges="handleAddToInventory"
           :showModal="showCreateModal"
-          :modalText="createModalForm"
           :modalTitle="createModalTitle"
           :modalButtonText="createButtonText"
-        ></modal-view>
+        >
+          <component
+            :is="add_ingredient_component"
+            ref="add_ingredient_ref"
+          ></component>
+        </modal-view>
       </div>
       <div class="row border-bottom mb-4">
         <div class="col-md-8 mb-4">
@@ -18,7 +22,6 @@
             placeholder="Search for ingredient in inventory..."
             v-model="searchString"
             type="text"
-            id="test"
             class="form-control"
           />
         </div>
@@ -40,11 +43,14 @@
 </template>
 
 <script>
-import ModalView from "../components/ModalView.vue";
+import ModalView from "@/components/ModalView.vue";
+import AddIngredientView from "@/components/AddIngredientView.vue";
+
 export default {
   name: "IngredientFeed",
   components: {
     ModalView,
+    AddIngredientView,
   },
   computed: {
     currentUser() {
@@ -60,10 +66,9 @@ export default {
     return {
       searchString: "",
       showCreateModal: false,
-      createModalForm:
-        "A form/interactive component for adding ingredient; later update this to pass a prop instead",
       createModalTitle: "Add ingredient to inventory",
       createButtonText: "Add",
+      add_ingredient_component: "add-ingredient-view",
     };
   },
   watch: {
@@ -74,9 +79,13 @@ export default {
   },
   methods: {
     handleAddToInventory() {
+      const data = JSON.parse(
+        JSON.stringify(this.$refs.add_ingredient_ref.ingredientsToAdd)
+      );
       // TODO(ADD NUM HERE): Create service for adding ingredient to inventory
       console.log(
-        "Add ingredient button pressed; update this method to actually add ingredient to inventory"
+        "Add ingredient button pressed; update this method to actually add ingredient to inventory; provided items: ",
+        data
       );
     },
   },

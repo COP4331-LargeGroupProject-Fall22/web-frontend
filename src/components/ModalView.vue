@@ -14,7 +14,9 @@
               {{ modalTitle || "No title passed" }}
             </h5>
           </div>
-          <div class="modal-body">{{ modalText || "No props passed yet" }}</div>
+          <div class="modal-body">
+            <slot></slot>
+          </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" @click="hideModal">
               Close
