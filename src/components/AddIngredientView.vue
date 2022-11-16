@@ -14,6 +14,8 @@
             class="form-control"
           />
         </div>
+        <!-- TODO(Add number): Add a checkbox that allows searching only for
+        exact match -->
         <div class="col-md-2 mb-4">
           <button
             id="searchIngredients"
@@ -30,7 +32,7 @@
             <div class="col-md-1 mb-4">
               <input type="checkbox" v-model="item.shouldAdd" :key="item.id" />
             </div>
-            <div class="col-md-9 mb-4">
+            <div class="col-md-9 mb-4 toCapitalFirst">
               <span :class="{ done: item.shouldAdd }">{{ item.name }}</span>
             </div>
             <div class="col-md-2 mb-4">
@@ -50,6 +52,8 @@
 </template>
 
 <script>
+import IngredientService from "@/services/ingredient.service";
+
 export default {
   name: "AddIngredientView",
   data() {
@@ -65,19 +69,16 @@ export default {
     },
   },
   methods: {
-    searchIngredients() {
-      // TODO(26): Update this function to actually search and render
-      // ingredients
-      console.log("INCOMPLETE: Searches for/renders ingredients");
+    async searchIngredients() {
       this.searchString = this.searchString.trim();
       if (this.searchString === "") {
         return;
       }
-      this.searchResults.push({
-        id: this.id++,
-        name: this.searchString,
-        shouldAdd: false,
-      });
+      IngredientService.getAllMatchingQuery(this.searchString).then(
+        (response) => {
+          this.searchResults = response.data;
+        }
+      );
     },
     removeItemFromResults(item) {
       this.searchResults = this.searchResults.filter((t) => t !== item);
@@ -86,4 +87,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.toCapitalFirst {
+  text-transform: capitalize;
+}
+</style>
