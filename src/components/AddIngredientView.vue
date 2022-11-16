@@ -16,6 +16,8 @@
         </div>
         <!-- TODO(Add number): Add a checkbox that allows searching only for
         exact match -->
+        <!-- TODO(Add number): Add a checkbox that allows searching only for
+        ingredients that start with provided string -->
         <div class="col-md-2 mb-4">
           <button
             id="searchIngredients"
@@ -44,8 +46,8 @@
         </div>
       </div>
 
-      <div v-if="!searchResults.length" class="row">
-        <p>No search results found</p>
+      <div v-if="errorString.length" class="row">
+        <p>{{ errorString }}</p>
       </div>
     </div>
   </div>
@@ -61,6 +63,7 @@ export default {
       id: 0,
       searchString: "",
       searchResults: [],
+      errorString: "",
     };
   },
   computed: {
@@ -70,8 +73,10 @@ export default {
   },
   methods: {
     async searchIngredients() {
+      this.errorString = "Loading...";
       this.searchString = this.searchString.trim();
       if (this.searchString === "") {
+        this.errorString = "Please provide an ingredient name";
         return;
       }
       IngredientService.getAllMatchingQuery(this.searchString).then(
@@ -79,6 +84,9 @@ export default {
           this.searchResults = response.data;
         }
       );
+      this.errorString = this.searchResults.length
+        ? ""
+        : "No search results found";
     },
     removeItemFromResults(item) {
       this.searchResults = this.searchResults.filter((t) => t !== item);
