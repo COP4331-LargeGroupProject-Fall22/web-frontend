@@ -66,10 +66,9 @@ export default {
   },
   methods: {
     searchIngredients() {
-      // TODO(ADD NUM HERE): Update this function to actually search and render ingredients
-      console.log(
-        "INCOMPLETE: Searches for ingredients and displays returned ingredients"
-      );
+      // TODO(26): Update this function to actually search and render
+      // ingredients
+      console.log("INCOMPLETE: Searches for/renders ingredients");
       this.searchString = this.searchString.trim();
       if (this.searchString === "") {
         return;

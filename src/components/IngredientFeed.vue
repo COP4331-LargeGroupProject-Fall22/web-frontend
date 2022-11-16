@@ -73,7 +73,8 @@ export default {
   },
   watch: {
     searchString(newVal) {
-      // TODO(ADD NUM HERE): Update this to filter inventory results when this value changes to only match ingredients with this as substring
+      // TODO(27): Update this to filter inventory results when this value
+      // changes to only match ingredients with this as substring
       console.log("new searchString: ", newVal);
     },
   },
@@ -82,11 +83,8 @@ export default {
       const data = JSON.parse(
         JSON.stringify(this.$refs.add_ingredient_ref.ingredientsToAdd)
       );
-      // TODO(ADD NUM HERE): Create service for adding ingredient to inventory
-      console.log(
-        "Add ingredient button pressed; update this method to actually add ingredient to inventory; provided items: ",
-        data
-      );
+      // TODO(25): Create service for adding ingredient to inventory
+      console.log("UNIMPLEMENTED: Adding ingredients to inventory", data);
     },
   },
 };
