@@ -83,8 +83,10 @@ export default {
       const data = JSON.parse(
         JSON.stringify(this.$refs.add_ingredient_ref.ingredientsToAdd)
       );
-      // TODO(25): Create service for adding ingredient to inventory
-      console.log("UNIMPLEMENTED: Adding ingredients to inventory", data);
+      if (data.length) {
+        // TODO(25): Create service for adding ingredient to inventory
+        console.log("UNIMPLEMENTED: Adding ingredients to inventory", data);
+      }
     },
   },
 };
