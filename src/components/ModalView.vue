@@ -1,16 +1,16 @@
 <template>
   <div>
     <div
-      id="myModal"
+      id="templateModal"
       class="modal fade"
-      ref="exampleModal"
+      ref="templateModalRef"
       tabindex="-1"
       aria-hidden="true"
     >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">
+            <h5 class="modal-title" id="templateModalLabel">
               {{ modalTitle || "No title passed" }}
             </h5>
           </div>
@@ -53,8 +53,8 @@ export default {
   },
   methods: {
     modalActive: function () {
-      this.modalInstance = new Modal(document.getElementById("myModal"), {
-        target: "#my-modal",
+      this.modalInstance = new Modal(document.getElementById("templateModal"), {
+        target: "#template-modal",
         backdrop: "static",
       });
       this.modalInstance.show();
