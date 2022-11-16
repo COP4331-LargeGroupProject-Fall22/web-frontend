@@ -44,6 +44,36 @@
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-6 text-left">
+            <div class="previous">
+              <div v-if="currentPage > 1">
+                <button
+                  type="button"
+                  @click="currentPage--"
+                  class="btn btn-primary btn-md"
+                >
+                  <i class="fas fa-arrow-left"></i>
+                  <span class=""></span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 text-right">
+            <div class="next">
+              <button
+                type="button"
+                @click="currentPage++"
+                class="btn btn-primary btn-md"
+              >
+                <!-- TODO(add num): only show this if there is a next  page to
+                 render, e.g. v-if hasNextPage -->
+                <i class="fas fa-arrow-right"></i>
+                <span class=""></span>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div v-if="errorString.length" class="row">
@@ -60,15 +90,28 @@ export default {
   name: "AddIngredientView",
   data() {
     return {
-      id: 0,
       searchString: "",
       searchResults: [],
       errorString: "",
+      currentPage: 1,
+      // TODO(): make this configurable by user
+      resultsPerPage: 10,
     };
   },
   computed: {
     ingredientsToAdd() {
       return this.searchResults.filter((t) => t.shouldAdd);
+    },
+  },
+  watch: {
+    currentPage() {
+      console.log("calling searchIngredients");
+      this.searchIngredients();
+    },
+    searchString() {
+      this.currentPage = 1;
+      this.searchResults = [];
+      this.errorString = "";
     },
   },
   methods: {
@@ -79,14 +122,16 @@ export default {
         this.errorString = "Please provide an ingredient name";
         return;
       }
-      IngredientService.getAllMatchingQuery(this.searchString).then(
-        (response) => {
-          this.searchResults = response.data;
-        }
-      );
-      this.errorString = this.searchResults.length
-        ? ""
-        : "No search results found";
+      IngredientService.getAllMatchingQuery(
+        this.searchString,
+        this.currentPage,
+        this.resultsPerPage
+      ).then((response) => {
+        console.log(response);
+        this.searchResults = response.data;
+        this.errorString =
+          this.searchResults.length > 0 ? "" : "No search results found";
+      });
     },
     removeItemFromResults(item) {
       this.searchResults = this.searchResults.filter((t) => t !== item);
@@ -98,5 +143,13 @@ export default {
 <style scoped>
 .toCapitalFirst {
   text-transform: capitalize;
+}
+
+.previous {
+  text-align: left;
+}
+
+.next {
+  text-align: right;
 }
 </style>
