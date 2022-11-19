@@ -26,13 +26,14 @@
       </div>
     </div>
     <!-- TODO(#20) set up a scroll button -->
-    <!-- TODO(#unassigned because ill do it soon) section scroll buttons dont work -->
     <div class="row">
       <ul>
         <li v-for="list in data" :key="list" class="categories">
           <div v-for="(types, name) in list" :key="name">
             <div class="col-md-auto">
-              <a href="#{{ name }}" class="btn type-of-food">{{ name }}</a>
+              <a v-bind:href="'#' + name" class="btn type-of-food">
+                {{ name }}
+              </a>
             </div>
           </div>
         </li>
@@ -43,7 +44,7 @@
       <ul>
         <li v-for="list in data" :key="list">
           <div v-for="(types, name) in list" :key="name">
-            <div id="{{ name }}" class="row">
+            <div :id="name" class="row">
               <h3>{{ name }}</h3>
             </div>
             <div class="row">
