@@ -26,69 +26,37 @@
       </div>
     </div>
     <!-- TODO(#20) set up a scroll button -->
+    <!-- TODO(#unassigned because ill do it soon) section scroll buttons dont work -->
     <div class="row">
       <ul>
-        <div class="col-md-auto">
-          <a href="#Dairy" class="btn type-of-food">Dairy</a>
-        </div>
-        <div class="col-md-auto">
-          <a href="#Produce" class="btn type-of-food">Produce</a>
-        </div>
-        <div class="col-md-auto">
-          <a href="#Vegetables" class="btn type-of-food">Vegetables</a>
-        </div>
-        <div class="col-md-auto">
-          <a href="#Fruits" class="btn type-of-food">Fruits</a>
-        </div>
-        <div class="col-md-auto">
-          <a href="#Misc1" class="btn type-of-food">Misc1</a>
-        </div>
-        <div class="col-md-auto">
-          <a href="#Misc2" class="btn type-of-food">Misc2</a>
-        </div>
-        <div class="col-md-auto">
-          <a href="#Misc3" class="btn type-of-food">Misc3</a>
-        </div>
-      </ul>
-    </div>
-    <div id="Dairy" class="row">
-      <h3>Dairy</h3>
-    </div>
-    <div class="row">
-      <ul>
-        <li v-for="dairy in dairys" v-bind:key="dairy.id">
-          <div class="col-md-auto">
-            <button type="button" class="btn food-item">
-              {{ dairy.foodName }}
-            </button>
+        <li v-for="list in data" :key="list" class="categories">
+          <div v-for="(types, name) in list" :key="name">
+            <div class="col-md-auto">
+              <a href="#{{ name }}" class="btn type-of-food">{{ name }}</a>
+            </div>
           </div>
         </li>
       </ul>
     </div>
-    <div id="Produce" class="row">
-      <h3>Produce</h3>
-    </div>
+
     <div class="row">
       <ul>
-        <li v-for="produce in produces" v-bind:key="produce.id">
-          <div class="col-md-auto">
-            <button type="button" class="btn food-item">
-              {{ produce.foodName }}
-            </button>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <div id="Vegetables" class="row">
-      <h3>Vegetables</h3>
-    </div>
-    <div class="row">
-      <ul>
-        <li v-for="vegetable in vegetables" v-bind:key="vegetable.id">
-          <div class="col-md-auto">
-            <button type="button" class="btn food-item">
-              {{ vegetable.foodName }}
-            </button>
+        <li v-for="list in data" :key="list">
+          <div v-for="(types, name) in list" :key="name">
+            <div id="{{ name }}" class="row">
+              <h3>{{ name }}</h3>
+            </div>
+            <div class="row">
+              <ul>
+                <div v-for="(food, name) in types" :key="name">
+                  <div class="col-md-auto">
+                    <button type="button" class="btn food-item">
+                      {{ name }}
+                    </button>
+                  </div>
+                </div>
+              </ul>
+            </div>
           </div>
         </li>
       </ul>
@@ -116,81 +84,128 @@ export default {
       this.$router.push("/login");
     }
   },
-  setup() {
-    const dairys = ref([
+  data() {
+    const data = ref([
       {
-        foodName: "Dairy1",
-      },
-      {
-        foodName: "Dairy2",
-      },
-      {
-        foodName: "Dairy3",
-      },
-      {
-        foodName: "Dairy4",
-      },
-      {
-        foodName: "Dairy5",
-      },
-      {
-        foodName: "Dairy6",
-      },
-      {
-        foodName: "Dairy7",
-      },
-    ]);
-    const produces = ref([
-      {
-        foodName: "Produce1",
-      },
-      {
-        foodName: "Produce2",
-      },
-      {
-        foodName: "Produce3",
-      },
-      {
-        foodName: "Produce4",
-      },
-      {
-        foodName: "Produce5",
-      },
-      {
-        foodName: "Produce6",
-      },
-      {
-        foodName: "Produce7",
-      },
-    ]);
-    const vegetables = ref([
-      {
-        foodName: "Veg1",
-      },
-      {
-        foodName: "Veg2",
-      },
-      {
-        foodName: "Veg3",
-      },
-      {
-        foodName: "Veg4",
-      },
-      {
-        foodName: "Veg5",
-      },
-      {
-        foodName: "Veg6",
-      },
-      {
-        foodName: "Veg7",
-      },
-    ]);
+        Dairy: {
+          Dairy2: {
+            foodName: "Dairy1",
+            foodType: "Dairy",
+            expirationDate: "1/15/2023",
+          },
+          Dairy1: {
+            foodName: "Dairy2",
+            foodType: "Dairy",
+            expirationDate: "10/19/2022",
+          },
 
+          Dairy3: {
+            foodName: "Dairy3",
+            foodType: "Dairy",
+            expirationDate: "2/11/2023",
+          },
+          Dairy4: {
+            foodName: "Dairy4",
+            foodType: "Dairy",
+            expirationDate: "1/20/2023",
+          },
+          Dairy5: {
+            foodName: "Dairy5",
+            foodType: "Dairy",
+            expirationDate: "1/20/2023",
+          },
+          Dairy6: {
+            foodName: "Dairy6",
+            foodType: "Dairy",
+            expirationDate: "1/20/2023",
+          },
+        },
+
+        Produce: {
+          Produce1: {
+            foodName: "Produce1",
+            foodType: "Produce",
+            expirationDate: "1/20/2023",
+          },
+          Produce2: {
+            foodName: "Produce2",
+            foodType: "Produce",
+            expirationDate: "1/20/2023",
+          },
+          Produce3: {
+            foodName: "Produce3",
+            foodType: "Produce",
+            expirationDate: "1/20/2023",
+          },
+          Produce4: {
+            foodName: "Produce4",
+            foodType: "Produce",
+            expirationDate: "1/20/2023",
+          },
+          Produce5: {
+            foodName: "Produce5",
+            foodType: "Produce",
+            expirationDate: "1/20/2023",
+          },
+          Produce6: {
+            foodName: "Produce6",
+            foodType: "Produce",
+            expirationDate: "1/20/2023",
+          },
+          Produce7: {
+            foodName: "Produce7",
+            foodType: "Produce",
+            expirationDate: "1/20/2023",
+          },
+          Produce8: {
+            foodName: "Produce8",
+            foodType: "Produce",
+            expirationDate: "1/20/2023",
+          },
+        },
+        Vegetable: {
+          Vegetable1: {
+            foodName: "Vegetable1",
+            foodType: "Vegetable",
+            expirationDate: "11/19/2022",
+          },
+          Vegetable2: {
+            foodName: "Vegetable2",
+            foodType: "Vegetable",
+            expirationDate: "11/19/2022",
+          },
+          Vegetable3: {
+            foodName: "Vegetable3",
+            foodType: "Vegetable",
+            expirationDate: "11/19/2022",
+          },
+        },
+        Fruits: {
+          Fruits1: {
+            foodName: "Fruits1",
+            foodType: "Fruits",
+            expirationDate: "11/19/2022",
+          },
+          Fruits2: {
+            foodName: "Fruits2",
+            foodType: "Fruits",
+            expirationDate: "11/19/2022",
+          },
+          Fruits3: {
+            foodName: "Fruits3",
+            foodType: "Fruits",
+            expirationDate: "11/19/2022",
+          },
+          Fruits4: {
+            foodName: "Fruits4",
+            foodType: "Fruits",
+            expirationDate: "11/19/2022",
+          },
+        },
+      },
+    ]);
     return {
-      dairys,
-      produces,
-      vegetables,
+      data,
     };
   },
 };
@@ -255,7 +270,7 @@ export default {
   border-radius: 15px;
   text-align: left;
   line-height: 300px;
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: white;
   background-image: linear-gradient(
       to bottom,
@@ -273,6 +288,11 @@ export default {
 
 li {
   list-style: none;
+}
+
+.categories {
+  list-style: none;
+  display: flex;
 }
 
 ul {
