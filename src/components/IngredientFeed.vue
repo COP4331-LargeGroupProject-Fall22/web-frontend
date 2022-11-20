@@ -1,10 +1,5 @@
 <template>
   <div class="container">
-    <!-- Example of how to use MDB rows to open the centered modal view -->
-    <!-- <MDBRow center class="text-center">
-      <h3>Vue Teleport Example</h3>
-      <ModalView />
-    </MDBRow> -->
     <div class="tool-bar">
       <div class="tool-bar-container">
         <button type="button" class="btn">Sort By</button>
@@ -12,17 +7,40 @@
       <div class="tool-bar-container">
         <div class="form-outline">
           <input
-            type="search"
             id="searchIngredients"
-            class="form-control"
-            placeholder="Search Ingredients"
             aria-label="Search"
+            autocomplete="off"
+            placeholder="Search Inventory..."
+            v-model="searchString"
+            type="text"
+            class="form-control"
           />
         </div>
         <!-- TODO(#19) replace with an actual material icon -->
-        <button type="button" class="btn btn-primary btn-floating">
+        <button
+          type="button"
+          class="btn btn-primary btn-floating"
+          id="addIngredient"
+          @click="showCreateModal = true"
+        >
           <i class="fas fa-plus"></i>
         </button>
+      </div>
+      <div class="container mt-3">
+        <div class="row">
+          <modal-view
+            @closeModal="showCreateModal = false"
+            @saveChanges="handleAddToInventory"
+            :showModal="showCreateModal"
+            :modalTitle="createModalTitle"
+            :modalButtonText="createButtonText"
+          >
+            <component
+              :is="add_ingredient_component"
+              ref="add_ingredient_ref"
+            ></component>
+          </modal-view>
+        </div>
       </div>
     </div>
     <!-- TODO(#20) set up a scroll button -->
@@ -66,14 +84,15 @@
 </template>
 
 <script>
-// import ModalView from "@/components/ModalView";
-// import { MDBRow } from "mdb-vue-ui-kit";
 import { ref } from "vue";
+import ModalView from "@/components/ModalView.vue";
+import AddIngredientView from "@/components/AddIngredientView.vue";
+
 export default {
   name: "IngredientFeed",
   components: {
-    // ModalView,
-    // MDBRow,
+    ModalView,
+    AddIngredientView,
   },
   computed: {
     currentUser() {
@@ -89,12 +108,12 @@ export default {
     const data = ref([
       {
         Dairy: {
-          Dairy2: {
+          Dairy1: {
             foodName: "Dairy1",
             foodType: "Dairy",
             expirationDate: "1/15/2023",
           },
-          Dairy1: {
+          Dairy2: {
             foodName: "Dairy2",
             foodType: "Dairy",
             expirationDate: "10/19/2022",
@@ -207,7 +226,30 @@ export default {
     ]);
     return {
       data,
+      searchString: "",
+      showCreateModal: false,
+      createModalTitle: "Add ingredient to inventory",
+      createButtonText: "Add",
+      add_ingredient_component: "add-ingredient-view",
     };
+  },
+  watch: {
+    searchString(newVal) {
+      // TODO(27): Update this to filter inventory results when this value
+      // changes to only match ingredients with this as substring
+      console.log("new searchString: ", newVal);
+    },
+  },
+  methods: {
+    handleAddToInventory() {
+      const data = JSON.parse(
+        JSON.stringify(this.$refs.add_ingredient_ref.ingredientsToAdd)
+      );
+      if (data.length) {
+        // TODO(25): Create service for adding ingredient to inventory
+        console.log("UNIMPLEMENTED: Adding ingredients to inventory", data);
+      }
+    },
   },
 };
 </script>
