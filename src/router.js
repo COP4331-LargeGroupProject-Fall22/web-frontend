@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from "vue-router";
 import HomeView from "./components/HomeView.vue";
 import LoginView from "./components/LoginView.vue";
 import RegisterView from "./components/RegisterView.vue";
+import VerifyEmailView from "./components/VerifyEmailView.vue";
 // lazy-loaded
 const ProfileView = () => import("./components/ProfileView.vue");
 const RecipeView = () => import("./components/RecipeView.vue");
@@ -22,6 +23,11 @@ const routes = [
     path: "/register",
     name: "Register",
     component: RegisterView,
+  },
+  {
+    path: "/confirm",
+    name: "Confirm email",
+    component: VerifyEmailView,
   },
   {
     path: "/profile",

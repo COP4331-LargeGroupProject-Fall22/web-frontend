@@ -99,6 +99,9 @@ export default {
           this.$router.push("/home");
         },
         (error) => {
+          if (error.response.status === 403) {
+            this.$router.push("/confirm");
+          }
           this.loading = false;
           this.message =
             (error.response &&

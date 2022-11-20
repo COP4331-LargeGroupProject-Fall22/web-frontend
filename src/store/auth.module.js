@@ -36,7 +36,31 @@ export const auth = {
           return Promise.reject(error);
         }
       );
+    },
+    sendVerificationCode(username) {
+      return AuthService.sendVerificationCode(username).then(
+        response => {
+          return Promise.resolve(response.data);
+        },
+        error => {
+          return Promise.reject(error);
+        }
+      );
+    },
+    confirmVerificationCode(username, code) {
+      return AuthService.sendVerificationCode(username, code).then(
+        response => {
+          return Promise.resolve(response.data);
+        },
+        error => {
+          return Promise.reject(error);
+        }
+      );
     }
+
+    // TODO(add num): Add JWT stuff here. Also make sure that the other services
+    // have corresponding module that is used to make functions available, e.g.
+    // load ingredients might be messed up.
   },
   mutations: {
     loginSuccess(state, user) {
