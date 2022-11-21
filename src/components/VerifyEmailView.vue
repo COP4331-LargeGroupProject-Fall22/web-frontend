@@ -193,7 +193,6 @@ export default {
       );
     },
     handleResend(user) {
-      console.log(user);
       this.$store.dispatch("auth/sendVerificationCode", user).then(
         () => {
           this.message = "Verification sent, please check your email";
