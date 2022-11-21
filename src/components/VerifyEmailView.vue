@@ -179,6 +179,7 @@ export default {
 
       this.$store.dispatch("auth/confirmVerificationCode", user).then(
         () => {
+          this.loading = false;
           this.successMessage = "Verification succeeded! Please log in.";
         },
         (error) => {
