@@ -37,22 +37,26 @@ export const auth = {
         }
       );
     },
-    sendVerificationCode(username) {
+    sendVerificationCode({ commit }, username) {
       return AuthService.sendVerificationCode(username).then(
         response => {
+          commit('sendCodeSuccess');
           return Promise.resolve(response.data);
         },
         error => {
+          commit('sendCodeFailure');
           return Promise.reject(error);
         }
       );
     },
-    confirmVerificationCode(user) {
+    confirmVerificationCode({ commit }, user) {
       return AuthService.confirmVerificationCode(user).then(
         response => {
+          commit('verifyCodeSuccess');
           return Promise.resolve(response.data);
         },
         error => {
+          commit('verifyCodeFailure');
           return Promise.reject(error);
         }
       );
@@ -77,6 +81,18 @@ export const auth = {
       state.status.loggedIn = false;
     },
     registerFailure(state) {
+      state.status.loggedIn = false;
+    },
+    verifyCodeSuccess(state) {
+      state.status.loggedIn = false;
+    },
+    verifyCodeFailure(state) {
+      state.status.loggedIn = false;
+    },
+    sendCodeSuccess(state) {
+      state.status.loggedIn = false;
+    },
+    sendCodeFailure(state) {
       state.status.loggedIn = false;
     }
   }
