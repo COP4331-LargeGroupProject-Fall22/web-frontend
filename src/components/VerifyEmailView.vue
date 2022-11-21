@@ -7,7 +7,6 @@
             <div
               class="content_center my-class position-absolute top-50 start-50 translate-middle"
             >
-              <!-- TODO: make this show the username -->
               <h2>
                 If your account is not verified, please check your email for a
                 verification code. Otherwise please
@@ -32,9 +31,13 @@
                 <ErrorMessage name="username" class="error-feedback" />
               </div>
               <div class="form-group">
-                <label for="code">Verification code</label>
-                <Field name="code" type="code" class="form-control" />
-                <ErrorMessage name="code" class="error-feedback" />
+                <label for="verificationCode">Verification code</label>
+                <Field
+                  name="verificationCode"
+                  type="verificationCode"
+                  class="form-control"
+                />
+                <ErrorMessage name="verificationCode" class="error-feedback" />
               </div>
 
               <div class="form-group">
@@ -50,7 +53,7 @@
                 <div v-if="message" class="alert alert-danger" role="alert">
                   {{ message }}
                 </div>
-                <!-- TODO: style this to make it look better/not error -->
+                <!-- TODO(34): style this to make it look better/not error -->
                 <div
                   v-if="successMessage"
                   class="alert alert-danger"
@@ -93,7 +96,7 @@
                 <div v-if="message" class="alert alert-danger" role="alert">
                   {{ message }}
                 </div>
-                <!-- TODO: style this to make it look better/not error -->
+                <!-- TODO(34): style this to make it look better/not error -->
                 <div
                   v-if="successMessage"
                   class="alert alert-danger"
@@ -145,10 +148,11 @@ export default {
   data() {
     const verifySchema = yup.object().shape({
       username: yup.string().required("Username is required!"),
-      code: yup.string().required("Verification code is required!"),
-      // TODO: update this to match verification code, I think 6 chars
-      // .min(6, "Must be at least 6 characters!")
-      // .max(40, "Must be maximum 40 characters!"),
+      verificationCode: yup
+        .string()
+        .required("Verification code is required!")
+        .min(6, "Must be exactly 6 characters!")
+        .max(6, "Must be exactly 6 characters!"),
     });
 
     const resendSchema = yup.object().shape({

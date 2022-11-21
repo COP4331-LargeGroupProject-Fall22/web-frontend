@@ -99,6 +99,7 @@ export default {
           this.$router.push("/home");
         },
         (error) => {
+          // 403 indicates that username exists, but they haven't verified their email
           if (error.response.status === 403) {
             this.$router.push("/confirm");
           }

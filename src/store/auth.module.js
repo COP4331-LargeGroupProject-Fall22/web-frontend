@@ -47,8 +47,8 @@ export const auth = {
         }
       );
     },
-    confirmVerificationCode(username, code) {
-      return AuthService.sendVerificationCode(username, code).then(
+    confirmVerificationCode(user) {
+      return AuthService.confirmVerificationCode(user).then(
         response => {
           return Promise.resolve(response.data);
         },
@@ -58,9 +58,7 @@ export const auth = {
       );
     }
 
-    // TODO(add num): Add JWT stuff here. Also make sure that the other services
-    // have corresponding module that is used to make functions available, e.g.
-    // load ingredients might be messed up.
+    // TODO(21): Add JWT methods here
   },
   mutations: {
     loginSuccess(state, user) {
