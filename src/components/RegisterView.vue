@@ -135,7 +135,7 @@ export default {
           this.loading = false;
 
           this.$store
-            .dispatch("auth/sendVerificationCode", user.username)
+            .dispatch("auth/sendVerificationCode", { username: user.username })
             .then(() => {
               this.message =
                 "Verification sent, please check your email.\nRedirecting to confirmation page...";
