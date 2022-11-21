@@ -193,9 +193,21 @@ export default {
       );
     },
     handleResend(user) {
-      // TODO: make this handle resend
-      console.log("Resend pressed");
-      console.log(user.username);
+      this.$store
+        .dispatch("auth/sendVerificationCode", { username: user.username })
+        .then(
+          () => {
+            this.message = "Verification sent, please check your email";
+          },
+          (error) => {
+            this.message =
+              (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+              error.message ||
+              error.toString();
+          }
+        );
     },
     toggleForm() {
       this.showSubmit = !this.showSubmit;
