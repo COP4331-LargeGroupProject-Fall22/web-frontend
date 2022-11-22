@@ -32,6 +32,14 @@ class AuthService {
     return axios.post(API_PREFIX + 'auth/register', user);
   }
 
+  sendVerificationCode(username) {
+    return axios.post(API_PREFIX + 'auth/send-verification-code', username);
+  }
+
+  confirmVerificationCode(user) {
+    return axios.post(API_PREFIX + 'auth/confirm-verification-code', user);
+  }
+
   // TODO(21): update code to refresh token when access token expires
   refreshJWT(refreshToken) {
     return axios

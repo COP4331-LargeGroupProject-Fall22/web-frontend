@@ -130,11 +130,20 @@ export default {
       this.loading = true;
 
       this.$store.dispatch("auth/register", user).then(
-        (data) => {
-          this.message = data.message;
+        () => {
           this.successful = true;
           this.loading = false;
-          this.$router.push("/login");
+
+          this.$store
+            .dispatch("auth/sendVerificationCode", { username: user.username })
+            .then(() => {
+              this.message =
+                "Verification sent, please check your email.\nRedirecting to confirmation page...";
+              // Redirect to confirmation page after 3 seconds
+              setTimeout(function () {
+                this.router.push("/confirm");
+              }, 3 * 1000);
+            });
         },
         (error) => {
           this.message =
