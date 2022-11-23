@@ -14,9 +14,9 @@
             class="form-control"
           />
         </div>
-        <!-- TODO(Add number): Add a checkbox that allows searching only for
+        <!-- TODO(36): Add a checkbox that allows searching only for
         exact match -->
-        <!-- TODO(Add number): Add a checkbox that allows searching only for
+        <!-- TODO(36): Add a checkbox that allows searching only for
         ingredients that start with provided string -->
         <div class="col-md-2 mb-4">
           <button
@@ -66,8 +66,7 @@
                 @click="currentPage++"
                 class="btn btn-primary btn-md"
               >
-                <!-- TODO(add num): only show this if there is a next  page to
-                 render, e.g. v-if hasNextPage -->
+                <!-- TODO(37): Fix next page rendering -->
                 <i class="fas fa-arrow-right"></i>
                 <span class=""></span>
               </button>
@@ -84,8 +83,6 @@
 </template>
 
 <script>
-import IngredientService from "@/services/ingredient.service";
-
 export default {
   name: "AddIngredientView",
   data() {
@@ -94,7 +91,7 @@ export default {
       searchResults: [],
       errorString: "",
       currentPage: 1,
-      // TODO(): make this configurable by user
+      // TODO(36): make this configurable by user
       resultsPerPage: 10,
     };
   },
@@ -105,7 +102,6 @@ export default {
   },
   watch: {
     currentPage() {
-      console.log("calling searchIngredients");
       this.searchIngredients();
     },
     searchString() {
@@ -122,16 +118,31 @@ export default {
         this.errorString = "Please provide an ingredient name";
         return;
       }
-      IngredientService.getAllMatchingQuery(
-        this.searchString,
-        this.currentPage,
-        this.resultsPerPage
-      ).then((response) => {
-        console.log(response);
-        this.searchResults = response.data;
-        this.errorString =
-          this.searchResults.length > 0 ? "" : "No search results found";
-      });
+
+      this.$store
+        .dispatch("ingredients/getAllMatchingQuery", {
+          ingredientName: this.searchString,
+          page: this.currentPage,
+          resultsPerPage: this.resultsPerPage,
+          // TODO(35): add support for intolerances
+          intolerance: undefined,
+        })
+        .then(
+          (response) => {
+            console.log(response);
+            this.searchResults = response;
+            this.errorString =
+              this.searchResults.length > 0 ? "" : "No search results found";
+          },
+          (error) => {
+            this.errorString =
+              (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+              error.message ||
+              error.toString();
+          }
+        );
     },
     removeItemFromResults(item) {
       this.searchResults = this.searchResults.filter((t) => t !== item);

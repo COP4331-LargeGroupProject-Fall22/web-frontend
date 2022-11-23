@@ -6,27 +6,12 @@ const API_PREFIX = process.env.VUE_APP_NODE_ENV === process.env.VUE_APP_DEV ?
 const API_URL = API_PREFIX + 'ingredients';
 
 class IngredientService {
-  getAllMatchingQuery(ingredientName, page=undefined, resultsPerPage=resultsPerPage, intolerance=undefined) {
-    return axios.get(API_URL, {
-        // TODO(add num): response should have some indication of totalNumPages
-        // for the given requestName or totalNumResults
-        params: {
-            ingredientName: ingredientName,
-            resultsPerPage: resultsPerPage,
-            page: page,
-            intolerance: intolerance
-        }
-    });
+  getAllMatchingQuery(query) {
+    return axios.get(API_URL, { params: query });
   }
 
-  get(ingredientID, quantity=undefined, unit=undefined) {
-    return axios.get(API_URL, {
-        params: {
-            ingredientID: ingredientID,
-            quantity: quantity,
-            unit: unit
-        }
-    });
+  get(query) {
+    return axios.get(API_URL, { params: query });
   }
 }
 
