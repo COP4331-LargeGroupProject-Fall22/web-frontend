@@ -60,6 +60,7 @@
 <script>
 import { Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
+import { util } from "@/globals.js";
 
 export default {
   name: "LoginView",
@@ -104,7 +105,7 @@ export default {
             this.$router.push("/confirm");
           }
           this.loading = false;
-          this.message = getErrorString(error);
+          this.message = util.getErrorString(error);
         }
       );
     },
