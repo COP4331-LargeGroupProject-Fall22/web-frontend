@@ -127,6 +127,7 @@
 <script>
 import { Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
+import { util } from "@/globals.js";
 
 export default {
   name: "VerifyEmailView",
@@ -184,7 +185,7 @@ export default {
         },
         (error) => {
           this.loading = false;
-          this.message = getErrorString(error);
+          this.message = util.getErrorString(error);
         }
       );
     },
@@ -194,7 +195,7 @@ export default {
           this.message = "Verification sent, please check your email";
         },
         (error) => {
-          this.message = getErrorString(error);
+          this.message = util.getErrorString(error);
         }
       );
     },
