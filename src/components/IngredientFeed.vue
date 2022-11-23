@@ -6,6 +6,7 @@
       </div>
       <div class="tool-bar-container">
         <div class="form-outline">
+          <!-- TODO(38): Fix search text placeholder not showing unless field is active -->
           <input
             id="searchIngredients"
             aria-label="Search"
@@ -49,8 +50,10 @@
         <li v-for="list in data" :key="list" class="categories">
           <div v-for="(types, name) in list" :key="name">
             <div class="col-md-auto">
-              <a v-bind:href="'#' + name" class="btn type-of-food">
-                {{ name }}
+              <a v-bind:href="'#' + name" class="">
+                <button type="button" class="btn type-of-food">
+                  {{ name }}
+                </button>
               </a>
             </div>
           </div>
@@ -69,9 +72,10 @@
               <ul>
                 <div v-for="(food, name) in types" :key="name">
                   <div class="col-md-auto">
-                    <button type="button" class="btn food-item">
-                      {{ name }}
-                    </button>
+                    <button type="button" class="btn food-item"></button>
+                  </div>
+                  <div class="col-md-auto text-center food-text">
+                    {{ name }}
                   </div>
                 </div>
               </ul>
@@ -255,6 +259,7 @@ export default {
 </script>
 
 <style scoped>
+/* TODO(41): Extract css into separate file */
 .container {
   padding: 0 !important;
   margin: 0 !important;
@@ -298,23 +303,25 @@ export default {
 }
 
 .type-of-food {
-  width: 100px;
-  height: 100px;
+  width: 10vw;
+  height: 5vw;
   border-radius: 15px;
-  text-align: center;
-  line-height: 150px;
+  align-items: center;
+  color: black;
   background-color: lightgrey;
   margin: 15px;
 }
 
-.food-item {
-  width: 150px;
-  height: 200px;
-  border-radius: 15px;
+.food-text {
   text-align: left;
-  line-height: 300px;
-  font-size: 1.5rem;
-  color: white;
+  font-size: 1rem;
+}
+
+.food-item {
+  width: 10vw;
+  height: 10vw;
+  border-radius: 15px;
+  /* TODO(40): Update this to display the image from the ingredient in inventory */
   background-image: linear-gradient(
       to bottom,
       rgb(255 255 255 / 0%),
