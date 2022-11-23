@@ -9,9 +9,11 @@ import {
   faShoppingCart,
   faCarrot,
   faHamburger,
-  faTimes
+  faTimes,
+  faPlus,
+  faCheck
 } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt, faShoppingCart, faCarrot, faHamburger, faTimes);
+library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt, faShoppingCart, faCarrot, faHamburger, faTimes, faPlus, faCheck);
 
 export { FontAwesomeIcon };

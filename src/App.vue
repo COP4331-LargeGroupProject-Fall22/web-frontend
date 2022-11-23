@@ -5,36 +5,13 @@
         <img id="logo-img" src="@/assets/smart-chef-logo1.png" class="logo" />
       </a>
       <a href="/home" class="navbar-brand">Smart Chef</a>
-      <div v-if="currentUser" class="navbar-nav mr-auto">
-        <!-- <li class="nav-item">
-          <router-link to="/home" class="nav-link">
-            <font-awesome-icon icon="home" /> Home
-          </router-link>
-        </li> -->
-
-        <!-- TODO(#9): replace this icon with the ones we're using in the figma diagrams -->
-        <li class="nav-item">
-          <router-link to="/recipes" class="nav-link">
-            <font-awesome-icon icon="hamburger" /> Recipes
-          </router-link>
-        </li>
-
-        <!-- TODO(#9): replace this icon with the ones we're using in the figma diagrams -->
-        <li class="nav-item">
-          <router-link to="/ingredients" class="nav-link">
-            <font-awesome-icon icon="carrot" /> Ingredients
-          </router-link>
-        </li>
-
-        <!-- TODO(#9): replace this icon with the ones we're using in the figma diagrams -->
-        <li class="nav-item">
-          <router-link to="/shopping-list" class="nav-link">
-            <font-awesome-icon icon="shopping-cart" /> Shopping List
-          </router-link>
-        </li>
-      </div>
 
       <div v-if="!currentUser" class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <router-link to="/confirm" class="nav-link">
+            <font-awesome-icon icon="check" /> Confirm email
+          </router-link>
+        </li>
         <li class="nav-item">
           <router-link to="/register" class="nav-link">
             <font-awesome-icon icon="user-plus" /> Sign Up

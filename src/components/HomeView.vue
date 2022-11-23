@@ -51,7 +51,6 @@ export default {
   },
 };
 </script>
-<!-- TODO(#16): fix css to keep button active when clicked off, it was until it suddenly stopped -->
 <!-- TODO(#16): set script to have the inital tab (IngredientFeed) button active -->
 <!-- TODO(#17): remove App.vue routing and routing in router.js for everything other than home-->
 <!-- TODO(#9): replace this icon with the ones we're using in the figma diagrams -->

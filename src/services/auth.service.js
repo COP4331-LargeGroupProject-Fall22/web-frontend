@@ -7,22 +7,20 @@ const API_PREFIX = process.env.VUE_APP_NODE_ENV === process.env.VUE_APP_DEV ?
 class AuthService {
   login(user) {
     return axios
-      .post(API_PREFIX + 'auth/login', user)
+      .post(API_PREFIX + 'auth/login?includeInfo=true', user)
       .then(response => {
-        const token = response.data.data.accessToken;
-        if (!token) {
+        const accessToken = response.data.accessToken;
+        const refreshToken = response.data.refreshToken;
+        if (!accessToken) {
           return null;
         }
 
-        return axios
-          .get(API_PREFIX + 'user', { headers: { "Authorization": token } })
-          .then(response => {
-            let userData = response.data.data;
-            userData['accessToken'] = token;
-            localStorage.setItem('user', JSON.stringify(userData));
+        let user = response.data.userInfo;
+        user['accessToken'] = accessToken;
+        user['refreshToken'] = refreshToken;
+        localStorage.setItem('user', JSON.stringify(user));
 
-            return userData;
-          });
+        return user;
       });
   }
 
@@ -32,6 +30,34 @@ class AuthService {
 
   register(user) {
     return axios.post(API_PREFIX + 'auth/register', user);
+  }
+
+  sendVerificationCode(username) {
+    return axios.post(API_PREFIX + 'auth/send-verification-code', username);
+  }
+
+  confirmVerificationCode(user) {
+    return axios.post(API_PREFIX + 'auth/confirm-verification-code', user);
+  }
+
+  // TODO(21): update code to refresh token when access token expires
+  refreshJWT(refreshToken) {
+    return axios
+      .post(API_PREFIX + 'auth/refreshJWT', {refreshToken})
+      .then(response => {
+        const accessToken = response.data.accessToken;
+        const refreshToken = response.data.refreshToken;
+        if (!accessToken) {
+          return response.status;
+        }
+
+        let user = JSON.parse(localStorage.getItem('user'));
+        user['accessToken'] = accessToken;
+        user['refreshToken'] = refreshToken;
+        localStorage.setItem('user', JSON.stringify(user));
+
+        return response.status;
+      });
   }
 }
 

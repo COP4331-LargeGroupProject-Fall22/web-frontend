@@ -2,12 +2,10 @@ import { createWebHistory, createRouter } from "vue-router";
 import HomeView from "./components/HomeView.vue";
 import LoginView from "./components/LoginView.vue";
 import RegisterView from "./components/RegisterView.vue";
+import VerifyEmailView from "./components/VerifyEmailView.vue";
 // lazy-loaded
-const ProfileView = () => import("./components/ProfileView.vue")
-const IngredientFeed = () => import("./components/IngredientFeed.vue")
-const RecipeFeed = () => import("./components/RecipeFeed.vue")
-const ShoppingListFeed = () => import("./components/ShoppingListFeed.vue")
-const RecipeView = () => import("./components/RecipeView.vue")
+const ProfileView = () => import("./components/ProfileView.vue");
+const RecipeView = () => import("./components/RecipeView.vue");
 
 const routes = [
   {
@@ -27,28 +25,15 @@ const routes = [
     component: RegisterView,
   },
   {
+    path: "/confirm",
+    name: "Confirm email",
+    component: VerifyEmailView,
+  },
+  {
     path: "/profile",
     name: "User profile",
     // lazy-loaded
     component: ProfileView,
-  },
-  {
-    path: "/ingredients",
-    name: "Ingredients",
-    // lazy-loaded
-    component: IngredientFeed,
-  },
-  {
-    path: "/recipes",
-    name: "Recipes",
-    // lazy-loaded
-    component: RecipeFeed,
-  },
-  {
-    path: "/shopping-list",
-    name: "Shopping list",
-    // lazy-loaded
-    component: ShoppingListFeed,
   },
   {
     path: "/recipes/:id",

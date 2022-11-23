@@ -1,60 +1,74 @@
 <template>
-  <div @click="handleBackdropClick">
-    <button @click="open = true">Open Modal</button>
-
-    <!-- Wrapper for modal -->
-    <div v-if="open" id="myModal" class="modal">
-      <!-- Modal content -->
-      <div class="modal-content">
-        <button @click="open = false" class="close">
-          <font-awesome-icon icon="times" />
-        </button>
-        <p>Some text in the Modal..</p>
+  <div>
+    <div
+      id="templateModal"
+      class="modal fade"
+      ref="templateModalRef"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="templateModalLabel">
+              {{ modalTitle || "No title passed" }}
+            </h5>
+          </div>
+          <div class="modal-body">
+            <slot></slot>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @click="hideModal">
+              Close
+            </button>
+            <button type="button" @click="saveChanges" class="btn btn-primary">
+              {{ modalButtonText || "Save changes" }}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { Modal } from "bootstrap";
 export default {
-  data() {
-    return {
-      open: false,
-    };
+  name: "GenericModal",
+  data: () => ({
+    modalInstance: null,
+  }),
+  props: {
+    showModal: Boolean,
+    modalText: String,
+    modalTitle: String,
+    modalButtonText: String,
+  },
+  watch: {
+    showModal(newValue) {
+      if (newValue === true) {
+        this.modalActive();
+      }
+    },
   },
   methods: {
-    handleBackdropClick(e) {
-      if (e.target.className == "modal") {
-        this.open = false;
-      }
+    modalActive: function () {
+      this.modalInstance = new Modal(document.getElementById("templateModal"), {
+        target: "#template-modal",
+        backdrop: "static",
+      });
+      this.modalInstance.show();
+    },
+    hideModal: function () {
+      this.modalInstance.hide();
+      this.$emit("closeModal");
+    },
+    saveChanges: function () {
+      this.$emit("saveChanges");
+      this.hideModal();
     },
   },
 };
 </script>
 
-<style scoped>
-button {
-  width: 10%;
-}
-
-.modal {
-  display: block;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-}
-
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-}
-</style>
+<style scoped></style>

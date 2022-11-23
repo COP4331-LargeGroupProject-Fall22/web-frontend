@@ -4,3 +4,12 @@
  * object as well as the Vue prototype for access throughout the app
  * (register globals with care, only when it makes since to be accessible app wide)
  */
+
+
+export const util = {
+   getErrorString: (error) => {
+      return (error.response && error.response.data && error.response.data.message)
+       || error.message
+       || error.toString();  
+    }
+}
