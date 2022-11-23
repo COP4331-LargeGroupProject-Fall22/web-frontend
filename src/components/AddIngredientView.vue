@@ -135,12 +135,7 @@ export default {
               this.searchResults.length > 0 ? "" : "No search results found";
           },
           (error) => {
-            this.errorString =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.message ||
-              error.toString();
+            this.errorString = getErrorString(error);
           }
         );
     },
