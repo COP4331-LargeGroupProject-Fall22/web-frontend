@@ -184,12 +184,7 @@ export default {
         },
         (error) => {
           this.loading = false;
-          this.message =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
+          this.message = getErrorString(error);
         }
       );
     },
@@ -199,12 +194,7 @@ export default {
           this.message = "Verification sent, please check your email";
         },
         (error) => {
-          this.message =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
+          this.message = getErrorString(error);
         }
       );
     },

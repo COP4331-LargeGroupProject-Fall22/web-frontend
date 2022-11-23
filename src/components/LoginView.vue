@@ -104,12 +104,7 @@ export default {
             this.$router.push("/confirm");
           }
           this.loading = false;
-          this.message =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
+          this.message = getErrorString(error);
         }
       );
     },
