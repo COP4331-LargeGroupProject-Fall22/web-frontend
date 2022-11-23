@@ -5,8 +5,11 @@
  * (register globals with care, only when it makes since to be accessible app wide)
  */
 
-function getErrorString(error) {
-  return (error.response && error.response.data && error.response.data.message)
+
+export const util = {
+   getErrorString: (error) => {
+      return (error.response && error.response.data && error.response.data.message)
        || error.message
-       || error.toString();
+       || error.toString();  
+    }
 }

@@ -83,6 +83,8 @@
 </template>
 
 <script>
+import { util } from "@/globals.js";
+
 export default {
   name: "AddIngredientView",
   data() {
@@ -135,7 +137,7 @@ export default {
               this.searchResults.length > 0 ? "" : "No search results found";
           },
           (error) => {
-            this.errorString = getErrorString(error);
+            this.errorString = util.getErrorString(error);
           }
         );
     },
