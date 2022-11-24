@@ -2,7 +2,7 @@
   <div class="container">
     <div class="tool-bar">
       <div class="tool-bar-container">
-        <!-- TODO(42): Add drop down for sorting, and connect to endpoint for
+        <!-- TODO(43): Add drop down for sorting, and connect to endpoint for
           sorting results -->
         <button type="button" class="btn">Sort By</button>
       </div>
@@ -10,89 +10,79 @@
         <div class="form-outline">
           <!-- TODO(38): Fix search text placeholder not showing unless field is active -->
           <input
-            type="search"
             id="searchRecipes"
-            class="form-control"
-            placeholder="Search Recipes"
             aria-label="Search"
+            autocomplete="off"
+            placeholder="Search Inventory..."
+            v-model="searchString"
+            type="text"
+            class="form-control"
           />
         </div>
       </div>
-    </div>
-    <!-- TODO see if this can be done in a list -->
-    <!-- TODO it automatically moves to a new row, 
-      if we want a sidescroller we need to set up an overflow system, scroll bar or button -->
-    <div class="row">
-      <div class="col-md-auto">
-        <button type="button" class="btn type-of-recipe">Favorite</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn type-of-recipe">Favorite</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn type-of-recipe">Favorite</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn type-of-recipe">Favorite</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn type-of-recipe">Favorite</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn type-of-recipe">Favorite</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn type-of-recipe">Favorite</button>
+      <div class="container mt-3">
+        <div class="row">
+          <modal-view
+            @closeModal="showCreateModal = false"
+            @saveChanges="handleAddToInventory"
+            :showModal="showCreateModal"
+            :modalTitle="createModalTitle"
+            :modalButtonText="createButtonText"
+          >
+            <component
+              :is="add_ingredient_component"
+              ref="add_ingredient_ref"
+            ></component>
+          </modal-view>
+        </div>
       </div>
     </div>
+    <!-- TODO(20) set up a scroll button -->
     <div class="row">
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
-      <div class="col-md-auto">
-        <button type="button" class="btn recipe-item">Recipe</button>
-      </div>
+      <ul>
+        <li v-for="list in data" :key="list" class="categories">
+          <div v-for="(types, name) in list" :key="name">
+            <div class="col-md-auto">
+              <a v-bind:href="'#' + name" class="">
+                <button type="button" class="btn type-of-recipe">
+                  {{ name }}
+                </button>
+              </a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="row">
+      <ul>
+        <li v-for="list in data" :key="list">
+          <div v-for="(types, name) in list" :key="name">
+            <div :id="name" class="row">
+              <h3>{{ name }}</h3>
+            </div>
+            <div class="row">
+              <ul>
+                <div v-for="(recipe, name) in types" :key="name">
+                  <div class="col-md-auto">
+                    <button type="button" class="btn recipe-item">
+                      <div class="col-md-auto text-center recipe-text">
+                        {{ name }}
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </ul>
+            </div>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
+import { ref } from "vue";
 export default {
   name: "RecipeFeed",
   computed: {
@@ -104,6 +94,73 @@ export default {
     if (!this.currentUser) {
       this.$router.push("/login");
     }
+  },
+  data() {
+    const data = ref([
+      {
+        Category1: {
+          Recipe1: {
+            recipeName: "Recipe1",
+            recipeType: "Category1",
+          },
+          RecipeNameVeryLong: {
+            recipeName: "RecipeNameVeryLong",
+            recipeType: "Category1",
+          },
+          Recipe3: {
+            recipeName: "Recipe3",
+            recipeType: "Category1",
+          },
+          Recipe4: {
+            recipeName: "Recipe4",
+            recipeType: "Category1",
+          },
+          Recipe5: {
+            recipeName: "Recipe5",
+            recipeType: "Category1",
+          },
+          Recipe6: {
+            recipeName: "Recipe6",
+            recipeType: "Category1",
+          },
+          Recipe7: {
+            recipeName: "Recipe7",
+            recipeType: "Category1",
+          },
+        },
+
+        Category2: {
+          Recipe1: {
+            recipeName: "Recipe1",
+            recipeType: "Category2",
+          },
+          Recipe2: {
+            recipeName: "Recipe2",
+            recipeType: "Category2",
+          },
+          Recipe3: {
+            recipeName: "Recipe3",
+            recipeType: "Category3",
+          },
+          Recipe4: {
+            recipeName: "Recipe4",
+            recipeType: "Category4",
+          },
+          Recipe5: {
+            recipeName: "Recipe5",
+            recipeType: "Category5",
+          },
+        },
+      },
+    ]);
+    return {
+      data,
+      searchString: "",
+      showCreateModal: false,
+      createModalTitle: "Add ingredient to inventory",
+      createButtonText: "Add",
+      add_ingredient_component: "add-ingredient-view",
+    };
   },
 };
 </script>
@@ -154,23 +211,36 @@ css. If not, just extract this into a separate css file */
 }
 
 .type-of-recipe {
-  width: 100px;
-  height: 100px;
+  width: 10vw;
+  height: 5vw;
   border-radius: 15px;
-  text-align: center;
-  line-height: 150px;
+  align-items: center;
+  color: black;
   background-color: lightgrey;
   margin: 15px;
 }
 
-.recipe-item {
-  width: 150px;
-  height: 200px;
-  border-radius: 15px;
-  text-align: left;
-  line-height: 300px;
-  font-size: 2rem;
+.recipe-text {
+  text-align: left !important;
+  font-size: 1rem;
   color: white;
+  top: 30%;
+  padding: 8% !important;
+}
+
+.type-of-recipe,
+.recipe-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recipe-item {
+  width: 12vw;
+  height: 19vw;
+  border-radius: 15px;
+  /* TODO(40): Update this to display the image from the ingredient in inventory */
+  background-size: auto;
   background-image: linear-gradient(
       to bottom,
       rgb(255 255 255 / 0%),
@@ -178,10 +248,34 @@ css. If not, just extract this into a separate css file */
     ),
     url("../assets/food.png");
   margin: 15px;
+  padding: 0;
 }
 
 .col-md-auto {
   padding: 0;
   margin: 0;
+}
+
+li {
+  list-style: none;
+}
+
+.categories {
+  list-style: none;
+  display: flex;
+}
+
+ul {
+  margin: 0;
+  display: flex;
+  max-width: 80vw;
+  padding: 0;
+  overflow: auto;
+  overflow-y: hidden;
+}
+
+h3 {
+  padding-left: 15px;
+  padding-top: 15px;
 }
 </style>
