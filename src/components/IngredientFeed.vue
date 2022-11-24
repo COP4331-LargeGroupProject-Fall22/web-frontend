@@ -2,7 +2,14 @@
   <div class="container">
     <div class="tool-bar">
       <div class="tool-bar-container">
-        <button type="button" class="btn">Sort By</button>
+        <button
+          v-on:click="clicked = !clicked"
+          v-bind:class="{ white: !clicked, green: clicked }"
+          type="button"
+          class="btn"
+        >
+          Sort By
+        </button>
       </div>
       <div class="tool-bar-container">
         <div class="form-outline">
@@ -42,6 +49,17 @@
             ></component>
           </modal-view>
         </div>
+      </div>
+    </div>
+    <div class="tool-bar">
+      <div
+        v-if="clicked == true"
+        class="tool-bar-container sortByOptionsToolBar"
+      >
+        <button type="button" class="btn sortByOptions">Type</button>
+        <button type="button" class="btn sortByOptions">Expirtaion Date</button>
+        <button type="button" class="btn sortByOptions">A-Z</button>
+        <button type="button" class="btn sortByOptions">Z-A</button>
       </div>
     </div>
     <!-- TODO(#20) set up a scroll button -->
@@ -235,6 +253,8 @@ export default {
       createModalTitle: "Add ingredient to inventory",
       createButtonText: "Add",
       add_ingredient_component: "add-ingredient-view",
+      isHidden: true,
+      clicked: false,
     };
   },
   watch: {
@@ -357,5 +377,22 @@ ul {
 h3 {
   padding-left: 15px;
   padding-top: 15px;
+}
+
+.sortByOptions {
+  margin-right: 15px;
+}
+
+.white {
+  background-color: white;
+}
+
+.green {
+  background-color: #008600;
+  color: white;
+}
+
+.sortByOptionsToolBar {
+  padding-top: 0;
 }
 </style>
