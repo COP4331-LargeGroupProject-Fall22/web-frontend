@@ -60,6 +60,7 @@
 <script>
 import { Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
+import { util } from "@/globals.js";
 
 export default {
   name: "LoginView",
@@ -99,13 +100,12 @@ export default {
           this.$router.push("/home");
         },
         (error) => {
+          // 403 indicates that username exists, but they haven't verified their email
+          if (error.response.status === 403) {
+            this.$router.push("/confirm");
+          }
           this.loading = false;
-          this.message =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
+          this.message = util.getErrorString(error);
         }
       );
     },
