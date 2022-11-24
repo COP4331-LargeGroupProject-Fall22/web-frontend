@@ -72,10 +72,11 @@
               <ul>
                 <div v-for="(food, name) in types" :key="name">
                   <div class="col-md-auto">
-                    <button type="button" class="btn food-item"></button>
-                  </div>
-                  <div class="col-md-auto text-center food-text">
-                    {{ name }}
+                    <button type="button" class="btn food-item">
+                      <div class="col-md-auto text-center food-text">
+                        {{ name }}
+                      </div>
+                    </button>
                   </div>
                 </div>
               </ul>
@@ -313,15 +314,26 @@ export default {
 }
 
 .food-text {
-  text-align: left;
+  text-align: left !important;
   font-size: 1rem;
+  color: white;
+  top: 30%;
+  padding: 8% !important;
+}
+
+.type-of-food,
+.food-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .food-item {
-  width: 10vw;
-  height: 10vw;
+  width: 12vw;
+  height: 19vw;
   border-radius: 15px;
   /* TODO(40): Update this to display the image from the ingredient in inventory */
+  background-size: auto;
   background-image: linear-gradient(
       to bottom,
       rgb(255 255 255 / 0%),
@@ -329,6 +341,7 @@ export default {
     ),
     url("../assets/food.png");
   margin: 15px;
+  padding: 0;
 }
 
 .col-md-auto {
