@@ -2,13 +2,16 @@
   <div class="container">
     <div class="tool-bar">
       <div class="tool-bar-container">
+        <!-- TODO(42): Add drop down for sorting, and connect to endpoint for
+          sorting results -->
         <button type="button" class="btn">Sort By</button>
       </div>
       <div class="tool-bar-container">
         <div class="form-outline">
+          <!-- TODO(38): Fix search text placeholder not showing unless field is active -->
           <input
             type="search"
-            id="form1"
+            id="searchRecipes"
             class="form-control"
             placeholder="Search Recipes"
             aria-label="Search"
@@ -106,6 +109,8 @@ export default {
 </script>
 
 <style scoped>
+/* TODO(41): If the styles for this and ingredient are identical, make them share
+css. If not, just extract this into a separate css file */
 .container {
   padding: 0 !important;
   margin: 0 !important;
