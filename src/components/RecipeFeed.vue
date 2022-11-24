@@ -53,7 +53,6 @@
         </li>
       </ul>
     </div>
-
     <div class="row">
       <ul>
         <li v-for="list in data" :key="list">
