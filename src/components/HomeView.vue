@@ -3,13 +3,31 @@
     <div class="col-md-2">
       <nav id="sidebarMenu" class="sidebar">
         <div class="position-sticky">
-          <button @click="currentTab = 'IngredientFeed'">
+          <button
+            @click="currentTab = 'IngredientFeed'"
+            v-bind:class="{
+              white: currentTab != 'IngredientFeed',
+              green: currentTab == 'IngredientFeed',
+            }"
+          >
             <font-awesome-icon icon="carrot" />My Ingredients
           </button>
-          <button @click="currentTab = 'RecipeFeed'">
+          <button
+            @click="currentTab = 'RecipeFeed'"
+            v-bind:class="{
+              white: currentTab != 'RecipeFeed',
+              green: currentTab == 'RecipeFeed',
+            }"
+          >
             <font-awesome-icon icon="hamburger" />Recipes
           </button>
-          <button @click="currentTab = 'ShoppingListFeed'">
+          <button
+            @click="currentTab = 'ShoppingListFeed'"
+            v-bind:class="{
+              white: currentTab != 'ShoppingListFeed',
+              green: currentTab == 'ShoppingListFeed',
+            }"
+          >
             <font-awesome-icon icon="shopping-cart" />Shopping Cart
           </button>
         </div>
@@ -51,11 +69,10 @@ export default {
   },
 };
 </script>
-<!-- TODO(#16): fix css to keep button active when clicked off, it was until it suddenly stopped -->
-<!-- TODO(#16): set script to have the inital tab (IngredientFeed) button active -->
-<!-- TODO(#9): replace this icon with the ones we're using in the figma diagrams -->
 
 <style scoped>
+/* TODO(#16): set script to have the inital tab (IngredientFeed) button active */
+/* TODO(#9): replace this icon with the ones we're using in the figma diagrams */
 .container {
   padding: 0 !important;
   margin: 0 !important;
@@ -89,11 +106,7 @@ button {
   text-align: left;
 }
 
-button.active,
-button:active,
-button:hover,
-button:focus,
-button:target {
+button:hover {
   color: green;
   font-weight: bold;
 }
@@ -101,5 +114,14 @@ button:target {
 .svg-inline--fa {
   margin-right: 10px;
   font-size: 20px;
+}
+
+.white {
+  color: black;
+}
+
+.green {
+  color: #008600;
+  font-weight: bold;
 }
 </style>
