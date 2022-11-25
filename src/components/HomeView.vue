@@ -69,9 +69,10 @@ export default {
   },
 };
 </script>
-<!-- TODO(#9): replace this icon with the ones we're using in the figma diagrams -->
 
 <style scoped>
+/* TODO(#16): set script to have the inital tab (IngredientFeed) button active */
+/* TODO(#9): replace this icon with the ones we're using in the figma diagrams */
 .container {
   padding: 0 !important;
   margin: 0 !important;
