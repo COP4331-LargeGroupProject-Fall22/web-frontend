@@ -2,6 +2,8 @@
   <div class="container">
     <div class="tool-bar">
       <div class="tool-bar-container">
+        <!-- TODO(43): Add drop down for sorting, and connect to endpoint for
+          sorting results -->
         <button type="button" class="btn">Sort By</button>
       </div>
       <div class="tool-bar-container">
@@ -17,7 +19,7 @@
             class="form-control"
           />
         </div>
-        <!-- TODO(#19) replace with an actual material icon -->
+        <!-- TODO(19) replace with an actual material icon -->
         <button
           type="button"
           class="btn btn-primary btn-floating"
@@ -44,7 +46,7 @@
         </div>
       </div>
     </div>
-    <!-- TODO(#20) set up a scroll button -->
+    <!-- TODO(20) set up a scroll button -->
     <div class="row">
       <ul>
         <li v-for="list in data" :key="list" class="categories">
