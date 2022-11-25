@@ -20,22 +20,6 @@
           />
         </div>
       </div>
-      <div class="container mt-3">
-        <div class="row">
-          <modal-view
-            @closeModal="showCreateModal = false"
-            @saveChanges="handleAddToInventory"
-            :showModal="showCreateModal"
-            :modalTitle="createModalTitle"
-            :modalButtonText="createButtonText"
-          >
-            <component
-              :is="add_ingredient_component"
-              ref="add_ingredient_ref"
-            ></component>
-          </modal-view>
-        </div>
-      </div>
     </div>
     <!-- TODO(20) set up a scroll button -->
     <div class="row">
@@ -155,10 +139,6 @@ export default {
     return {
       data,
       searchString: "",
-      showCreateModal: false,
-      createModalTitle: "Add ingredient to inventory",
-      createButtonText: "Add",
-      add_ingredient_component: "add-ingredient-view",
     };
   },
 };
