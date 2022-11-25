@@ -4,8 +4,7 @@ import router from "./router";
 import store from "./store";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import 'mdb-vue-ui-kit/css/mdb.min.css';
-import { FontAwesomeIcon } from './plugins/font-awesome'
+import { FontAwesomeIcon } from "./plugins/font-awesome";
 
 createApp(App)
   .use(router)
