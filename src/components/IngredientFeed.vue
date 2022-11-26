@@ -2,6 +2,8 @@
   <div class="container">
     <div class="tool-bar">
       <div class="tool-bar-container">
+        <!-- TODO(43): Add drop down for sorting, and connect to endpoint for
+          sorting results -->
         <button type="button" class="btn">Sort By</button>
       </div>
       <div class="tool-bar-container">
@@ -17,7 +19,7 @@
             class="form-control"
           />
         </div>
-        <!-- TODO(#19) replace with an actual material icon -->
+        <!-- TODO(19) replace with an actual material icon -->
         <button
           type="button"
           class="btn btn-primary btn-floating"
@@ -44,7 +46,7 @@
         </div>
       </div>
     </div>
-    <!-- TODO(#20) set up a scroll button -->
+    <!-- TODO(20) set up a scroll button -->
     <div class="row">
       <ul>
         <li
@@ -76,10 +78,11 @@
               <ul>
                 <div v-for="item in category.items" :key="item">
                   <div class="col-md-auto">
-                    <button type="button" class="btn food-item"></button>
-                  </div>
-                  <div class="col-md-auto text-center food-text">
-                    {{ item.name }}
+                    <button type="button" class="btn food-item">
+                      <div class="col-md-auto text-center food-text">
+                        {{ item.name }}
+                      </div>
+                    </button>
                   </div>
                 </div>
               </ul>
@@ -238,15 +241,26 @@ export default {
 }
 
 .food-text {
-  text-align: left;
+  text-align: left !important;
   font-size: 1rem;
+  color: white;
+  top: 30%;
+  padding: 8% !important;
+}
+
+.type-of-food,
+.food-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .food-item {
-  width: 10vw;
-  height: 10vw;
+  width: 12vw;
+  height: 19vw;
   border-radius: 15px;
   /* TODO(40): Update this to display the image from the ingredient in inventory */
+  background-size: auto;
   background-image: linear-gradient(
       to bottom,
       rgb(255 255 255 / 0%),
@@ -254,6 +268,7 @@ export default {
     ),
     url("../assets/food.png");
   margin: 15px;
+  padding: 0;
 }
 
 .col-md-auto {
