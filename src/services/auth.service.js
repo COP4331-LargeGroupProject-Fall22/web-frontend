@@ -9,8 +9,8 @@ class AuthService {
     return axios
       .post(API_PREFIX + 'auth/login?includeInfo=true', user)
       .then(response => {
-        const accessToken = response.data.accessToken;
-        const refreshToken = response.data.refreshToken;
+        const accessToken = response.data.token.accessToken;
+        const refreshToken = response.data.token.refreshToken;
         if (!accessToken) {
           return null;
         }

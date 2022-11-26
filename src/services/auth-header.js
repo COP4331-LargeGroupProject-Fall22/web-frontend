@@ -3,7 +3,7 @@ export default function authHeader() {
 
     // TODO(add num): Refresh JWT token if needed
     if (user && user.accessToken) {
-      return { 'Authorization': user.accessToken };       // for Node.js Express back-end
+      return { 'Authorization': user.accessToken.token };       // for Node.js Express back-end
     } else {
       return {};
     }
