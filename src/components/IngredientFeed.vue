@@ -47,12 +47,16 @@
     <!-- TODO(#20) set up a scroll button -->
     <div class="row">
       <ul>
-        <li v-for="list in data" :key="list" class="categories">
-          <div v-for="(types, name) in list" :key="name">
+        <li
+          v-for="category in categorizedItems"
+          :key="category"
+          class="categories"
+        >
+          <div>
             <div class="col-md-auto">
-              <a v-bind:href="'#' + name" class="">
+              <a v-bind:href="'#' + category.name" class="">
                 <button type="button" class="btn type-of-food">
-                  {{ name }}
+                  {{ category.name }}
                 </button>
               </a>
             </div>
@@ -63,19 +67,19 @@
 
     <div class="row">
       <ul>
-        <li v-for="list in data" :key="list">
-          <div v-for="(types, name) in list" :key="name">
-            <div :id="name" class="row">
-              <h3>{{ name }}</h3>
+        <li v-for="category in categorizedItems" :key="category">
+          <div>
+            <div :id="category.name" class="row">
+              <h3>{{ category.name }}</h3>
             </div>
             <div class="row">
               <ul>
-                <div v-for="(food, name) in types" :key="name">
+                <div v-for="item in category.items" :key="item">
                   <div class="col-md-auto">
                     <button type="button" class="btn food-item"></button>
                   </div>
                   <div class="col-md-auto text-center food-text">
-                    {{ name }}
+                    {{ item.name }}
                   </div>
                 </div>
               </ul>
@@ -88,9 +92,10 @@
 </template>
 
 <script>
-import { ref } from "vue";
 import ModalView from "@/components/ModalView.vue";
 import AddIngredientView from "@/components/AddIngredientView.vue";
+
+import { util } from "@/globals.js";
 
 export default {
   name: "IngredientFeed",
@@ -102,6 +107,20 @@ export default {
     currentUser() {
       return this.$store.state.auth.user;
     },
+    categorizedItems() {
+      let itemsAsJson = {};
+      for (const item of this.inventoryItems) {
+        if (!(item.category in itemsAsJson)) {
+          itemsAsJson[item.category] = {
+            name: item.category,
+            items: {},
+          };
+        }
+        itemsAsJson[item.category]["items"][item.name] = item;
+      }
+      console.log(JSON.stringify(itemsAsJson));
+      return itemsAsJson;
+    },
   },
   mounted() {
     if (!this.currentUser) {
@@ -109,127 +128,8 @@ export default {
     }
   },
   data() {
-    const data = ref([
-      {
-        Dairy: {
-          Dairy1: {
-            foodName: "Dairy1",
-            foodType: "Dairy",
-            expirationDate: "1/15/2023",
-          },
-          Dairy2: {
-            foodName: "Dairy2",
-            foodType: "Dairy",
-            expirationDate: "10/19/2022",
-          },
-
-          Dairy3: {
-            foodName: "Dairy3",
-            foodType: "Dairy",
-            expirationDate: "2/11/2023",
-          },
-          Dairy4: {
-            foodName: "Dairy4",
-            foodType: "Dairy",
-            expirationDate: "1/20/2023",
-          },
-          Dairy5: {
-            foodName: "Dairy5",
-            foodType: "Dairy",
-            expirationDate: "1/20/2023",
-          },
-          Dairy6: {
-            foodName: "Dairy6",
-            foodType: "Dairy",
-            expirationDate: "1/20/2023",
-          },
-        },
-
-        Produce: {
-          Produce1: {
-            foodName: "Produce1",
-            foodType: "Produce",
-            expirationDate: "1/20/2023",
-          },
-          Produce2: {
-            foodName: "Produce2",
-            foodType: "Produce",
-            expirationDate: "1/20/2023",
-          },
-          Produce3: {
-            foodName: "Produce3",
-            foodType: "Produce",
-            expirationDate: "1/20/2023",
-          },
-          Produce4: {
-            foodName: "Produce4",
-            foodType: "Produce",
-            expirationDate: "1/20/2023",
-          },
-          Produce5: {
-            foodName: "Produce5",
-            foodType: "Produce",
-            expirationDate: "1/20/2023",
-          },
-          Produce6: {
-            foodName: "Produce6",
-            foodType: "Produce",
-            expirationDate: "1/20/2023",
-          },
-          Produce7: {
-            foodName: "Produce7",
-            foodType: "Produce",
-            expirationDate: "1/20/2023",
-          },
-          Produce8: {
-            foodName: "Produce8",
-            foodType: "Produce",
-            expirationDate: "1/20/2023",
-          },
-        },
-        Vegetable: {
-          Vegetable1: {
-            foodName: "Vegetable1",
-            foodType: "Vegetable",
-            expirationDate: "11/19/2022",
-          },
-          Vegetable2: {
-            foodName: "Vegetable2",
-            foodType: "Vegetable",
-            expirationDate: "11/19/2022",
-          },
-          Vegetable3: {
-            foodName: "Vegetable3",
-            foodType: "Vegetable",
-            expirationDate: "11/19/2022",
-          },
-        },
-        Fruits: {
-          Fruits1: {
-            foodName: "Fruits1",
-            foodType: "Fruits",
-            expirationDate: "11/19/2022",
-          },
-          Fruits2: {
-            foodName: "Fruits2",
-            foodType: "Fruits",
-            expirationDate: "11/19/2022",
-          },
-          Fruits3: {
-            foodName: "Fruits3",
-            foodType: "Fruits",
-            expirationDate: "11/19/2022",
-          },
-          Fruits4: {
-            foodName: "Fruits4",
-            foodType: "Fruits",
-            expirationDate: "11/19/2022",
-          },
-        },
-      },
-    ]);
     return {
-      data,
+      inventoryItems: [],
       searchString: "",
       showCreateModal: false,
       createModalTitle: "Add ingredient to inventory",
@@ -246,14 +146,39 @@ export default {
   },
   methods: {
     handleAddToInventory() {
-      const data = JSON.parse(
+      const newFoods = JSON.parse(
         JSON.stringify(this.$refs.add_ingredient_ref.ingredientsToAdd)
       );
-      if (data.length) {
-        // TODO(25): Create service for adding ingredient to inventory
-        console.log("UNIMPLEMENTED: Adding ingredients to inventory", data);
+      if (newFoods.length) {
+        for (const food of newFoods) {
+          this.$store.dispatch("inventory/post", food).then(
+            () => {
+              this.successful = true;
+              this.loading = false;
+              this.getInventoryItems();
+            },
+            (error) => {
+              // TODO(add num): Add something to this page for an error message
+              // in the event that the fetch fails.
+              this.message = util.getErrorString(error);
+            }
+          );
+        }
       }
     },
+    getInventoryItems() {
+      this.$store.dispatch("inventory/getAll").then(
+        (response) => {
+          this.inventoryItems = response;
+        },
+        (error) => {
+          this.message = util.getErrorString(error);
+        }
+      );
+    },
+  },
+  beforeMount() {
+    this.getInventoryItems();
   },
 };
 </script>
