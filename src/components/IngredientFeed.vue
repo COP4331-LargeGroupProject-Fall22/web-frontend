@@ -2,14 +2,27 @@
   <div class="container">
     <div class="tool-bar">
       <div class="tool-bar-container">
-        <button
-          v-on:click="clicked = !clicked"
-          v-bind:class="{ white: !clicked, green: clicked }"
-          type="button"
-          class="btn"
-        >
-          Sort By
-        </button>
+        <!-- TODO(43): Connect to endpoint for sorting results -->
+        <div class="btn-group">
+          <button
+            type="button"
+            class="btn btn-sortBy dropdown-toggle"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Sort By
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item active" href="#">Type</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Expiration Date</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">A-Z</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Z-A</a>
+          </div>
+        </div>
       </div>
       <div class="tool-bar-container">
         <div class="form-outline">
@@ -51,17 +64,6 @@
         </div>
       </div>
     </div>
-    <div class="tool-bar">
-      <div
-        v-if="clicked == true"
-        class="tool-bar-container sortByOptionsToolBar"
-      >
-        <button type="button" class="btn sortByOptions">Type</button>
-        <button type="button" class="btn sortByOptions">Expirtaion Date</button>
-        <button type="button" class="btn sortByOptions">A-Z</button>
-        <button type="button" class="btn sortByOptions">Z-A</button>
-      </div>
-    </div>
     <!-- TODO(#20) set up a scroll button -->
     <div class="row">
       <ul>
@@ -78,7 +80,6 @@
         </li>
       </ul>
     </div>
-
     <div class="row">
       <ul>
         <li v-for="list in data" :key="list">
@@ -254,8 +255,6 @@ export default {
       createModalTitle: "Add ingredient to inventory",
       createButtonText: "Add",
       add_ingredient_component: "add-ingredient-view",
-      isHidden: true,
-      clicked: false,
     };
   },
   watch: {
@@ -369,10 +368,6 @@ export default {
   margin: 0;
 }
 
-li {
-  list-style: none;
-}
-
 .categories {
   list-style: none;
   display: flex;
@@ -392,20 +387,25 @@ h3 {
   padding-top: 15px;
 }
 
-.sortByOptions {
-  margin-right: 15px;
+.dropdown-menu {
+  display: none;
 }
 
-.white {
-  background-color: white;
+.btn-sortBy {
+  color: black !important;
+  background-color: white !important;
+  border: none;
 }
 
-.green {
+.btn-sortBy:hover,
+.btn-sortBy:active,
+.btn-sortBy:focus {
+  color: white !important;
+  background-color: #008600 !important;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
   background-color: #008600;
-  color: white;
-}
-
-.sortByOptionsToolBar {
-  padding-top: 0;
 }
 </style>
