@@ -42,7 +42,21 @@ class AuthService {
 
   // TODO(21): update code to refresh token when access token expires
   refreshJWT(refreshToken) {
-    return axios.post(API_PREFIX + 'auth/refreshJWT', { refreshToken });
+    return axios.post(API_PREFIX + 'auth/refreshJWT', { refreshToken })
+      .then(response => {
+        const accessToken = response.data.accessToken;
+        const refreshToken = response.data.refreshToken;
+        if (!accessToken) {
+          return null;
+        }
+
+        let user = JSON.parse(localStorage.getItem('user'));
+        user['accessToken'] = accessToken;
+        user['refreshToken'] = refreshToken;
+        localStorage.setItem('user', JSON.stringify(user));
+
+        return user;
+      });
   }
 }
 

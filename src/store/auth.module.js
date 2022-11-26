@@ -64,17 +64,6 @@ export const auth = {
     refreshJWT({ commit }, token) {
       return AuthService.refreshJWT(token).then(
         response => {
-          const accessToken = response.data.accessToken;
-          const refreshToken = response.data.refreshToken;
-          if (!accessToken) {
-            return response.status;
-          }
-
-          let user = JSON.parse(localStorage.getItem('user'));
-          user['accessToken'] = accessToken;
-          user['refreshToken'] = refreshToken;
-          localStorage.setItem('user', JSON.stringify(user));
-
           return Promise.resolve(response);
         },
         error => {
@@ -116,6 +105,9 @@ export const auth = {
       state.status.loggedIn = false;
     },
     JWTsuccess(state) {
+      state.status.loggedIn = false;
+    },
+    JWTfailure(state) {
       state.status.loggedIn = false;
     }
   }
