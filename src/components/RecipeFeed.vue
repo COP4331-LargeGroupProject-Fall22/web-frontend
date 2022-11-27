@@ -14,9 +14,11 @@
             Sort By
           </button>
           <div class="dropdown-menu">
-            <a class="dropdown-item active" href="#">Type</a>
+            <a class="dropdown-item active" href="#"
+              >Ingredient Expiration Date</a
+            >
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Expiration Date</a>
+            <a class="dropdown-item" href="#">Time To Cook</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#">A-Z</a>
             <div class="dropdown-divider"></div>
