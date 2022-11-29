@@ -2,9 +2,27 @@
   <div class="container">
     <div class="tool-bar">
       <div class="tool-bar-container">
-        <!-- TODO(43): Add drop down for sorting, and connect to endpoint for
-          sorting results -->
-        <button type="button" class="btn">Sort By</button>
+        <!-- TODO(43): Connect to endpoint for sorting results -->
+        <div class="btn-group">
+          <button
+            type="button"
+            class="btn btn-sortBy dropdown-toggle"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Sort By
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item active" href="#">Type</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Expiration Date</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">A-Z</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Z-A</a>
+          </div>
+        </div>
       </div>
       <div class="tool-bar-container">
         <div class="form-outline">
@@ -46,7 +64,7 @@
         </div>
       </div>
     </div>
-    <!-- TODO(20) set up a scroll button -->
+    <!-- TODO(#20) set up a scroll button -->
     <div class="row">
       <ul>
         <li
@@ -66,7 +84,6 @@
         </li>
       </ul>
     </div>
-
     <div class="row">
       <ul>
         <li v-for="category in categorizedItems" :key="category">
@@ -276,10 +293,6 @@ export default {
   margin: 0;
 }
 
-li {
-  list-style: none;
-}
-
 .categories {
   list-style: none;
   display: flex;
@@ -297,5 +310,27 @@ ul {
 h3 {
   padding-left: 15px;
   padding-top: 15px;
+}
+
+.dropdown-menu {
+  display: none;
+}
+
+.btn-sortBy {
+  color: black !important;
+  background-color: white !important;
+  border: none;
+}
+
+.btn-sortBy:hover,
+.btn-sortBy:active,
+.btn-sortBy:focus {
+  color: white !important;
+  background-color: #008600 !important;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  background-color: #008600;
 }
 </style>
