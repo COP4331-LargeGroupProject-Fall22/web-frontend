@@ -86,8 +86,8 @@
     </div>
     <div class="row">
       <ul>
-        <li v-for="category in filteredItems" :key="category">
-          <div>
+        <li>
+          <div v-for="category in filteredItems" :key="category">
             <div :id="category.name" class="row">
               <h3>{{ category.name }}</h3>
             </div>
@@ -95,7 +95,16 @@
               <ul>
                 <div v-for="item in category.items" :key="item">
                   <div class="col-md-auto">
-                    <button type="button" class="btn food-item">
+                    <button
+                      type="button"
+                      class="btn food-item"
+                      v-bind:style="{
+                        backgroundImage:
+                          'linear-gradient(to bottom,rgb(255 255 255 / 0%),rgb(0 0 0 /73%)),url(' +
+                          item.image.srcUrl +
+                          ')',
+                      }"
+                    >
                       <div class="col-md-auto text-center food-text">
                         {{ item.name }}
                       </div>
@@ -157,7 +166,7 @@ export default {
   },
   data() {
     return {
-      inventoryItems: [],
+      inventoryItems: {},
       searchString: "",
       showCreateModal: false,
       createModalTitle: "Add ingredient to inventory",
@@ -198,10 +207,15 @@ export default {
                 items: {},
               };
             }
-            // Lord help me for this line of code: converts proxy to an object
-            this.inventoryItems[item.category]["items"][item.name] = JSON.parse(
-              JSON.stringify(item)
-            );
+            console.log(JSON.stringify(item));
+            // TODO(): fix this to render imgs properly
+            if (item.image.srcUrl === null) {
+              item.image.srcUrl =
+                "https://raw.githubusercontent.com/COP4331-LargeGroupProject-Fall22/web-frontend/main/src/assets/food.png";
+            } else {
+              item.image.srcUrl = item.image.srcUrl.srcUrl;
+            }
+            this.inventoryItems[item.category]["items"][item.name] = item;
           }
         },
         (error) => {
