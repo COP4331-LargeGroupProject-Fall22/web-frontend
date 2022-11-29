@@ -39,6 +39,7 @@
             class="form-control"
           />
         </div>
+        <!-- TODO(): Add a button for search -->
       </div>
     </div>
     <!-- TODO(20) set up a scroll button -->

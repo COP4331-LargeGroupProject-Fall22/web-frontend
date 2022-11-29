@@ -68,7 +68,7 @@
     <div class="row">
       <ul>
         <li
-          v-for="category in categorizedItems"
+          v-for="category in filteredItems"
           :key="category"
           class="categories"
         >
@@ -86,7 +86,7 @@
     </div>
     <div class="row">
       <ul>
-        <li v-for="category in categorizedItems" :key="category">
+        <li v-for="category in filteredItems" :key="category">
           <div>
             <div :id="category.name" class="row">
               <h3>{{ category.name }}</h3>
@@ -127,19 +127,27 @@ export default {
     currentUser() {
       return this.$store.state.auth.user;
     },
-    categorizedItems() {
-      let itemsAsJson = {};
-      for (const item of this.inventoryItems) {
-        if (!(item.category in itemsAsJson)) {
-          itemsAsJson[item.category] = {
-            name: item.category,
-            items: {},
-          };
-        }
-        itemsAsJson[item.category]["items"][item.name] = item;
+    filteredItems() {
+      let searchString = this.searchString.toLowerCase();
+      if (!searchString.length) {
+        return this.inventoryItems;
       }
-      console.log(JSON.stringify(itemsAsJson));
-      return itemsAsJson;
+      let filtered = {};
+      for (const cat in this.inventoryItems) {
+        for (const itemName in this.inventoryItems[cat].items) {
+          if (itemName.toLowerCase().includes(searchString)) {
+            if (!(cat in filtered)) {
+              filtered[cat] = {
+                name: cat,
+                items: {},
+              };
+            }
+            filtered[cat].items[itemName] =
+              this.inventoryItems[cat].items[itemName];
+          }
+        }
+      }
+      return filtered;
     },
   },
   mounted() {
@@ -156,13 +164,6 @@ export default {
       createButtonText: "Add",
       add_ingredient_component: "add-ingredient-view",
     };
-  },
-  watch: {
-    searchString(newVal) {
-      // TODO(27): Update this to filter inventory results when this value
-      // changes to only match ingredients with this as substring
-      console.log("new searchString: ", newVal);
-    },
   },
   methods: {
     handleAddToInventory() {
@@ -187,7 +188,21 @@ export default {
     getInventoryItems() {
       this.$store.dispatch("inventory/getAll").then(
         (response) => {
-          this.inventoryItems = response;
+          // TODO(): this needs to be updated after Mikhail fixes format of
+          // response for ingredients
+          this.inventoryItems = {};
+          for (const item of response) {
+            if (!(item.category in this.inventoryItems)) {
+              this.inventoryItems[item.category] = {
+                name: item.category,
+                items: {},
+              };
+            }
+            // Lord help me for this line of code: converts proxy to an object
+            this.inventoryItems[item.category]["items"][item.name] = JSON.parse(
+              JSON.stringify(item)
+            );
+          }
         },
         (error) => {
           this.message = util.getErrorString(error);
