@@ -7,9 +7,13 @@
 
 
 export const util = {
-   getErrorString: (error) => {
-      return (error.response && error.response.data && error.response.data.message)
-       || error.message
-       || error.toString();  
-    }
+  getErrorString: (error) => {
+    return (error.response && error.response.data && error.response.data.message)
+      || error.message
+      || error.toString();  
+  },
+  capitalizeFirstLetter: (string) => {
+    if (!string.length) return "";
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 }

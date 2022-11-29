@@ -68,6 +68,22 @@
           </modal-view>
         </div>
       </div>
+      <div class="container mt-3">
+        <div class="row">
+          <individual-ingredient-view
+            @closeModal="
+              showIndividualIngredient = false;
+              this.getInventoryItems();
+            "
+            @saveChanges="showIndividualIngredient = false"
+            :showModal="showIndividualIngredient"
+            :modalTitle="individualIngredientTitle"
+            :modalButtonText="individualButtonText"
+            :ingredientId="ingredientId"
+          >
+          </individual-ingredient-view>
+        </div>
+      </div>
     </div>
     <!-- TODO(#20) set up a scroll button -->
     <div class="row">
@@ -101,6 +117,11 @@
                 <div v-for="item in category.items" :key="item">
                   <div class="col-md-auto">
                     <button
+                      id="individualIngredient"
+                      @click="
+                        showIndividualIngredient = true;
+                        ingredientId = item.id;
+                      "
                       type="button"
                       class="btn food-item"
                       v-bind:style="{
@@ -112,6 +133,7 @@
                     >
                       <div class="col-md-auto text-center food-text">
                         {{ item.name }}
+                        {{ item.id }}
                       </div>
                     </button>
                   </div>
@@ -128,6 +150,7 @@
 <script>
 import ModalView from "@/components/ModalView.vue";
 import AddIngredientView from "@/components/AddIngredientView.vue";
+import IndividualIngredientView from "@/components/IndividualIngredientView.vue";
 
 import { util } from "@/globals.js";
 
@@ -136,6 +159,7 @@ export default {
   components: {
     ModalView,
     AddIngredientView,
+    IndividualIngredientView,
   },
   computed: {
     currentUser() {
@@ -148,16 +172,15 @@ export default {
       }
       let filtered = {};
       for (const cat in this.inventoryItems) {
-        for (const itemName in this.inventoryItems[cat].items) {
-          if (itemName.toLowerCase().includes(searchString)) {
+        for (const item of this.inventoryItems[cat].items) {
+          if (item.name.toLowerCase().includes(searchString)) {
             if (!(cat in filtered)) {
               filtered[cat] = {
                 name: cat,
                 items: {},
               };
             }
-            filtered[cat].items[itemName] =
-              this.inventoryItems[cat].items[itemName];
+            filtered[cat].items[item.name] = item;
           }
         }
       }
@@ -173,10 +196,18 @@ export default {
     return {
       inventoryItems: {},
       searchString: "",
+      // Add ingredient modal
       showCreateModal: false,
       createModalTitle: "Add ingredient to inventory",
       createButtonText: "Add",
       add_ingredient_component: "add-ingredient-view",
+      // Individual ingredient modal
+      showIndividualIngredient: false,
+      individualIngredientTitle: "buh",
+      individualButtonText: "buh",
+      individual_ingredient_component: "individual-ingredient-view",
+      ingredientId: null,
+      // Filters
       sortByFilters: [
         { id: "Category", name: "Category" },
         { id: "Expiration Date", name: "Expiration Date" },
@@ -195,8 +226,6 @@ export default {
         for (const food of newFoods) {
           this.$store.dispatch("inventory/post", food).then(
             () => {
-              this.successful = true;
-              this.loading = false;
               this.getInventoryItems();
             },
             (error) => {
@@ -206,28 +235,20 @@ export default {
         }
       }
     },
-    getInventoryItems(params) {
+    getInventoryItems(params = { sortByCategory: true }) {
       this.$store.dispatch("inventory/getAll", params).then(
         (response) => {
-          // TODO(): this needs to be updated after Mikhail fixes format of
-          // response for ingredients
-          this.inventoryItems = {};
-          for (const item of response) {
-            if (!(item.category in this.inventoryItems)) {
-              this.inventoryItems[item.category] = {
-                name: item.category,
-                items: {},
-              };
-            }
-            // TODO(): fix this to render imgs properly
-            if (item.image.srcUrl === null) {
-              item.image.srcUrl =
-                "https://raw.githubusercontent.com/COP4331-LargeGroupProject-Fall22/web-frontend/main/src/assets/food.png";
-            } else {
-              item.image.srcUrl = item.image.srcUrl.srcUrl;
-            }
-            this.inventoryItems[item.category]["items"][item.name] = item;
+          // Each key in parsed is a category name
+          let parsed = {};
+          for (let i = 0; i < response.length; i++) {
+            // Each element is 2-tuple of 1) category name, 2) data
+            let categoryName = util.capitalizeFirstLetter(response[i][0]);
+            parsed[categoryName] = {
+              name: categoryName,
+              items: response[i][1],
+            };
           }
+          this.inventoryItems = parsed;
         },
         (error) => {
           this.message = util.getErrorString(error);
@@ -239,20 +260,19 @@ export default {
     selected(newVal) {
       switch (newVal) {
         case "Category":
-          console.log("TODO: sort by cat");
-          // this.getInventoryItems({sortByCategory: true});
+          this.getInventoryItems();
           break;
         case "Expiration Date":
-          console.log("TODO: sort by exp");
-          // this.getInventoryItems({sortByExpirationDate: true});
+          this.getInventoryItems({ sortByExpirationDate: true });
           break;
         case "A-Z":
-          console.log("TODO: sort by lex");
-          // this.getInventoryItems({sortByLexicographicalOrder: true});
+          this.getInventoryItems({ sortByLexicographicalOrder: true });
           break;
         case "Z-A":
-          console.log("TODO: sort by reverse lex");
-          // this.getInventoryItems({sortByLexicographicalOrder: true, isReverse=true});
+          this.getInventoryItems({
+            sortByLexicographicalOrder: true,
+            isReverse: true,
+          });
           break;
         default:
           console.log("this should not happen. gg");
@@ -338,7 +358,6 @@ export default {
   width: 12vw;
   height: 19vw;
   border-radius: 15px;
-  /* TODO(40): Update this to display the image from the ingredient in inventory */
   background-size: auto;
   background-image: linear-gradient(
       to bottom,
