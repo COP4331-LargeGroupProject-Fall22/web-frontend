@@ -13,7 +13,7 @@
             id="searchRecipes"
             aria-label="Search"
             autocomplete="off"
-            placeholder="Search Inventory..."
+            placeholder="Search Recipes..."
             v-model="searchString"
             type="text"
             class="form-control"

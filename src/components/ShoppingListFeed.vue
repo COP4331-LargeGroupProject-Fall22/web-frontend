@@ -3,28 +3,28 @@
     <div class="tool-bar">
       <div class="tool-bar-container">
         <!-- TODO(43): Connect to endpoint for sorting results -->
-        <div class="btn-group">
-          <button
-            type="button"
-            class="btn btn-sortBy dropdown-toggle"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            Sort By
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item active" href="#">Type</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Added First</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Added First</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">A-Z</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Z-A</a>
-          </div>
+        <!-- <div class="btn-group"> -->
+        <button
+          type="button"
+          class="btn btn-sortBy dropdown-toggle"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Sort By
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item active" href="#">Type</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Added First</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Added Last</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">A-Z</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Z-A</a>
         </div>
+        <!-- </div> -->
       </div>
       <div class="tool-bar-container">
         <div class="form-outline">
@@ -53,7 +53,7 @@
         <div class="row">
           <modal-view
             @closeModal="showCreateModal = false"
-            @saveChanges="handleAddToInventory"
+            @saveChanges="handleAddToShoppingList"
             :showModal="showCreateModal"
             :modalTitle="createModalTitle"
             :modalButtonText="createButtonText"
@@ -243,26 +243,26 @@ export default {
       data,
       searchString: "",
       showCreateModal: false,
-      createModalTitle: "Add ingredient to inventory",
+      createModalTitle: "Add ingredient to shopping list",
       createButtonText: "Add",
       add_ingredient_component: "add-ingredient-view",
     };
   },
   watch: {
     searchString(newVal) {
-      // TODO(27): Update this to filter inventory results when this value
+      // TODO(27): Update this to filter shopping list results when this value
       // changes to only match ingredients with this as substring
       console.log("new searchString: ", newVal);
     },
   },
   methods: {
-    handleAddToInventory() {
+    handleAddToShoppingList() {
       const data = JSON.parse(
         JSON.stringify(this.$refs.add_ingredient_ref.ingredientsToAdd)
       );
       if (data.length) {
-        // TODO(25): Create service for adding ingredient to inventory
-        console.log("UNIMPLEMENTED: Adding ingredients to inventory", data);
+        // TODO(50): Create service for adding ingredient to shopping list
+        console.log("UNIMPLEMENTED: Adding ingredients to shopping list", data);
       }
     },
   },
