@@ -7,9 +7,9 @@ const API_PREFIX = process.env.VUE_APP_NODE_ENV === process.env.VUE_APP_DEV ?
 const API_URL = API_PREFIX + 'user/inventory';
 
 class InventoryService {
-  async getAll() {
+  async getAll(params) {
     const header = await authHeader();
-    return (header === null) ? null : axios.get(API_URL, { headers: header });
+    return (header === null) ? null : axios.get(API_URL, { headers: header, params: params });
   }
 
   async post(newFood) {

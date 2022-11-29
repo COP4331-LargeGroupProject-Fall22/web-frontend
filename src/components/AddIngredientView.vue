@@ -132,6 +132,7 @@ export default {
         })
         .then(
           (response) => {
+            console.log(response);
             this.searchResults = response.results;
             this.hasNextPage = response.currentPage < response.numOfPages - 1;
             this.errorString =

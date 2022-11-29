@@ -2,9 +2,8 @@
   <div class="container">
     <div class="tool-bar">
       <div class="tool-bar-container">
-        <!-- TODO(43): Connect to endpoint for sorting results -->
         <div class="btn-group">
-          <button
+          <!-- <button
             type="button"
             class="btn btn-sortBy dropdown-toggle"
             data-toggle="dropdown"
@@ -21,12 +20,19 @@
             <a class="dropdown-item" href="#">A-Z</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#">Z-A</a>
+          </div> -->
+          <!-- TODO(): fix style -->
+          <div>
+            <select v-model="selected" class="form-control sl">
+              <option v-for="option in sortByFilters" v-bind:key="option.id">
+                {{ option.name }}
+              </option>
+            </select>
           </div>
         </div>
       </div>
       <div class="tool-bar-container">
         <div class="form-outline">
-          <!-- TODO(38): Fix search text placeholder not showing unless field is active -->
           <input
             id="searchIngredients"
             aria-label="Search"
@@ -37,7 +43,6 @@
             class="form-control"
           />
         </div>
-        <!-- TODO(19) replace with an actual material icon -->
         <button
           type="button"
           class="btn btn-primary btn-floating"
@@ -172,6 +177,13 @@ export default {
       createModalTitle: "Add ingredient to inventory",
       createButtonText: "Add",
       add_ingredient_component: "add-ingredient-view",
+      sortByFilters: [
+        { id: "Category", name: "Category" },
+        { id: "Expiration Date", name: "Expiration Date" },
+        { id: "A-Z", name: "A-Z" },
+        { id: "Z-A", name: "Z-A" },
+      ],
+      selected: "Category",
     };
   },
   methods: {
@@ -194,8 +206,8 @@ export default {
         }
       }
     },
-    getInventoryItems() {
-      this.$store.dispatch("inventory/getAll").then(
+    getInventoryItems(params) {
+      this.$store.dispatch("inventory/getAll", params).then(
         (response) => {
           // TODO(): this needs to be updated after Mikhail fixes format of
           // response for ingredients
@@ -207,7 +219,6 @@ export default {
                 items: {},
               };
             }
-            console.log(JSON.stringify(item));
             // TODO(): fix this to render imgs properly
             if (item.image.srcUrl === null) {
               item.image.srcUrl =
@@ -222,6 +233,30 @@ export default {
           this.message = util.getErrorString(error);
         }
       );
+    },
+  },
+  watch: {
+    selected(newVal) {
+      switch (newVal) {
+        case "Category":
+          console.log("TODO: sort by cat");
+          // this.getInventoryItems({sortByCategory: true});
+          break;
+        case "Expiration Date":
+          console.log("TODO: sort by exp");
+          // this.getInventoryItems({sortByExpirationDate: true});
+          break;
+        case "A-Z":
+          console.log("TODO: sort by lex");
+          // this.getInventoryItems({sortByLexicographicalOrder: true});
+          break;
+        case "Z-A":
+          console.log("TODO: sort by reverse lex");
+          // this.getInventoryItems({sortByLexicographicalOrder: true, isReverse=true});
+          break;
+        default:
+          console.log("this should not happen. gg");
+      }
     },
   },
   beforeMount() {

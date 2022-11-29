@@ -3,8 +3,8 @@ import InventoryService from '../services/inventory.service';
 export const inventory = {
   namespaced: true,
   actions: {
-    getAll({ commit }) {
-      return InventoryService.getAll().then(
+    getAll({ commit }, params) {
+      return InventoryService.getAll(params).then(
         response => {
           return Promise.resolve(response.data);
         },
