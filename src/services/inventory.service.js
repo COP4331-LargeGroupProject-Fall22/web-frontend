@@ -7,24 +7,29 @@ const API_PREFIX = process.env.VUE_APP_NODE_ENV === process.env.VUE_APP_DEV ?
 const API_URL = API_PREFIX + 'user/inventory';
 
 class InventoryService {
-  getAll() {
-    return axios.get(API_URL, { headers: authHeader() });
+  async getAll() {
+    const header = await authHeader();
+    return (header === null) ? null : axios.get(API_URL, { headers: header });
   }
 
-  post(newFood) {
-    return axios.post(API_URL, newFood, { headers: authHeader() });
+  async post(newFood) {
+    const header = await authHeader();
+    return (header === null) ? null : axios.post(API_URL, newFood, { headers: header });
   }
 
-  get(id) {
-    return axios.get(API_URL + "/" + id, { headers: authHeader() });
+  async get(id) {
+    const header = await authHeader();
+    return (header === null) ? null : axios.get(API_URL + "/" + id, { headers: header });
   }
 
-  put(id, updatedFood) {
-    return axios.get(API_URL + "/" + id, updatedFood, { headers: authHeader() });
+  async put(id, updatedFood) {
+    const header = await authHeader();
+    return (header === null) ? null : axios.get(API_URL + "/" + id, updatedFood, { headers: header });
   }
-  
-  delete(id) {
-    return axios.delete(API_URL + "/" + id, { headers: authHeader() });
+
+  async delete(id) {
+    const header = await authHeader();
+    return (header === null) ? null : axios.delete(API_URL + "/" + id, { headers: header });
   }
 }
 

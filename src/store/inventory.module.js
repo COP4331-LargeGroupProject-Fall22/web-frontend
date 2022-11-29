@@ -2,7 +2,7 @@ import InventoryService from '../services/inventory.service';
 
 export const inventory = {
   namespaced: true,
-  actions: {    
+  actions: {
     getAll({ commit }) {
       return InventoryService.getAll().then(
         response => {

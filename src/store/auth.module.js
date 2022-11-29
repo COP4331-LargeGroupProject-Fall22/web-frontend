@@ -109,6 +109,7 @@ export const auth = {
     },
     JWTfailure(state) {
       state.status.loggedIn = false;
+      state.user = null;
     }
   }
 };
