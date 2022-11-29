@@ -41,20 +41,6 @@ export default {
     if (!this.currentUser) {
       this.$router.push("/login");
     }
-
-    // TODO(add num): this is a hacky way of refreshing token until we
-    // implement automatic refresh of JWT
-    this.$store.dispatch("auth/refreshJWT", this.currentUserToken).then(
-      () => {
-        console.log("Refreshed token: " + this.currentUserToken);
-      },
-      (error) => {
-        // TODO(add num): Add something to this page for an error message
-        // in the event that the fetch fails.
-        // this.message = util.getErrorString(error);
-        console.log(error);
-      }
-    );
   },
 };
 </script>

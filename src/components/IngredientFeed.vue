@@ -178,8 +178,6 @@ export default {
               this.getInventoryItems();
             },
             (error) => {
-              // TODO(add num): Add something to this page for an error message
-              // in the event that the fetch fails.
               this.message = util.getErrorString(error);
             }
           );
