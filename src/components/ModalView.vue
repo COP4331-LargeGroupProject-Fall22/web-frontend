@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     modalActive: function () {
-      // TODO(): I think modifying this to take an id would allow multiple
+      // TODO(6): I think modifying this to take an id would allow multiple
       // instances, explore later if time
       this.modalInstance = new Modal(document.getElementById("templateModal"), {
         target: "#template-modal",

@@ -21,7 +21,7 @@
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#">Z-A</a>
           </div> -->
-          <!-- TODO(): fix style -->
+          <!-- TODO(58): fix style of dropdown to match figma -->
           <div>
             <select v-model="selected" class="form-control sl">
               <option v-for="filter in sortByFilters" v-bind:key="filter">
