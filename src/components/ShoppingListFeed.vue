@@ -2,7 +2,6 @@
   <div class="container">
     <div class="tool-bar">
       <div class="tool-bar-container">
-        <!-- TODO(43): Connect to endpoint for sorting results -->
         <!-- <button
           type="button"
           class="btn btn-sortBy dropdown-toggle"
@@ -43,7 +42,6 @@
             class="form-control"
           />
         </div>
-        <!-- TODO(19) replace with an actual material icon -->
         <button
           type="button"
           class="btn btn-primary btn-floating"
@@ -172,7 +170,7 @@ export default {
     currentUser() {
       return this.$store.state.auth.user;
     },
-    // TODO(): extract to util; same logic for all feeds
+    // TODO(68): extract to util; same logic for all feeds
     filteredItems() {
       let searchString = this.searchString.toLowerCase();
       if (!searchString.length) {
@@ -274,7 +272,7 @@ export default {
               // Flatten, remove currency units - only USD
               foodDetails.price = foodDetails.price.price;
               foodDetails.dateAdded = Date.now();
-              // TODO(): Specify quantity here
+              // TODO(69): Specify quantity here
               this.$store.dispatch("shoppinglist/post", response.data).then(
                 () => {
                   this.getShoppingListItems();
@@ -312,7 +310,7 @@ export default {
         }
       );
     },
-    // TODO(): Update this to be a modal instead with more ingredient info
+    // TODO(62): Update this to be a modal instead with more ingredient info
     // matching figma design
     deleteItem(item) {
       var result = confirm(
@@ -331,7 +329,7 @@ export default {
         );
       }
     },
-    // TODO(): Update this to be a modal instead with more ingredient info
+    // TODO(70): Update this to be a modal instead with more ingredient info
     // matching figma design
     addItemToInventory(item) {
       var result = confirm(
@@ -345,7 +343,7 @@ export default {
             inventoryItem["name"] = item.name;
             inventoryItem["category"] = item.category;
             inventoryItem["image"] = item.image;
-            // TODO(): update to get exp date when adding to inventory
+            // TODO(50): update to get exp date when adding to inventory
             inventoryItem["expirationDate"] = null;
             this.$store.dispatch("inventory/post", inventoryItem).then(
               () => {
@@ -466,7 +464,6 @@ h3 {
   width: 10vw;
   height: 10vw;
   border-radius: 15px;
-  /* TODO(40): Update this to display the image from the ingredient in inventory */
   background-size: auto;
   background-image: linear-gradient(
       to bottom,
