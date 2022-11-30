@@ -28,7 +28,6 @@
       </div>
       <div class="tool-bar-container">
         <div class="form-outline">
-          <!-- TODO(38): Fix search text placeholder not showing unless field is active -->
           <input
             id="searchRecipes"
             aria-label="Search"
@@ -39,6 +38,7 @@
             class="form-control"
           />
         </div>
+        <!-- TODO(59): Add a button for search -->
       </div>
     </div>
     <!-- TODO(20) set up a scroll button -->

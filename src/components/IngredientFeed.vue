@@ -2,9 +2,8 @@
   <div class="container">
     <div class="tool-bar">
       <div class="tool-bar-container">
-        <!-- TODO(43): Connect to endpoint for sorting results -->
         <div class="btn-group">
-          <button
+          <!-- <button
             type="button"
             class="btn btn-sortBy dropdown-toggle"
             data-toggle="dropdown"
@@ -21,12 +20,19 @@
             <a class="dropdown-item" href="#">A-Z</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#">Z-A</a>
+          </div> -->
+          <!-- TODO(58): fix style of dropdown to match figma -->
+          <div>
+            <select v-model="selected" class="form-control sl">
+              <option v-for="filter in sortByFilters" v-bind:key="filter">
+                {{ filter }}
+              </option>
+            </select>
           </div>
         </div>
       </div>
       <div class="tool-bar-container">
         <div class="form-outline">
-          <!-- TODO(38): Fix search text placeholder not showing unless field is active -->
           <input
             id="searchIngredients"
             aria-label="Search"
@@ -37,7 +43,6 @@
             class="form-control"
           />
         </div>
-        <!-- TODO(19) replace with an actual material icon -->
         <button
           type="button"
           class="btn btn-primary btn-floating"
@@ -63,16 +68,35 @@
           </modal-view>
         </div>
       </div>
+      <div class="container mt-3">
+        <div class="row">
+          <individual-ingredient-view
+            @closeModal="
+              showIndividualIngredient = false;
+              this.getInventoryItems();
+            "
+            @saveChanges="showIndividualIngredient = false"
+            :showModal="showIndividualIngredient"
+            :modalTitle="individualIngredientTitle"
+            :ingredientId="ingredientId"
+          >
+          </individual-ingredient-view>
+        </div>
+      </div>
     </div>
     <!-- TODO(#20) set up a scroll button -->
     <div class="row">
       <ul>
-        <li v-for="list in data" :key="list" class="categories">
-          <div v-for="(types, name) in list" :key="name">
+        <li
+          v-for="category in filteredItems"
+          :key="category"
+          class="categories"
+        >
+          <div>
             <div class="col-md-auto">
-              <a v-bind:href="'#' + name" class="">
+              <a v-bind:href="'#' + category.name" class="">
                 <button type="button" class="btn type-of-food">
-                  {{ name }}
+                  {{ category.name }}
                 </button>
               </a>
             </div>
@@ -81,19 +105,40 @@
       </ul>
     </div>
     <div class="row">
+      <div v-if="isEmptyInventory">
+        <h3>No items, try adding some to your inventory!</h3>
+      </div>
+      <div v-if="noMatchesForSearchString">
+        <h3>No items matching search string: "{{ searchString }}"</h3>
+      </div>
       <ul>
-        <li v-for="list in data" :key="list">
-          <div v-for="(types, name) in list" :key="name">
-            <div :id="name" class="row">
-              <h3>{{ name }}</h3>
+        <li>
+          <div v-for="category in filteredItems" :key="category">
+            <div :id="category.name" class="row">
+              <h3>{{ category.name }}</h3>
             </div>
             <div class="row">
               <ul>
-                <div v-for="(food, name) in types" :key="name">
+                <div v-for="item in category.items" :key="item">
                   <div class="col-md-auto">
-                    <button type="button" class="btn food-item">
+                    <button
+                      id="individualIngredient"
+                      @click="
+                        showIndividualIngredient = true;
+                        ingredientId = item.id;
+                        individualIngredientTitle = item.name;
+                      "
+                      type="button"
+                      class="btn food-item"
+                      v-bind:style="{
+                        backgroundImage:
+                          'linear-gradient(to bottom,rgb(255 255 255 / 0%),rgb(0 0 0 /73%)),url(' +
+                          item.image.srcUrl +
+                          ')',
+                      }"
+                    >
                       <div class="col-md-auto text-center food-text">
-                        {{ name }}
+                        {{ item.name }}
                       </div>
                     </button>
                   </div>
@@ -108,19 +153,48 @@
 </template>
 
 <script>
-import { ref } from "vue";
 import ModalView from "@/components/ModalView.vue";
 import AddIngredientView from "@/components/AddIngredientView.vue";
+import IndividualIngredientView from "@/components/IndividualIngredientView.vue";
+
+import { util } from "@/globals.js";
 
 export default {
   name: "IngredientFeed",
   components: {
     ModalView,
     AddIngredientView,
+    IndividualIngredientView,
   },
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
+    },
+    filteredItems() {
+      let searchString = this.searchString.toLowerCase();
+      if (!searchString.length) {
+        return this.inventoryItems;
+      }
+      let filtered = {};
+      for (const cat in this.inventoryItems) {
+        for (const item of this.inventoryItems[cat].items) {
+          if (item.name.toLowerCase().includes(searchString)) {
+            if (!(cat in filtered)) {
+              filtered[cat] = {
+                name: cat,
+                items: {},
+              };
+            }
+            filtered[cat].items[item.name] = item;
+          }
+        }
+      }
+      return filtered;
+    },
+    noMatchesForSearchString() {
+      return (
+        this.searchString.length > 0 && util.isEmptyJson(this.filteredItems)
+      );
     },
   },
   mounted() {
@@ -129,151 +203,96 @@ export default {
     }
   },
   data() {
-    const data = ref([
-      {
-        Dairy: {
-          Dairy1: {
-            foodName: "Dairy1",
-            foodType: "Dairy",
-            expirationDate: "1/15/2023",
-          },
-          Dairy2: {
-            foodName: "Dairy2",
-            foodType: "Dairy",
-            expirationDate: "10/19/2022",
-          },
-
-          Dairy3: {
-            foodName: "Dairy3",
-            foodType: "Dairy",
-            expirationDate: "2/11/2023",
-          },
-          Dairy4: {
-            foodName: "Dairy4",
-            foodType: "Dairy",
-            expirationDate: "1/20/2023",
-          },
-          Dairy5: {
-            foodName: "Dairy5",
-            foodType: "Dairy",
-            expirationDate: "1/20/2023",
-          },
-          Dairy6: {
-            foodName: "Dairy6",
-            foodType: "Dairy",
-            expirationDate: "1/20/2023",
-          },
-        },
-
-        Produce: {
-          Produce1: {
-            foodName: "Produce1",
-            foodType: "Produce",
-            expirationDate: "1/20/2023",
-          },
-          Produce2: {
-            foodName: "Produce2",
-            foodType: "Produce",
-            expirationDate: "1/20/2023",
-          },
-          Produce3: {
-            foodName: "Produce3",
-            foodType: "Produce",
-            expirationDate: "1/20/2023",
-          },
-          Produce4: {
-            foodName: "Produce4",
-            foodType: "Produce",
-            expirationDate: "1/20/2023",
-          },
-          Produce5: {
-            foodName: "Produce5",
-            foodType: "Produce",
-            expirationDate: "1/20/2023",
-          },
-          Produce6: {
-            foodName: "Produce6",
-            foodType: "Produce",
-            expirationDate: "1/20/2023",
-          },
-          Produce7: {
-            foodName: "Produce7",
-            foodType: "Produce",
-            expirationDate: "1/20/2023",
-          },
-          Produce8: {
-            foodName: "Produce8",
-            foodType: "Produce",
-            expirationDate: "1/20/2023",
-          },
-        },
-        Vegetable: {
-          Vegetable1: {
-            foodName: "Vegetable1",
-            foodType: "Vegetable",
-            expirationDate: "11/19/2022",
-          },
-          Vegetable2: {
-            foodName: "Vegetable2",
-            foodType: "Vegetable",
-            expirationDate: "11/19/2022",
-          },
-          Vegetable3: {
-            foodName: "Vegetable3",
-            foodType: "Vegetable",
-            expirationDate: "11/19/2022",
-          },
-        },
-        Fruits: {
-          Fruits1: {
-            foodName: "Fruits1",
-            foodType: "Fruits",
-            expirationDate: "11/19/2022",
-          },
-          Fruits2: {
-            foodName: "Fruits2",
-            foodType: "Fruits",
-            expirationDate: "11/19/2022",
-          },
-          Fruits3: {
-            foodName: "Fruits3",
-            foodType: "Fruits",
-            expirationDate: "11/19/2022",
-          },
-          Fruits4: {
-            foodName: "Fruits4",
-            foodType: "Fruits",
-            expirationDate: "11/19/2022",
-          },
-        },
-      },
-    ]);
     return {
-      data,
+      inventoryItems: {},
       searchString: "",
+      // Add ingredient modal
       showCreateModal: false,
       createModalTitle: "Add ingredient to inventory",
       createButtonText: "Add",
       add_ingredient_component: "add-ingredient-view",
+      // Individual ingredient modal
+      showIndividualIngredient: false,
+      individualIngredientTitle: "",
+      individual_ingredient_component: "individual-ingredient-view",
+      ingredientId: null,
+      // Filters
+      sortByFilters: ["Category", "Expiration Date", "A-Z", "Z-A"],
+      selected: "Category",
+      isEmptyInventory: false,
     };
-  },
-  watch: {
-    searchString(newVal) {
-      // TODO(27): Update this to filter inventory results when this value
-      // changes to only match ingredients with this as substring
-      console.log("new searchString: ", newVal);
-    },
   },
   methods: {
     handleAddToInventory() {
-      const data = JSON.parse(
+      const newFoods = JSON.parse(
         JSON.stringify(this.$refs.add_ingredient_ref.ingredientsToAdd)
       );
-      if (data.length) {
-        // TODO(25): Create service for adding ingredient to inventory
-        console.log("UNIMPLEMENTED: Adding ingredients to inventory", data);
+      if (newFoods.length) {
+        for (const food of newFoods) {
+          // TODO(56): Open a date picker and let the user specify expiration date
+          // for each item being added to inventory
+          food.expirationDate = null;
+          this.$store.dispatch("inventory/post", food).then(
+            () => {
+              this.getInventoryItems();
+            },
+            (error) => {
+              // TODO(65): If item is already in inventory, prompt user to let
+              // them know
+              this.message = util.getErrorString(error);
+            }
+          );
+        }
       }
     },
+    getInventoryItems(params = { sortByCategory: true }) {
+      this.$store.dispatch("inventory/getAll", params).then(
+        (response) => {
+          // Each key in parsed is a category name
+          let parsed = {};
+          for (let i = 0; i < response.length; i++) {
+            // Each element is 2-tuple of 1) category name, 2) data
+            if (!response[i][1].length) continue;
+            let categoryName = util.capitalizeFirstLetter(response[i][0]);
+            parsed[categoryName] = {
+              name: categoryName,
+              items: response[i][1],
+            };
+          }
+          this.inventoryItems = parsed;
+          this.isEmptyInventory = util.isEmptyJson(parsed);
+        },
+        (error) => {
+          this.message = util.getErrorString(error);
+        }
+      );
+    },
+  },
+  watch: {
+    selected(newVal) {
+      switch (newVal) {
+        case "Category":
+          this.getInventoryItems();
+          break;
+        case "Expiration Date":
+          this.getInventoryItems({ sortByExpirationDate: true });
+          break;
+        case "A-Z":
+          this.getInventoryItems({ sortByLexicographicalOrder: true });
+          break;
+        case "Z-A":
+          this.getInventoryItems({
+            sortByLexicographicalOrder: true,
+            isReverse: true,
+          });
+          break;
+        default:
+          console.log("this should not happen. gg");
+      }
+    },
+  },
+  beforeMount() {
+    this.getInventoryItems();
   },
 };
 </script>
@@ -351,7 +370,6 @@ export default {
   width: 12vw;
   height: 19vw;
   border-radius: 15px;
-  /* TODO(40): Update this to display the image from the ingredient in inventory */
   background-size: auto;
   background-image: linear-gradient(
       to bottom,

@@ -60,9 +60,18 @@ export const auth = {
           return Promise.reject(error);
         }
       );
+    },
+    refreshJWT({ commit }, token) {
+      return AuthService.refreshJWT(token).then(
+        response => {
+          return Promise.resolve(response);
+        },
+        error => {
+          commit('JWTfailure');
+          return Promise.reject(error);
+        }
+      );
     }
-
-    // TODO(21): Add JWT methods here
   },
   mutations: {
     loginSuccess(state, user) {
@@ -94,6 +103,13 @@ export const auth = {
     },
     sendCodeFailure(state) {
       state.status.loggedIn = false;
+    },
+    JWTsuccess(state) {
+      state.status.loggedIn = false;
+    },
+    JWTfailure(state) {
+      state.status.loggedIn = false;
+      state.user = null;
     }
   }
 };

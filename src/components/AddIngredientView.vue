@@ -47,7 +47,7 @@
         <div class="row">
           <div class="col-6 text-left">
             <div class="previous">
-              <div v-if="currentPage > 1">
+              <div v-if="currentPage > 0">
                 <button
                   type="button"
                   @click="currentPage--"
@@ -61,20 +61,20 @@
           </div>
           <div class="col-6 text-right">
             <div class="next">
-              <button
-                type="button"
-                @click="currentPage++"
-                class="btn btn-primary btn-md"
-              >
-                <!-- TODO(37): Fix next page rendering -->
-                <i class="fas fa-arrow-right"></i>
-                <span class=""></span>
-              </button>
+              <div v-if="hasNextPage">
+                <button
+                  type="button"
+                  @click="currentPage++"
+                  class="btn btn-primary btn-md"
+                >
+                  <i class="fas fa-arrow-right"></i>
+                  <span class=""></span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
       <div v-if="errorString.length" class="row">
         <p>{{ errorString }}</p>
       </div>
@@ -92,7 +92,8 @@ export default {
       searchString: "",
       searchResults: [],
       errorString: "",
-      currentPage: 1,
+      currentPage: 0,
+      hasNextPage: false,
       // TODO(36): make this configurable by user
       resultsPerPage: 10,
     };
@@ -107,7 +108,7 @@ export default {
       this.searchIngredients();
     },
     searchString() {
-      this.currentPage = 1;
+      this.currentPage = 0;
       this.searchResults = [];
       this.errorString = "";
     },
@@ -132,7 +133,8 @@ export default {
         .then(
           (response) => {
             console.log(response);
-            this.searchResults = response;
+            this.searchResults = response.results;
+            this.hasNextPage = response.currentPage < response.numOfPages - 1;
             this.errorString =
               this.searchResults.length > 0 ? "" : "No search results found";
           },

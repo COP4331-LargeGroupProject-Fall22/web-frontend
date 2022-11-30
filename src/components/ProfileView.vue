@@ -34,7 +34,7 @@ export default {
       return this.currentUser?.lastName;
     },
     currentUserToken() {
-      return this.currentUser ? this.currentUser.accessToken : "";
+      return this.currentUser ? this.currentUser.accessToken.token : "";
     },
   },
   mounted() {

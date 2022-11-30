@@ -9,8 +9,8 @@ class AuthService {
     return axios
       .post(API_PREFIX + 'auth/login?includeInfo=true', user)
       .then(response => {
-        const accessToken = response.data.accessToken;
-        const refreshToken = response.data.refreshToken;
+        const accessToken = response.data.token.accessToken;
+        const refreshToken = response.data.token.refreshToken;
         if (!accessToken) {
           return null;
         }
@@ -40,23 +40,23 @@ class AuthService {
     return axios.post(API_PREFIX + 'auth/confirm-verification-code', user);
   }
 
-  // TODO(21): update code to refresh token when access token expires
   refreshJWT(refreshToken) {
-    return axios
-      .post(API_PREFIX + 'auth/refreshJWT', {refreshToken})
-      .then(response => {
+    return axios.post(API_PREFIX + 'auth/refreshJWT', { refreshToken: refreshToken } ).then(
+      (response) => {
         const accessToken = response.data.accessToken;
         const refreshToken = response.data.refreshToken;
-        if (!accessToken) {
-          return response.status;
-        }
 
         let user = JSON.parse(localStorage.getItem('user'));
         user['accessToken'] = accessToken;
         user['refreshToken'] = refreshToken;
         localStorage.setItem('user', JSON.stringify(user));
-
-        return response.status;
+        return user;
+      },
+      (error) => {
+        console.log(error);
+        console.log("Token expired, logging out");
+        localStorage.removeItem('user');
+        return null;
       });
   }
 }
