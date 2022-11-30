@@ -24,8 +24,8 @@
           <!-- TODO(): fix style -->
           <div>
             <select v-model="selected" class="form-control sl">
-              <option v-for="option in sortByFilters" v-bind:key="option.id">
-                {{ option.name }}
+              <option v-for="filter in sortByFilters" v-bind:key="filter">
+                {{ filter }}
               </option>
             </select>
           </div>
@@ -206,12 +206,7 @@ export default {
       individual_ingredient_component: "individual-ingredient-view",
       ingredientId: null,
       // Filters
-      sortByFilters: [
-        { id: "Category", name: "Category" },
-        { id: "Expiration Date", name: "Expiration Date" },
-        { id: "A-Z", name: "A-Z" },
-        { id: "Z-A", name: "Z-A" },
-      ],
+      sortByFilters: ["Category", "Expiration Date", "A-Z", "Z-A"],
       selected: "Category",
     };
   },

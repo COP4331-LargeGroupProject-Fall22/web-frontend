@@ -104,7 +104,7 @@ export default {
       this.$emit("closeModal");
     },
     handleEditExpirationDate: function (newDate) {
-      console.log("UNIMPLEMENTED: implement edit expiration date");
+      console.log("UNIMPLEMENTED: implement edit expiration date", newDate);
       // TODO(56): Uncomment and validate below after adding datepicker to choose new date
       // this.ingredientInfo.expirationDate = newDate;
       // this.$store.dispatch("inventory/put", this.ingredientId).then(
