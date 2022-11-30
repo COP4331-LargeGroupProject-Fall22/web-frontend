@@ -1,10 +1,10 @@
-import InventoryService from '../services/inventory.service';
+import ShoppingListService from '../services/shoppinglist.service';
 
 export const inventory = {
   namespaced: true,
   actions: {
     getAll({ commit }, params) {
-      return InventoryService.getAll(params).then(
+      return ShoppingList.getAll(params).then(
         response => {
           return Promise.resolve(response.data);
         },
@@ -16,7 +16,7 @@ export const inventory = {
     },
 
     post({ commit }, newFood) {
-      return InventoryService.post(newFood).then(
+      return ShoppingList.post(newFood).then(
         response => {
           return Promise.resolve(response.data);
         },
@@ -28,7 +28,7 @@ export const inventory = {
     },
 
     get({ commit }, id) {
-      return InventoryService.get(id).then(
+      return ShoppingList.get(id).then(
         response => {
           return Promise.resolve(response);
         },
@@ -40,7 +40,7 @@ export const inventory = {
     },
 
     put({ commit }, id, updatedItem) {
-      return InventoryService.put(id, updatedItem).then(
+      return ShoppingList.put(id, updatedItem).then(
         response => {
           return Promise.resolve(response);
         },
@@ -52,7 +52,7 @@ export const inventory = {
     },
 
     delete({ commit }, id) {
-      return InventoryService.delete(id).then(
+      return ShoppingList.delete(id).then(
         response => {
           return Promise.resolve(response);
         },
@@ -65,7 +65,7 @@ export const inventory = {
   },
   mutations: {
     failure(state, error) {
-      console.log("Failure in inventory service, state: " + JSON.stringify(
+      console.log("Failure in shopping list service, state: " + JSON.stringify(
         state) + ", error: " + error);
     },
   }
