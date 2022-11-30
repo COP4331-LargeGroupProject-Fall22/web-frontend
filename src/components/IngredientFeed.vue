@@ -164,6 +164,7 @@ export default {
     currentUser() {
       return this.$store.state.auth.user;
     },
+    // TODO(): extract to util; same logic for all feeds
     filteredItems() {
       let searchString = this.searchString.toLowerCase();
       if (!searchString.length) {

@@ -3,8 +3,8 @@ import IngredientService from '../services/ingredient.service';
 export const ingredients = {
   namespaced: true,
   actions: {
-    get({ commit }, query) {
-      return IngredientService.get(query).then(
+    get({ commit }, ingredientId) {
+      return IngredientService.get(ingredientId).then(
         response => {
           return Promise.resolve(response);
         },

@@ -28,7 +28,7 @@
               green: currentTab == 'ShoppingListFeed',
             }"
           >
-            <font-awesome-icon icon="shopping-cart" />Shopping Cart
+            <font-awesome-icon icon="shopping-cart" />Shopping List
           </button>
         </div>
       </nav>

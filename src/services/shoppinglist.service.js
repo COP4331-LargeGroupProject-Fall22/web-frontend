@@ -4,7 +4,7 @@ import authHeader from './auth-header';
 const API_PREFIX = process.env.VUE_APP_NODE_ENV === process.env.VUE_APP_DEV ?
                 process.env.VUE_APP_LOCAL_API_STRING
               : process.env.VUE_APP_REMOTE_API_STRING;
-const API_URL = API_PREFIX + '/user/shopping-list';
+const API_URL = API_PREFIX + 'user/shopping-list';
 
 class ShoppingListService {
   async getAll(params) {

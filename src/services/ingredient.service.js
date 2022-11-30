@@ -10,8 +10,8 @@ class IngredientService {
     return axios.get(API_URL, { params: query });
   }
 
-  get(query) {
-    return axios.get(API_URL, { params: query });
+  get(id) {
+    return axios.get(API_URL + "/" + id);
   }
 }
 
