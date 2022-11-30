@@ -70,7 +70,7 @@
       </div>
       <div class="container mt-3">
         <div class="row">
-          <individual-ingredient-view
+          <inventory-ingredient-view
             @closeModal="
               showIndividualIngredient = false;
               this.getInventoryItems();
@@ -80,7 +80,7 @@
             :modalTitle="individualIngredientTitle"
             :ingredientId="ingredientId"
           >
-          </individual-ingredient-view>
+          </inventory-ingredient-view>
         </div>
       </div>
     </div>
@@ -108,7 +108,7 @@
       <div v-if="isEmptyInventory">
         <h3>No items, try adding some to your inventory!</h3>
       </div>
-      <div v-if="noMatchesForSearchString">
+      <div v-if="!isEmptyInventory && noMatchesForSearchString">
         <h3>No items matching search string: "{{ searchString }}"</h3>
       </div>
       <ul>
@@ -155,7 +155,7 @@
 <script>
 import ModalView from "@/components/ModalView.vue";
 import AddIngredientView from "@/components/AddIngredientView.vue";
-import IndividualIngredientView from "@/components/IndividualIngredientView.vue";
+import InventoryIngredientView from "@/components/InventoryIngredientView.vue";
 
 import { util } from "@/globals.js";
 
@@ -164,12 +164,13 @@ export default {
   components: {
     ModalView,
     AddIngredientView,
-    IndividualIngredientView,
+    InventoryIngredientView,
   },
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
     },
+    // TODO(): extract to util; same logic for all feeds
     filteredItems() {
       let searchString = this.searchString.toLowerCase();
       if (!searchString.length) {
@@ -214,7 +215,6 @@ export default {
       // Individual ingredient modal
       showIndividualIngredient: false,
       individualIngredientTitle: "",
-      individual_ingredient_component: "individual-ingredient-view",
       ingredientId: null,
       // Filters
       sortByFilters: ["Category", "Expiration Date", "A-Z", "Z-A"],
