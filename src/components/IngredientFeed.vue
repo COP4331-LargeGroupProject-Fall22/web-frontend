@@ -78,7 +78,6 @@
             @saveChanges="showIndividualIngredient = false"
             :showModal="showIndividualIngredient"
             :modalTitle="individualIngredientTitle"
-            :modalButtonText="individualButtonText"
             :ingredientId="ingredientId"
           >
           </individual-ingredient-view>
@@ -121,6 +120,7 @@
                       @click="
                         showIndividualIngredient = true;
                         ingredientId = item.id;
+                        individualIngredientTitle = item.name;
                       "
                       type="button"
                       class="btn food-item"
@@ -133,7 +133,6 @@
                     >
                       <div class="col-md-auto text-center food-text">
                         {{ item.name }}
-                        {{ item.id }}
                       </div>
                     </button>
                   </div>
@@ -203,8 +202,7 @@ export default {
       add_ingredient_component: "add-ingredient-view",
       // Individual ingredient modal
       showIndividualIngredient: false,
-      individualIngredientTitle: "buh",
-      individualButtonText: "buh",
+      individualIngredientTitle: "",
       individual_ingredient_component: "individual-ingredient-view",
       ingredientId: null,
       // Filters
@@ -224,6 +222,8 @@ export default {
       );
       if (newFoods.length) {
         for (const food of newFoods) {
+          // TODO(56): Open a date picker and let the user specify expiration date
+          // for each item being added to inventory
           this.$store.dispatch("inventory/post", food).then(
             () => {
               this.getInventoryItems();

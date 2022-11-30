@@ -15,18 +15,12 @@
             </h5>
           </div>
           <div class="modal-body">
-            <!-- TODO(): fix style -->
+            <!-- TODO(55): fix style to better match figma -->
             <div class="row">
-              Here is the {{ ingredientId }} if one was provided.<br />
+              <img v-bind:src="imageUrl" class="center-block" />
             </div>
-            <div class="row">
-              <div class="col-md-5">
-                <img v-bind:src="imageUrl" />
-              </div>
-              <div class="col-md-5">
-                {{ ingredientInfo }}
-              </div>
-            </div>
+            <div class="row">Food type: {{ category }}</div>
+            <div class="row">Expiration date: {{ expirationDate }}</div>
           </div>
           <div class="modal-footer">
             <button
@@ -40,8 +34,13 @@
             <button type="button" class="btn btn-secondary" @click="hideModal">
               Close
             </button>
-            <button type="button" @click="saveChanges" class="btn btn-primary">
-              {{ modalButtonText || "Save changes" }}
+            <!-- TODO(56): Open a date picker and let the user specify expiration date -->
+            <button
+              type="button"
+              @click="handleEditExpirationDate"
+              class="btn btn-primary"
+            >
+              {{ modalButtonText || "?" }}
             </button>
           </div>
         </div>
@@ -57,12 +56,12 @@ export default {
   data: () => ({
     modalInstance: null,
     ingredientInfo: null,
+    modalButtonText: "Edit expiration date",
   }),
   props: {
     showModal: Boolean,
     modalText: String,
     modalTitle: String,
-    modalButtonText: String,
     ingredientId: Number,
   },
   watch: {
@@ -77,6 +76,15 @@ export default {
       return this.ingredientInfo == null
         ? "https://github.com/COP4331-LargeGroupProject-Fall22/web-frontend/blob/main/src/assets/food.png?raw=true"
         : this.ingredientInfo.image.srcUrl;
+    },
+    category() {
+      return this.ingredientInfo == null ? "N/A" : this.ingredientInfo.category;
+    },
+    expirationDate() {
+      return this.ingredientInfo == null ||
+        this.ingredientInfo.expirationDate == null
+        ? "N/A"
+        : this.ingredientInfo.expirationDate;
     },
   },
   methods: {
@@ -95,9 +103,8 @@ export default {
       this.modalInstance.hide();
       this.$emit("closeModal");
     },
-    saveChanges: function () {
-      this.$emit("saveChanges");
-      this.hideModal();
+    handleEditExpirationDate: function () {
+      console.log("TODO: implement edit expiration date");
     },
     removeFromInventory: function () {
       this.$store.dispatch("inventory/delete", this.ingredientId).then(
