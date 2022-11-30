@@ -133,6 +133,7 @@
                     <button
                       type="button"
                       class="btn confirm dropdown-toggle-split"
+                      @click="addItemToInventory(item)"
                     >
                       <i class="fas fa-check"></i>
                     </button>
@@ -285,7 +286,6 @@ export default {
     getShoppingListItems(params = { sortByCategory: true }) {
       this.$store.dispatch("shoppinglist/getAll", params).then(
         (response) => {
-          console.log(JSON.stringify(response));
           // Each key in parsed is a category name
           let parsed = {};
           for (let i = 0; i < response.length; i++) {
@@ -309,7 +309,6 @@ export default {
     // TODO(): Update this to be a modal instead with more ingredient info
     // matching figma design
     deleteItem(item) {
-      console.log(item);
       var result = confirm(
         "Are you sure you want to delete " +
           item.name +
@@ -319,6 +318,37 @@ export default {
         this.$store.dispatch("shoppinglist/delete", item.itemID).then(
           () => {
             this.getShoppingListItems();
+          },
+          (error) => {
+            console.log("failed to delete: " + error);
+          }
+        );
+      }
+    },
+    // TODO(): Update this to be a modal instead with more ingredient info
+    // matching figma design
+    addItemToInventory(item) {
+      var result = confirm(
+        "Are you sure you want to add " + item.name + " to your inventory?"
+      );
+      if (result) {
+        this.$store.dispatch("shoppinglist/delete", item.itemID).then(
+          () => {
+            let inventoryItem = {};
+            inventoryItem["id"] = item.id;
+            inventoryItem["name"] = item.name;
+            inventoryItem["category"] = item.category;
+            inventoryItem["image"] = item.image;
+            // TODO(): update to get exp date when adding to inventory
+            inventoryItem["expirationDate"] = null;
+            this.$store.dispatch("inventory/post", inventoryItem).then(
+              () => {
+                this.getShoppingListItems();
+              },
+              (error) => {
+                console.log("failed to delete: " + error);
+              }
+            );
           },
           (error) => {
             console.log("failed to delete: " + error);
