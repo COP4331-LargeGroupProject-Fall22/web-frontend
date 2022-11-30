@@ -39,6 +39,14 @@
           />
         </div>
         <!-- TODO(59): Add a button for search -->
+        <button
+          type="button"
+          class="btn btn-primary btn-floating"
+          id="addIngredient"
+          @click="handleSearch"
+        >
+          <i class="fas fa-search"></i>
+        </button>
       </div>
     </div>
     <!-- TODO(20) set up a scroll button -->
