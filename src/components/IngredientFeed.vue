@@ -219,6 +219,7 @@ export default {
         for (const food of newFoods) {
           // TODO(56): Open a date picker and let the user specify expiration date
           // for each item being added to inventory
+          food.expirationDate = null;
           this.$store.dispatch("inventory/post", food).then(
             () => {
               this.getInventoryItems();
