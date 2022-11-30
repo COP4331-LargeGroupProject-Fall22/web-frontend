@@ -108,7 +108,7 @@
       <div v-if="isEmptyInventory">
         <h3>No items, try adding some to your inventory!</h3>
       </div>
-      <div v-if="noMatchesForSearchString">
+      <div v-if="!isEmptyInventory && noMatchesForSearchString">
         <h3>No items matching search string: "{{ searchString }}"</h3>
       </div>
       <ul>
