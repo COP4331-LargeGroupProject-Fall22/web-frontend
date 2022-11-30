@@ -15,7 +15,7 @@
             </h5>
           </div>
           <div class="modal-body">
-            <!-- TODO(): fix style to better match figma. show more info about
+            <!-- TODO(71): fix style to better match figma. show more info about
            item, price, date added, etc. -->
             <div class="row">
               <img v-bind:src="imageUrl" class="center-block" />
@@ -27,7 +27,7 @@
             <button type="button" class="btn btn-secondary" @click="hideModal">
               Close
             </button>
-            <!-- TODO(): Allow the user to edit quantity -->
+            <!-- TODO(69): Allow the user to edit quantity -->
             <button
               type="button"
               @click="handleEditQuantity"
@@ -101,12 +101,11 @@ export default {
     },
     handleEditQuantity: function (newQuantity) {
       console.log("UNIMPLEMENTED: implement edit quantity", newQuantity);
-      // TODO(56): Uncomment and validate below after adding datepicker to choose new date
-      // this.ingredientInfo.expirationDate = newDate;
-      // this.$store.dispatch("inventory/put", this.ingredientId).then(
+      // TODO(69): Allow the user to edit quantity
+      // this.ingredientInfo.quantity = newQuantity;
+      // this.$store.dispatch("shoppinglist/put", this.ingredientId).then(
       //   (response) => {
       //     this.ingredientInfo = response;
-      //     console.log(success);
       //   },
       //   (error) => {
       //     console.log("failed to update: " + error);
