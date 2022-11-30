@@ -131,7 +131,6 @@ export default {
       this.$store.dispatch("inventory/get", this.ingredientId).then(
         (response) => {
           this.ingredientInfo = response.data;
-          console.log(response.data);
         },
         (error) => {
           console.log("failed to get info: " + error);
