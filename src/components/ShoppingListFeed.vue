@@ -144,8 +144,11 @@
           </div>
         </li>
       </ul>
-      <div v-if="emptyShoppingList">
+      <div v-if="isEmptyShoppingList">
         <h3>Your shopping list is empty, try adding some items!</h3>
+      </div>
+      <div v-if="!isEmptyShoppingList && noMatchesForSearchString">
+        <h3>No items matching search string: "{{ searchString }}"</h3>
       </div>
     </div>
   </div>
@@ -191,6 +194,11 @@ export default {
       }
       return filtered;
     },
+    noMatchesForSearchString() {
+      return (
+        this.searchString.length > 0 && util.isEmptyJson(this.filteredItems)
+      );
+    },
   },
   mounted() {
     if (!this.currentUser) {
@@ -200,7 +208,7 @@ export default {
   data() {
     return {
       shoppingListItems: {},
-      emptyShoppingList: false,
+      isEmptyShoppingList: false,
       searchString: "",
       showCreateModal: false,
       createModalTitle: "Add ingredient to shopping list",
@@ -297,9 +305,7 @@ export default {
             };
           }
           this.shoppingListItems = parsed;
-          // TODO(): make util isEmpty(obj) {
-          this.emptyShoppingList =
-            Object.keys(this.shoppingListItems).length === 0;
+          this.isEmptyShoppingList = util.isEmptyJson(parsed);
         },
         (error) => {
           this.message = util.getErrorString(error);

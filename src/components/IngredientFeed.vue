@@ -105,6 +105,12 @@
       </ul>
     </div>
     <div class="row">
+      <div v-if="isEmptyInventory">
+        <h3>No items, try adding some to your inventory!</h3>
+      </div>
+      <div v-if="!isEmptyInventory && noMatchesForSearchString">
+        <h3>No items matching search string: "{{ searchString }}"</h3>
+      </div>
       <ul>
         <li>
           <div v-for="category in filteredItems" :key="category">
@@ -186,6 +192,11 @@ export default {
       }
       return filtered;
     },
+    noMatchesForSearchString() {
+      return (
+        this.searchString.length > 0 && util.isEmptyJson(this.filteredItems)
+      );
+    },
   },
   mounted() {
     if (!this.currentUser) {
@@ -208,6 +219,7 @@ export default {
       // Filters
       sortByFilters: ["Category", "Expiration Date", "A-Z", "Z-A"],
       selected: "Category",
+      isEmptyInventory: false,
     };
   },
   methods: {
@@ -219,11 +231,14 @@ export default {
         for (const food of newFoods) {
           // TODO(56): Open a date picker and let the user specify expiration date
           // for each item being added to inventory
+          food.expirationDate = null;
           this.$store.dispatch("inventory/post", food).then(
             () => {
               this.getInventoryItems();
             },
             (error) => {
+              // TODO(65): If item is already in inventory, prompt user to let
+              // them know
               this.message = util.getErrorString(error);
             }
           );
@@ -237,6 +252,7 @@ export default {
           let parsed = {};
           for (let i = 0; i < response.length; i++) {
             // Each element is 2-tuple of 1) category name, 2) data
+            if (!response[i][1].length) continue;
             let categoryName = util.capitalizeFirstLetter(response[i][0]);
             parsed[categoryName] = {
               name: categoryName,
@@ -244,6 +260,7 @@ export default {
             };
           }
           this.inventoryItems = parsed;
+          this.isEmptyInventory = util.isEmptyJson(parsed);
         },
         (error) => {
           this.message = util.getErrorString(error);
