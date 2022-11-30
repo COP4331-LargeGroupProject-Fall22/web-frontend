@@ -28,7 +28,6 @@
       </div>
       <div class="tool-bar-container">
         <div class="form-outline">
-          <!-- TODO(38): Fix search text placeholder not showing unless field is active -->
           <input
             id="searchShopping"
             aria-label="Search"
