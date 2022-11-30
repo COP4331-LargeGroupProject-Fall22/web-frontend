@@ -69,6 +69,21 @@
           </modal-view>
         </div>
       </div>
+      <div class="container mt-3">
+        <div class="row">
+          <shopping-list-ingredient-view
+            @closeModal="
+              showIndividualIngredient = false;
+              this.getShoppingListItems();
+            "
+            @saveChanges="showIndividualIngredient = false"
+            :showModal="showIndividualIngredient"
+            :modalTitle="individualIngredientTitle"
+            :ingredientId="ingredientId"
+          >
+          </shopping-list-ingredient-view>
+        </div>
+      </div>
     </div>
     <div class="row">
       <ul>
@@ -81,7 +96,15 @@
               <div class="row">
                 <ul>
                   <div class="btn-group">
-                    <button type="button" class="btn shopping-item">
+                    <button
+                      type="button"
+                      @click="
+                        showIndividualIngredient = true;
+                        ingredientId = item.itemID;
+                        individualIngredientTitle = item.name;
+                      "
+                      class="btn shopping-item"
+                    >
                       <div
                         class="shopping-item-pic"
                         v-bind:style="{
@@ -130,6 +153,7 @@
 <script>
 import ModalView from "@/components/ModalView.vue";
 import AddIngredientView from "@/components/AddIngredientView.vue";
+import ShoppingListIngredientView from "@/components/ShoppingListIngredientView.vue";
 
 import { util } from "@/globals.js";
 
@@ -138,6 +162,7 @@ export default {
   components: {
     ModalView,
     AddIngredientView,
+    ShoppingListIngredientView,
   },
   computed: {
     currentUser() {
@@ -180,6 +205,11 @@ export default {
       createModalTitle: "Add ingredient to shopping list",
       createButtonText: "Add",
       add_ingredient_component: "add-ingredient-view",
+      // Individual ingredient modal
+      showIndividualIngredient: false,
+      individualIngredientTitle: "",
+      ingredientId: null,
+      // Filters
       sortByFilters: [
         "Category",
         "Recipe",

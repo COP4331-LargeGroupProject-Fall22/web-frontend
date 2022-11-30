@@ -70,7 +70,7 @@
       </div>
       <div class="container mt-3">
         <div class="row">
-          <individual-ingredient-view
+          <inventory-ingredient-view
             @closeModal="
               showIndividualIngredient = false;
               this.getInventoryItems();
@@ -80,7 +80,7 @@
             :modalTitle="individualIngredientTitle"
             :ingredientId="ingredientId"
           >
-          </individual-ingredient-view>
+          </inventory-ingredient-view>
         </div>
       </div>
     </div>
@@ -149,7 +149,7 @@
 <script>
 import ModalView from "@/components/ModalView.vue";
 import AddIngredientView from "@/components/AddIngredientView.vue";
-import IndividualIngredientView from "@/components/IndividualIngredientView.vue";
+import InventoryIngredientView from "@/components/InventoryIngredientView.vue";
 
 import { util } from "@/globals.js";
 
@@ -158,7 +158,7 @@ export default {
   components: {
     ModalView,
     AddIngredientView,
-    IndividualIngredientView,
+    InventoryIngredientView,
   },
   computed: {
     currentUser() {
@@ -204,7 +204,6 @@ export default {
       // Individual ingredient modal
       showIndividualIngredient: false,
       individualIngredientTitle: "",
-      individual_ingredient_component: "individual-ingredient-view",
       ingredientId: null,
       // Filters
       sortByFilters: ["Category", "Expiration Date", "A-Z", "Z-A"],
