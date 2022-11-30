@@ -1,16 +1,16 @@
 <template>
   <div>
     <div
-      id="individualIngredientModal"
+      id="inventoryIngredientModal"
       class="modal fade"
-      ref="individualIngredientModalRef"
+      ref="inventoryIngredientModalRef"
       tabindex="-1"
       aria-hidden="true"
     >
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="individualIngredientModalLabel">
+            <h5 class="modal-title" id="inventoryIngredientModalLabel">
               {{ modalTitle || "No title passed" }}
             </h5>
           </div>
@@ -52,7 +52,7 @@
 <script>
 import { Modal } from "bootstrap";
 export default {
-  name: "GenericModal",
+  name: "InventoryIngredientView",
   data: () => ({
     modalInstance: null,
     ingredientInfo: null,
@@ -90,7 +90,7 @@ export default {
   methods: {
     modalActive: function () {
       this.modalInstance = new Modal(
-        document.getElementById("individualIngredientModal"),
+        document.getElementById("inventoryIngredientModal"),
         {
           target: "#individual-ingredient-modal",
           backdrop: "static",
