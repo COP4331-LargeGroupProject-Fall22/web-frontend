@@ -103,8 +103,19 @@ export default {
       this.modalInstance.hide();
       this.$emit("closeModal");
     },
-    handleEditExpirationDate: function () {
-      console.log("TODO: implement edit expiration date");
+    handleEditExpirationDate: function (newDate) {
+      console.log("UNIMPLEMENTED: implement edit expiration date");
+      // TODO(56): Uncomment and validate below after adding datepicker to choose new date
+      // this.ingredientInfo.expirationDate = newDate;
+      // this.$store.dispatch("inventory/put", this.ingredientId).then(
+      //   (response) => {
+      //     this.ingredientInfo = response;
+      //     console.log(success);
+      //   },
+      //   (error) => {
+      //     console.log("failed to update: " + error);
+      //   }
+      // );
     },
     removeFromInventory: function () {
       this.$store.dispatch("inventory/delete", this.ingredientId).then(
