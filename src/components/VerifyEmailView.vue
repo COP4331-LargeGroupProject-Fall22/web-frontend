@@ -31,13 +31,9 @@
                 <ErrorMessage name="username" class="error-feedback" />
               </div>
               <div class="form-group">
-                <label for="verificationCode">Verification code</label>
-                <Field
-                  name="verificationCode"
-                  type="verificationCode"
-                  class="form-control"
-                />
-                <ErrorMessage name="verificationCode" class="error-feedback" />
+                <label for="code">Verification code</label>
+                <Field name="code" type="code" class="form-control" />
+                <ErrorMessage name="code" class="error-feedback" />
               </div>
 
               <div class="form-group">
@@ -149,11 +145,11 @@ export default {
   data() {
     const verifySchema = yup.object().shape({
       username: yup.string().required("Username is required!"),
-      verificationCode: yup
-        .string()
+      code: yup
+        .number()
         .required("Verification code is required!")
-        .min(6, "Must be exactly 6 characters!")
-        .max(6, "Must be exactly 6 characters!"),
+        .typeError("Verification code must be a number!")
+        .integer("Verification code must be an integer!"),
     });
 
     const resendSchema = yup.object().shape({
