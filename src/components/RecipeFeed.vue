@@ -11,18 +11,23 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-            Sort By
+            {{ selected }}
           </button>
           <div class="dropdown-menu">
-            <a class="dropdown-item active" href="#"
-              >Ingredient Expiration Date</a
-            >
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Time To Cook</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">A-Z</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Z-A</a>
+            <ul v-for="filter in sortByFilters" v-bind:key="filter">
+              <div class="options">
+                <div v-if="filter == selected">
+                  <a @click="selected = filter" class="dropdown-item active">
+                    {{ filter }}
+                  </a>
+                </div>
+                <div v-else>
+                  <a @click="selected = filter" class="dropdown-item">
+                    {{ filter }}
+                  </a>
+                </div>
+              </div>
+            </ul>
           </div>
         </div>
       </div>
@@ -167,6 +172,13 @@ export default {
     return {
       data,
       searchString: "",
+      sortByFilters: [
+        "Ingredient Expiration Date",
+        "Time To Cook",
+        "A-Z",
+        "Z-A",
+      ],
+      selected: "Ingredient Expiration Date",
     };
   },
 };
@@ -306,5 +318,11 @@ h3 {
 .dropdown-item.active,
 .dropdown-item:active {
   background-color: #008600;
+}
+
+.options {
+  user-select: none;
+  cursor: pointer;
+  width: 100%;
 }
 </style>
