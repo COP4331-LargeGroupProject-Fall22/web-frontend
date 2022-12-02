@@ -2,33 +2,32 @@
   <div class="container">
     <div class="tool-bar">
       <div class="tool-bar-container">
-        <!-- <button
-          type="button"
+        <button type="button"
           class="btn btn-sortBy dropdown-toggle"
           data-toggle="dropdown"
           aria-haspopup="true"
-          aria-expanded="false"
-        >
-          Sort By
+          aria-expanded="false"> {{ selected }} 
         </button>
         <div class="dropdown-menu">
-          <a class="dropdown-item active" href="#">Type</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Added First</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Added Last</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">A-Z</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Z-A</a>
-        </div> -->
-        <div>
+          <ul v-for="filter in sortByFilters" v-bind:key="filter">
+            <div class="options">
+              <div v-if="filter == selected">
+                <a @click="selected = filter" class="dropdown-item active">{{ filter }}</a>
+              </div>
+              <div v-else>
+                <a @click="selected = filter" class="dropdown-item">{{ filter }}</a>
+              </div>
+            </div>
+          </ul>
+        </div>
+        <!-- TODO(58): delete if my change works -->
+        <!-- <div>
           <select v-model="selected" class="form-control sl">
             <option v-for="filter in sortByFilters" v-bind:key="filter">
               {{ filter }}
             </option>
           </select>
-        </div>
+        </div> -->
       </div>
       <div class="tool-bar-container">
         <div class="form-outline">
@@ -508,5 +507,9 @@ h3 {
 .confirm:focus {
   background-color: #33ff00;
   color: white;
+}
+
+.options {
+  width: 100%;
 }
 </style>
