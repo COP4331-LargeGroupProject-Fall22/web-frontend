@@ -423,7 +423,6 @@ h3 {
 
 .dropdown-item.active,
 .dropdown-item:active {
-  /* background-color: #008600; */
   background-color: #008600;
 }
 
