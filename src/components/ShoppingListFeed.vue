@@ -27,14 +27,6 @@
             </div>
           </ul>
         </div>
-        <!-- TODO(58): delete if my change works -->
-        <!-- <div>
-          <select v-model="selected" class="form-control sl">
-            <option v-for="filter in sortByFilters" v-bind:key="filter">
-              {{ filter }}
-            </option>
-          </select>
-        </div> -->
       </div>
       <div class="tool-bar-container">
         <div class="form-outline">
@@ -517,6 +509,8 @@ h3 {
 }
 
 .options {
+  user-select: none;
+  cursor: pointer;
   width: 100%;
 }
 </style>

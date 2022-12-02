@@ -3,7 +3,6 @@
     <div class="tool-bar">
       <div class="tool-bar-container">
         <div class="btn-group">
-          <!-- TODO(58): fix style of dropdown to match figma -->
           <button
             type="button"
             class="btn btn-sortBy dropdown-toggle"
@@ -29,14 +28,6 @@
               </div>
             </ul>
           </div>
-          <!-- TODO(58): delete if my change works -->
-          <!-- <div>
-            <select v-model="selected" class="form-control sl">
-              <option v-for="filter in sortByFilters" v-bind:key="filter">
-                {{ filter }}
-              </option>
-            </select>
-          </div> -->
         </div>
       </div>
       <div class="tool-bar-container">
@@ -432,10 +423,13 @@ h3 {
 
 .dropdown-item.active,
 .dropdown-item:active {
+  /* background-color: #008600; */
   background-color: #008600;
 }
 
 .options {
+  user-select: none;
+  cursor: pointer;
   width: 100%;
 }
 </style>
