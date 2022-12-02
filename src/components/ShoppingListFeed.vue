@@ -2,20 +2,27 @@
   <div class="container">
     <div class="tool-bar">
       <div class="tool-bar-container">
-        <button type="button"
+        <button
+          type="button"
           class="btn btn-sortBy dropdown-toggle"
           data-toggle="dropdown"
           aria-haspopup="true"
-          aria-expanded="false"> {{ selected }} 
+          aria-expanded="false"
+        >
+          {{ selected }}
         </button>
         <div class="dropdown-menu">
           <ul v-for="filter in sortByFilters" v-bind:key="filter">
             <div class="options">
               <div v-if="filter == selected">
-                <a @click="selected = filter" class="dropdown-item active">{{ filter }}</a>
+                <a @click="selected = filter" class="dropdown-item active">
+                  {{ filter }}
+                </a>
               </div>
               <div v-else>
-                <a @click="selected = filter" class="dropdown-item">{{ filter }}</a>
+                <a @click="selected = filter" class="dropdown-item">
+                  {{ filter }}
+                </a>
               </div>
             </div>
           </ul>
