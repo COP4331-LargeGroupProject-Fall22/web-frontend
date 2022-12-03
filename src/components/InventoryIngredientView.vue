@@ -9,16 +9,14 @@
     >
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="inventoryIngredientModalLabel">
-              {{ modalTitle || "No title passed" }}
-            </h5>
-          </div>
           <div class="modal-body">
             <!-- TODO(55): fix style to better match figma -->
             <div class="row">
               <img v-bind:src="imageUrl" class="center-block" />
             </div>
+            <h5 class="modal-title" id="inventoryIngredientModalLabel">
+              {{ modalTitle || "No title passed" }}
+            </h5>
             <div class="row">Food type: {{ category }}</div>
             <div class="row">Expiration date: {{ expirationDate }}</div>
           </div>
@@ -148,4 +146,19 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.modal-body {
+  padding: 0;
+}
+
+img {
+  widows: 100%;
+  height: 45vh;
+  object-fit: contain;
+  border-radius: 0.3rem;
+}
+
+.modal-title {
+  padding: 15px;
+}
+</style>
