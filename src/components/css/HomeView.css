@@ -1,0 +1,55 @@
+.container {
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: 100%;
+}
+
+.col-md-2,
+.col-md-10 {
+  padding: 0 !important;
+}
+
+.col-md-2 {
+  background-color: white !important;
+}
+
+.list-group {
+  margin: 0 !important;
+}
+
+.sectionicons {
+  margin-right: 10px;
+}
+
+.pb-2,
+.py-2 {
+  padding: 1.5rem !important;
+  margin: 0 !important;
+}
+
+button {
+  width: 100%;
+  padding: 20px;
+  border: none;
+  background-color: white;
+  text-align: left;
+}
+
+button:hover {
+  color: green;
+  font-weight: bold;
+}
+
+.svg-inline--fa {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+.white {
+  color: black;
+}
+
+.green {
+  color: #008600;
+  font-weight: bold;
+}

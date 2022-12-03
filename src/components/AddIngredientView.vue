@@ -165,4 +165,23 @@ export default {
 .next {
   text-align: right;
 }
+
+.btn-primary {
+  width: fit-content;
+  box-shadow: none;
+}
+
+.col-md-2 {
+  background-color: #ffffff00 !important;
+}
+
+.col-md-10,
+.col-md-2 {
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}
+
+.container {
+  background-color: white;
+}
 </style>

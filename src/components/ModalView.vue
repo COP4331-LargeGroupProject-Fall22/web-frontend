@@ -80,4 +80,13 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.btn-secondary {
+  width: fit-content;
+  box-shadow: none;
+}
+.btn-primary {
+  width: fit-content;
+  box-shadow: none;
+}
+</style>
