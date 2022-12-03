@@ -14,9 +14,9 @@
             <div class="row">
               <img v-bind:src="imageUrl" class="center-block" />
             </div>
-            <h5 class="modal-title" id="inventoryIngredientModalLabel">
+            <h4 class="modal-title" id="inventoryIngredientModalLabel">
               {{ modalTitle || "No title passed" }}
-            </h5>
+            </h4>
             <div class="row">Food type: {{ category }}</div>
             <div class="row">Expiration date: {{ expirationDate }}</div>
           </div>
