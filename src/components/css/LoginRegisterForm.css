@@ -97,6 +97,7 @@ h1 {
 .btn-primary {
   background-color: #008600 !important;
   border-color: #008600 !important;
+  box-shadow: none;
 }
 
 .btn-primary:hover,
@@ -105,12 +106,14 @@ h1 {
 .show > .btn-primary.dropdown-toggle {
   background-color: #006600 !important;
   border-color: #005600 !important;
+  font-weight: normal;
 }
 
 .btn-secondary {
   color: #008600 !important;
   background-color: white !important;
   border-color: white !important;
+  box-shadow: none;
 }
 
 .btn-secondary:hover,
@@ -119,4 +122,5 @@ h1 {
 .show > .btn-secondary.dropdown-toggle {
   background-color: lightgrey !important;
   border-color: lightgrey !important;
+  font-weight: normal;
 }
