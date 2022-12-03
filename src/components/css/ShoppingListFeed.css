@@ -1,3 +1,9 @@
+:root {
+  --confirm-color: red;
+  --cancel-color: #33ff00;
+  --shopping-text: black;
+}
+
 .shopping-item {
   width: 65vw;
   height: 10vw;
@@ -24,7 +30,7 @@
 .amount-needed {
   display: contents;
   text-align: left !important;
-  color: black;
+  color: var(--shopping-text);
   padding: 10px !important;
 }
 
@@ -45,13 +51,13 @@
 .cancel:hover,
 .cancel:active,
 .cancel:focus {
-  background-color: red !important;
+  background-color: var(--confirm-color) !important;
   color: white !important;
 }
 
 .confirm:hover,
 .confirm:active,
 .confirm:focus {
-  background-color: #33ff00 !important;
+  background-color: var(--cancel-color) !important;
   color: white !important;
 }

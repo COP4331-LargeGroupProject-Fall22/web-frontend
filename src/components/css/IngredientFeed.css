@@ -1,17 +1,22 @@
+:root {
+  --type-color: lightgrey;
+  --text-color: white;
+}
+
 .type-of-food {
   width: 10vw;
   height: 5vw;
   border-radius: 15px;
   align-items: center;
   color: black;
-  background-color: lightgrey;
+  background-color: var(--type-color);
   margin: 15px;
 }
 
 .food-text {
   text-align: left !important;
   font-size: 1rem;
-  color: white;
+  color: var(--text-color);
   top: 30%;
   padding: 8% !important;
 }

@@ -1,3 +1,8 @@
+:root {
+  --our-green: #008600;
+  --side-bar-color: white;
+}
+
 .container {
   padding: 0 !important;
   margin: 0 !important;
@@ -10,7 +15,7 @@
 }
 
 .col-md-2 {
-  background-color: white !important;
+  background-color: var(--side-bar-color) !important;
 }
 
 .list-group {
@@ -27,22 +32,21 @@
   margin: 0 !important;
 }
 
-button {
+.svg-inline--fa {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+.white, .green {
   width: 100%;
   padding: 20px;
   border: none;
   background-color: white;
   text-align: left;
 }
-
-button:hover {
+.white:hover, .green:hover {
   color: green;
   font-weight: bold;
-}
-
-.svg-inline--fa {
-  margin-right: 10px;
-  font-size: 20px;
 }
 
 .white {
@@ -50,6 +54,6 @@ button:hover {
 }
 
 .green {
-  color: #008600;
+  color: var(--our-green);
   font-weight: bold;
 }
