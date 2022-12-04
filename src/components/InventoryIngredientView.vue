@@ -21,6 +21,10 @@
             <div class="row ingredient-details">
               Expiration date: {{ expirationDate }}
             </div>
+            <Datepicker
+              v-model="expirationDateSelection"
+              :enable-time-picker="false"
+            />
           </div>
           <div class="modal-footer">
             <button
@@ -57,6 +61,7 @@ export default {
     modalInstance: null,
     ingredientInfo: null,
     modalButtonText: "Edit expiration date",
+    expirationDateSelection: null,
   }),
   props: {
     showModal: Boolean,
