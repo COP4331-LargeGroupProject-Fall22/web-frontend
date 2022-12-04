@@ -17,8 +17,10 @@
             <h4 class="modal-title" id="inventoryIngredientModalLabel">
               {{ modalTitle || "No title passed" }}
             </h4>
-            <div class="row">Food type: {{ category }}</div>
-            <div class="row">Expiration date: {{ expirationDate }}</div>
+            <div class="row ingredient-details">Food type: {{ category }}</div>
+            <div class="row ingredient-details">
+              Expiration date: {{ expirationDate }}
+            </div>
           </div>
           <div class="modal-footer">
             <button
@@ -159,6 +161,10 @@ img {
 }
 
 .modal-title {
+  padding: 15px;
+}
+
+.ingredient-details {
   padding: 15px;
 }
 </style>
