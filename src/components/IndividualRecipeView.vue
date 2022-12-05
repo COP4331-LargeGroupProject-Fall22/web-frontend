@@ -71,11 +71,22 @@
             >
               Show instruction steps
             </button>
-            <button type="button" class="btn btn-secondary" @click="hideModal">
-              Close
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="tryAddIngredientsToShoppingList"
+            >
+              Add missing ingredients to list
             </button>
-            <button type="button" class="btn btn-primary">
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="tryMakeRecipe"
+            >
               {{ modalButtonText || "?" }}
+            </button>
+            <button type="button" class="btn btn-danger" @click="hideModal">
+              Close
             </button>
           </div>
         </div>
@@ -108,7 +119,6 @@ export default {
     modalTitle: String,
     recipeId: Number,
     imageUrl: String,
-    favorite: Boolean,
   },
   watch: {
     showModal(newValue) {
@@ -149,7 +159,7 @@ export default {
     },
     isFavorite() {
       if (this.recipeInfo == null) {
-        return this.favorite;
+        return false;
       }
       return this.recipeInfo.isFavorite;
     },
@@ -223,6 +233,91 @@ export default {
           console.log("failed to get info: " + error);
         }
       );
+    },
+    getInventoryIngredientsList: async function () {
+      return await this.$store.dispatch("inventory/getAll", {}).then(
+        (response) => {
+          return response[0][1];
+        },
+        (error) => {
+          console.log("oops" + error);
+          return [];
+        }
+      );
+    },
+    tryAddIngredientsToShoppingList: async function () {
+      let invIngredients = await this.getInventoryIngredientsList();
+      let recipeIngredients = this.recipeInfo.ingredients;
+
+      let missing = recipeIngredients.filter(
+        (recIng) => !invIngredients.find((invIng) => invIng.id == recIng.id)
+      );
+
+      if (missing.length === 0) {
+        confirm("No missing ingredients :)");
+        return;
+      }
+
+      if (
+        missing.length !== 0 &&
+        confirm(
+          "You are missing ingredients: " +
+            missing.map((ing) => ing.name).join(", ") +
+            ". Do you want to add these to your shopping list?"
+        )
+      ) {
+        // TODO(): Make this more robust to only add certain ingredients, let
+        // user select.
+        // TODO(): Make it clear to the user when this done/while it's working.
+        // add spinny wheel or something
+        for (const ing of missing) {
+          this.$store.dispatch("shoppinglist/post", ing).then(
+            () => {},
+            (error) => {
+              console.log("failed to add: " + error);
+            }
+          );
+        }
+      }
+    },
+    tryMakeRecipe: async function () {
+      let invIngredients = await this.getInventoryIngredientsList();
+      let recipeIngredients = this.recipeInfo.ingredients;
+
+      let missing = recipeIngredients.filter(
+        (recIng) => !invIngredients.find((invIng) => invIng.id == recIng.id)
+      );
+      if (
+        missing.length === 0 ||
+        confirm(
+          "You are missing ingredients: " +
+            missing.map((ing) => ing.name).join(", ") +
+            ". Do you want to make the recipe anyway?"
+        )
+      ) {
+        // TODO(): Make this more robust to not remove all ingredients and let
+        // user select what to get rid of.
+        // TODO(): Make it clear to the user when this done/while it's working.
+        // add spinny wheel or something
+        let used = recipeIngredients.filter((recIng) =>
+          invIngredients.find((invIng) => invIng.id == recIng.id)
+        );
+        if (
+          confirm(
+            "Remove ingredients used for this recipe from inventory? " +
+              used.map((ing) => ing.name).join(", ")
+          )
+        ) {
+          for (const ing of used) {
+            await this.$store.dispatch("inventory/delete", ing.id).then(
+              () => {},
+              (error) => {
+                console.log("failed to delete: " + error);
+              }
+            );
+          }
+        }
+      }
     },
   },
   created() {
