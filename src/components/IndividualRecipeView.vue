@@ -31,29 +31,88 @@
               <img v-bind:src="imageUrl" class="center-block" />
             </div>
             <div v-if="recipeLoaded">
-              <div class="row">Cuisines: {{ cuisines }}</div>
-              <div class="row">Diets: {{ diets }}</div>
-              <div class="row">Meal type: {{ mealTypes }}</div>
-              <div class="row">Ingredients: {{ ingredients }}</div>
-              <div class="row">
-                Instructions: {{ recipeInfo.instruction.instructions }}
+              <div v-if="showInstructionSteps">
+                <div class="row">
+                  <h3>Instructions: Step {{ instructionPageNum + 1 }}</h3>
+                </div>
+                <div class="row">
+                  {{
+                    recipeInfo.instructionSteps[instructionPageNum].instructions
+                  }}
+                </div>
+                <div
+                  v-if="
+                    recipeInfo.instructionSteps[instructionPageNum].ingredients
+                      .length !== 0
+                  "
+                  class="row"
+                >
+                  Ingredients needed:
+                  {{
+                    recipeInfo.instructionSteps[instructionPageNum].ingredients
+                      .map((ing) => ing.name)
+                      .join(", ")
+                  }}
+                </div>
+                <div class="row">
+                  <div class="col-6 text-left">
+                    <div class="previous">
+                      <div v-if="instructionPageNum > 0">
+                        <button
+                          type="button"
+                          @click="instructionPageNum--"
+                          class="btn btn-primary btn-md"
+                        >
+                          <i class="fas fa-arrow-left"></i>
+                          <span class=""></span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6 text-right">
+                    <div class="next">
+                      <div
+                        v-if="
+                          instructionPageNum <
+                          recipeInfo.instructionSteps.length - 1
+                        "
+                      >
+                        <button
+                          type="button"
+                          @click="instructionPageNum++"
+                          class="btn btn-primary btn-md"
+                        >
+                          <i class="fas fa-arrow-right"></i>
+                          <span class=""></span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <!-- <div class="row">
+              <div v-else>
+                <div class="row">Cuisines: {{ cuisines }}</div>
+                <div class="row">Diets: {{ diets }}</div>
+                <div class="row">Meal type: {{ mealTypes }}</div>
+                <div class="row">Ingredients: {{ ingredients }}</div>
+                <!-- <div class="row">
                 Nutrition facts: {{ recipeInfo.nutritionFacts }}
               </div> -->
-              <div class="row">
-                Number of servings: {{ recipeInfo.servings }}
-              </div>
-              <div class="row">
-                Cooking time in minutes: {{ recipeInfo.cookingTimeInMinutes }}
-              </div>
-              <div class="row">
-                Prep time in minutes: {{ recipeInfo.preparationTimeInMinutes }}
-              </div>
-              <div class="row">Total cost: {{ totalCost }}</div>
-              <div class="row">Cost per serving: {{ costPerServing }}</div>
-              <div class="row">
-                Has any of user's allergens: {{ recipeInfo.hasAllergens }}
+                <div class="row">
+                  Number of servings: {{ recipeInfo.servings }}
+                </div>
+                <div class="row">
+                  Cooking time in minutes: {{ recipeInfo.cookingTimeInMinutes }}
+                </div>
+                <div class="row">
+                  Prep time in minutes:
+                  {{ recipeInfo.preparationTimeInMinutes }}
+                </div>
+                <div class="row">Total cost: {{ totalCost }}</div>
+                <div class="row">Cost per serving: {{ costPerServing }}</div>
+                <div class="row">
+                  Has any of user's allergens: {{ recipeInfo.hasAllergens }}
+                </div>
               </div>
             </div>
             <div v-else>
@@ -67,9 +126,10 @@
             <button
               type="button"
               class="btn btn-secondary"
-              @click="showInstructionSteps"
+              @click="showInstructionSteps = !showInstructionSteps"
             >
-              Show instruction steps
+              <div v-if="showInstructionSteps">Show recipe details</div>
+              <div v-else>Show instruction steps</div>
             </button>
             <button
               type="button"
@@ -107,11 +167,9 @@ export default {
     formatter: new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
-
-      // These options are needed to round to whole numbers if that's what you want.
-      //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-      //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
     }),
+    showInstructionSteps: false,
+    instructionPageNum: 0,
   }),
   props: {
     showModal: Boolean,
@@ -218,10 +276,6 @@ export default {
         }
       );
     },
-    showInstructionSteps: function () {
-      // TODO(): need to make a modal to do this
-      console.log("UNIMPLEMENTED: show inst steps");
-    },
     getRecipeInfo: function () {
       this.$store.dispatch("recipe/get", this.recipeId).then(
         (response) => {
@@ -246,8 +300,14 @@ export default {
       );
     },
     tryAddIngredientsToShoppingList: async function () {
+      if (this.recipeInfo === null) {
+        console.log("Recipe info isn't loaded yet...");
+        return;
+      }
+      // TODO(): Should also check that shopping list doesn't already have
       let invIngredients = await this.getInventoryIngredientsList();
       let recipeIngredients = this.recipeInfo.ingredients;
+      console.log(recipeIngredients);
 
       let missing = recipeIngredients.filter(
         (recIng) => !invIngredients.find((invIng) => invIng.id == recIng.id)
@@ -272,7 +332,9 @@ export default {
         // add spinny wheel or something
         for (const ing of missing) {
           ing.recipeId = this.recipeId;
-          this.$store.dispatch("shoppinglist/post", ing).then(
+          ing.price = ing.price.price;
+          ing.dateAdded = Date.now();
+          await this.$store.dispatch("shoppinglist/post", ing).then(
             () => {},
             (error) => {
               console.log("failed to add: " + error);
@@ -282,6 +344,10 @@ export default {
       }
     },
     tryMakeRecipe: async function () {
+      if (this.recipeInfo === null) {
+        console.log("Recipe info isn't loaded yet...");
+        return;
+      }
       let invIngredients = await this.getInventoryIngredientsList();
       let recipeIngredients = this.recipeInfo.ingredients;
 
