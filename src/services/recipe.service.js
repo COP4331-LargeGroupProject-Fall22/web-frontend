@@ -9,8 +9,7 @@ const API_URL = API_PREFIX + 'recipes';
 class RecipeService {
   async getAll(params) {
     const header = await authHeader();
-    // TODO(): After Mikhail finishes refactor, add auth header back in here
-    return (header === null) ? null : axios.get(API_URL, { params: params });
+    return (header === null) ? null : axios.get(API_URL, { headers: header, params: params });
   }
 
   async get(id) {
