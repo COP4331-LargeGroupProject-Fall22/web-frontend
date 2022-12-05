@@ -31,6 +31,19 @@
         </div>
       </div>
       <div class="tool-bar-container">
+        <!-- TODO(): when this is clicked, it should open a modal that lets
+        users pick all the ingredients from their inventory that they want to
+        use. something like "advanced search options" that lets them specify all
+        the extra stuff like items to use, etc, cuisines, diets,
+        meal types, intolerance set by user allergens if checkbox clicked -->
+        <label class="switch" title="Search using inventory ingredients">
+          <input
+            type="checkbox"
+            id="checkbox"
+            v-model="useInventoryIngredientsForSearch"
+          />
+          <span class="slider round"></span>
+        </label>
         <button
           type="button"
           class="btn btn-primary btn-floating"
@@ -54,7 +67,10 @@
           type="button"
           class="btn btn-primary btn-floating"
           id="clearSearchButton"
-          @click="this.recipes = []"
+          @click="
+            this.recipes = [];
+            this.message = 'Try searching for a recipe :)';
+          "
         >
           <i class="fa-solid fa-x"></i>
         </button>
@@ -68,6 +84,7 @@
             :modalTitle="individualRecipeTitle"
             :recipeId="recipeId"
             :imageUrl="imageUrl"
+            :isFavorite="false"
           >
           </individual-recipe-view>
         </div>
@@ -112,6 +129,7 @@
                       recipeId = recipe.id;
                       individualRecipeTitle = recipe.name;
                       imageUrl = recipe.image.srcUrl;
+                      isFavorite = recipe.isFavorite;
                     "
                     class="btn recipe-item"
                     v-bind:style="{
@@ -168,27 +186,47 @@ export default {
       imageUrl:
         "https://github.com/COP4331-LargeGroupProject-Fall22/web-frontend/blob/main/src/assets/food.png?raw=true",
       message: "Try searching for a recipe :)",
+      useInventoryIngredientsForSearch: false,
     };
   },
   methods: {
-    handleSearch() {
+    async handleSearch() {
       this.recipes = [];
-      if (this.searchString.trim() === "") {
+      if (
+        this.searchString.trim() === "" &&
+        !this.useInventoryIngredientsForSearch
+      ) {
         // TODO(): show all possible recipe categories as modal popup
         this.message =
           "No recipes match, please try searching for something else";
         return;
       }
-      // TODO(): Show a loading dialog while waiting for response
+      let ingredients = null;
+      if (this.useInventoryIngredientsForSearch) {
+        let ingredientsResponse = await this.$store.dispatch(
+          "inventory/getAll",
+          {}
+        );
+        ingredients = "";
+        // TODO(): add option for selecting checkbox of which ingredients to
+        // use from inventory rather than all at once
+        for (let i = 0; i < ingredientsResponse.length; i++) {
+          const items = ingredientsResponse[i][1];
+          // Each element is 2-tuple of 1) category name, 2) data
+          if (!items.length) continue;
+          for (const ingredient of items) {
+            ingredients += ingredient.name + ",";
+          }
+        }
+      }
+
       // TODO(): Update this to have params set by page
-      // TODO(): Set values based on options selected for dropdown and for checkbox (use
-      // inventory ingredients only for searching)
       let params = {
         recipeName: this.searchString.trim(),
         resultsPerPage: 100,
         page: 0,
         intolerance: null,
-        hasIngredients: null,
+        hasIngredients: ingredients,
         cuisines: null,
         diets: null,
         mealTypes: null,
@@ -254,6 +292,7 @@ css. If not, just extract this into a separate css file */
 }
 
 .form-outline {
+  padding-left: 20px;
   padding-right: 20px;
 }
 .form-control {
@@ -369,5 +408,66 @@ h3 {
   user-select: none;
   cursor: pointer;
   width: 100%;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  margin-right: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #2196f3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }
 </style>

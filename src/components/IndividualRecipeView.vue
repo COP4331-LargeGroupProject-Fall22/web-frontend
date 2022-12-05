@@ -18,9 +18,11 @@
               type="button"
               class="btn btn-primary btn-floating favorite-btn"
               id="favoriteButton"
-              @click="handleFavorite"
+              @click="toggleFavorite"
             >
-              <i class="fas fa-heart"></i>
+              <i
+                v-bind:class="isFavorite ? 'fas fa-heart' : 'far fa-heart'"
+              ></i>
             </button>
           </div>
           <div class="modal-body">
@@ -47,7 +49,7 @@
                 Cooking time in minutes: {{ recipeInfo.cookingTimeInMinutes }}
               </div>
               <div class="row">
-                Prep time in minute`s: {{ recipeInfo.preparationTimeInMinutes }}
+                Prep time in minutes: {{ recipeInfo.preparationTimeInMinutes }}
               </div>
               <div class="row">Total cost: {{ recipeInfo.totalCost }}</div>
               <div class="row">
@@ -67,7 +69,11 @@
           </div>
           <div class="modal-footer">
             <!-- TODO(): Update this to actually show instruction steps page -->
-            <button type="button" class="btn btn-secondary">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              @click="showInstructionSteps"
+            >
               Show instruction steps
             </button>
             <button type="button" class="btn btn-secondary" @click="hideModal">
@@ -92,6 +98,7 @@ export default {
     recipeInfo: null,
     modalButtonText: "Make recipe",
     recipeLoaded: false,
+    isFavorite: false,
   }),
   props: {
     showModal: Boolean,
@@ -99,19 +106,13 @@ export default {
     modalTitle: String,
     recipeId: Number,
     imageUrl: String,
-    isFavorite: Boolean,
+    favorite: Boolean,
   },
   watch: {
     showModal(newValue) {
       if (newValue === true) {
+        this.isFavorite = this.favorite;
         this.modalActive();
-      }
-    },
-    isFavorite(shouldAddToFavorites) {
-      if (shouldAddToFavorites) {
-        console.log("adding to favs");
-      } else {
-        console.log("removing from favs");
       }
     },
   },
@@ -162,6 +163,15 @@ export default {
       this.modalInstance.hide();
       this.$emit("closeModal");
     },
+    toggleFavorite: function () {
+      this.isFavorite = !this.isFavorite;
+
+      if (this.isFavorite) {
+        this.addToFavorites();
+      } else {
+        this.removeFromFavorites();
+      }
+    },
     addToFavorites: function () {
       // this.$store.dispatch("inventory/delete", this.recipeId).then(
       //   () => {
@@ -184,14 +194,15 @@ export default {
       // );
       console.log("UNIMPLEMENTED: delete from favs");
     },
+    showInstructionSteps: function () {
+      // TODO(): need to make a modal to do this
+      console.log("UNIMPLEMENTED: show inst steps");
+    },
     getRecipeInfo: function () {
       this.$store.dispatch("recipe/get", this.recipeId).then(
         (response) => {
           this.recipeInfo = response.data;
           this.recipeLoaded = true;
-          for (const val in this.recipeInfo) {
-            console.log(val);
-          }
         },
         (error) => {
           this.recipeLoaded = false;
