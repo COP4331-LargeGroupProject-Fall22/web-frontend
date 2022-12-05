@@ -30,7 +30,6 @@
             <div class="row">
               <img v-bind:src="imageUrl" class="center-block" />
             </div>
-            <!-- <div class="row"><h3>{{ recipeInfo.name }}</h3></div> -->
             <div v-if="recipeLoaded">
               <div class="row">Cuisines: {{ cuisines }}</div>
               <div class="row">Diets: {{ diets }}</div>
@@ -51,12 +50,8 @@
               <div class="row">
                 Prep time in minutes: {{ recipeInfo.preparationTimeInMinutes }}
               </div>
-              <div class="row">Total cost: {{ recipeInfo.totalCost }}</div>
-              <div class="row">
-                Cost per serving: {{ recipeInfo.costPerServing }}
-              </div>
-              <!-- <div class="row">Food type: {{ recipeInfo.image }}</div> -->
-              <div class="row">Is favorite: {{ recipeInfo.isFavorite }}</div>
+              <div class="row">Total cost: {{ totalCost }}</div>
+              <div class="row">Cost per serving: {{ costPerServing }}</div>
               <div class="row">
                 Has any of user's allergens: {{ recipeInfo.hasAllergens }}
               </div>
@@ -98,7 +93,14 @@ export default {
     recipeInfo: null,
     modalButtonText: "Make recipe",
     recipeLoaded: false,
-    isFavorite: false,
+    formatter: new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+
+      // These options are needed to round to whole numbers if that's what you want.
+      //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+      //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+    }),
   }),
   props: {
     showModal: Boolean,
@@ -111,7 +113,6 @@ export default {
   watch: {
     showModal(newValue) {
       if (newValue === true) {
-        this.isFavorite = this.favorite;
         this.modalActive();
       }
     },
@@ -146,6 +147,24 @@ export default {
       }
       return this.recipeInfo.diets.join(", ");
     },
+    isFavorite() {
+      if (this.recipeInfo == null) {
+        return this.favorite;
+      }
+      return this.recipeInfo.isFavorite;
+    },
+    totalCost() {
+      if (this.recipeInfo == null) {
+        return "N/A";
+      }
+      return this.formatter.format(this.recipeInfo.totalCost / 100);
+    },
+    costPerServing() {
+      if (this.recipeInfo == null) {
+        return "N/A";
+      }
+      return this.formatter.format(this.recipeInfo.costPerServing / 100);
+    },
   },
   methods: {
     modalActive: function () {
@@ -160,39 +179,34 @@ export default {
       this.getRecipeInfo();
     },
     hideModal: function () {
+      this.recipeLoaded = false;
       this.modalInstance.hide();
       this.$emit("closeModal");
     },
     toggleFavorite: function () {
-      this.isFavorite = !this.isFavorite;
+      this.recipeInfo.isFavorite = !this.recipeInfo.isFavorite;
 
-      if (this.isFavorite) {
+      if (this.recipeInfo.isFavorite) {
         this.addToFavorites();
       } else {
         this.removeFromFavorites();
       }
     },
     addToFavorites: function () {
-      // this.$store.dispatch("inventory/delete", this.recipeId).then(
-      //   () => {
-      //     this.hideModal();
-      //   },
-      //   (error) => {
-      //     console.log("failed to delete: " + error);
-      //   }
-      // );
-      console.log("UNIMPLEMENTED: add to favs");
+      this.$store.dispatch("favrecipe/post", this.recipeInfo).then(
+        () => {},
+        (error) => {
+          console.log("failed to add: " + error);
+        }
+      );
     },
     removeFromFavorites: function () {
-      // this.$store.dispatch("inventory/delete", this.recipeId).then(
-      //   () => {
-      //     this.hideModal();
-      //   },
-      //   (error) => {
-      //     console.log("failed to delete: " + error);
-      //   }
-      // );
-      console.log("UNIMPLEMENTED: delete from favs");
+      this.$store.dispatch("favrecipe/delete", this.recipeId).then(
+        () => {},
+        (error) => {
+          console.log("failed to delete: " + error);
+        }
+      );
     },
     showInstructionSteps: function () {
       // TODO(): need to make a modal to do this

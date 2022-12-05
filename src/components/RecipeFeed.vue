@@ -84,7 +84,7 @@
             :modalTitle="individualRecipeTitle"
             :recipeId="recipeId"
             :imageUrl="imageUrl"
-            :isFavorite="false"
+            :favorite="isFavorite"
           >
           </individual-recipe-view>
         </div>
@@ -187,6 +187,7 @@ export default {
         "https://github.com/COP4331-LargeGroupProject-Fall22/web-frontend/blob/main/src/assets/food.png?raw=true",
       message: "Try searching for a recipe :)",
       useInventoryIngredientsForSearch: false,
+      isFavorite: false,
     };
   },
   methods: {

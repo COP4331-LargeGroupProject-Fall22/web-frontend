@@ -38,18 +38,18 @@ export const favrecipe = {
         }
       );
     },
-  },
 
-  delete({ commit }, id) {
-    return FavoriteRecipeService.delete(id).then(
-      response => {
-        return Promise.resolve(response);
-      },
-      error => {
-        commit('failure', error);
-        return Promise.reject(error);
-      }
-    );
+    delete({ commit }, id) {
+      return FavoriteRecipeService.delete(id).then(
+        response => {
+          return Promise.resolve(response);
+        },
+        error => {
+          commit('failure', error);
+          return Promise.reject(error);
+        }
+      );
+    },
   },
 
   mutations: {
