@@ -70,7 +70,14 @@
               <h3>{{ name }}</h3>
             </div>
             <div class="row">
-              <ul>
+              <ul :id="name + 'scrollbar'">
+                <div id="left-scroll-button" class="left-scroll btn scroll">
+                  <i
+                    class="fa fa-chevron-left"
+                    @click="scroll_left(name + 'scrollbar')"
+                    aria-hidden="true"
+                  ></i>
+                </div>
                 <div v-for="(recipe, name) in types" :key="name">
                   <div class="col-md-auto">
                     <button type="button" class="btn recipe-item">
@@ -79,6 +86,13 @@
                       </div>
                     </button>
                   </div>
+                </div>
+                <div
+                  id="right-scroll-button"
+                  class="right-scroll btn scroll"
+                  @click="scroll_right(name + 'scrollbar')"
+                >
+                  <i class="fa fa-chevron-right" aria-hidden="true"></i>
                 </div>
               </ul>
             </div>
@@ -96,6 +110,16 @@ export default {
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
+    },
+  },
+  methods: {
+    scroll_right(categoryToScroll) {
+      let content = document.getElementById(categoryToScroll);
+      content.scrollLeft += 500;
+    },
+    scroll_left(categoryToScroll) {
+      let content = document.getElementById(categoryToScroll);
+      content.scrollLeft -= 500;
     },
   },
   mounted() {
@@ -135,6 +159,34 @@ export default {
             recipeName: "Recipe7",
             recipeType: "Category1",
           },
+          Recipe8: {
+            recipeName: "Recipe1",
+            recipeType: "Category1",
+          },
+          Recipe9: {
+            recipeName: "RecipeNameVeryLong",
+            recipeType: "Category1",
+          },
+          Recipe10: {
+            recipeName: "Recipe3",
+            recipeType: "Category1",
+          },
+          Recipe11: {
+            recipeName: "Recipe4",
+            recipeType: "Category1",
+          },
+          Recipe12: {
+            recipeName: "Recipe5",
+            recipeType: "Category1",
+          },
+          Recipe13: {
+            recipeName: "Recipe6",
+            recipeType: "Category1",
+          },
+          Recipe14: {
+            recipeName: "Recipe7",
+            recipeType: "Category1",
+          },
         },
 
         Category2: {
@@ -157,6 +209,37 @@ export default {
           Recipe5: {
             recipeName: "Recipe5",
             recipeType: "Category5",
+          },
+        },
+
+        Category3: {
+          Recipe1: {
+            recipeName: "Recipe1",
+            recipeType: "Category1",
+          },
+          RecipeNameVeryLong: {
+            recipeName: "RecipeNameVeryLong",
+            recipeType: "Category1",
+          },
+          Recipe3: {
+            recipeName: "Recipe3",
+            recipeType: "Category1",
+          },
+          Recipe4: {
+            recipeName: "Recipe4",
+            recipeType: "Category1",
+          },
+          Recipe5: {
+            recipeName: "Recipe5",
+            recipeType: "Category1",
+          },
+          Recipe6: {
+            recipeName: "Recipe6",
+            recipeType: "Category1",
+          },
+          Recipe7: {
+            recipeName: "Recipe7",
+            recipeType: "Category1",
           },
         },
       },
@@ -283,6 +366,7 @@ ul {
   padding: 0;
   overflow: auto;
   overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 h3 {
@@ -316,5 +400,21 @@ h3 {
   user-select: none;
   cursor: pointer;
   width: 100%;
+}
+
+.scroll {
+  position: sticky;
+  z-index: 1;
+  height: fit-content;
+}
+
+.left-scroll {
+  top: 40%;
+  left: 3%;
+}
+
+.right-scroll {
+  top: 40%;
+  right: 3%;
 }
 </style>
