@@ -106,13 +106,57 @@
       </ul>
     </div>
     <div class="row">
-      <div v-if="message.length">
-        <h3>{{ message }}</h3>
+      <div v-if="message.length" class="col-12 d-flex justify-content-center">
+        <h2>{{ message }}</h2>
       </div>
+    </div>
+    <div v-if="showFavorites" class="row">
+      <ul>
+        <li>
+          <div>
+            <div class="row">
+              <h3>Your Favorite Recipes</h3>
+            </div>
+            <div class="row">
+              <ul>
+                <div
+                  v-for="recipe in favoriteRecipes"
+                  :key="recipe"
+                  class="col-md-auto"
+                >
+                  <button
+                    type="button"
+                    @click="
+                      showIndividualRecipe = true;
+                      recipeId = recipe.id;
+                      individualRecipeTitle = recipe.name;
+                      imageUrl = recipe.image.srcUrl;
+                      isFavorite = recipe.isFavorite;
+                    "
+                    class="btn recipe-item"
+                    v-bind:style="{
+                      backgroundImage:
+                        'linear-gradient(to bottom,rgb(255 255 255 / 0%),rgb(0 0 0 /73%)),url(' +
+                        recipe.image.srcUrl +
+                        ')',
+                    }"
+                  >
+                    <div class="col-md-auto text-center recipe-text">
+                      {{ recipe.name }}
+                    </div>
+                  </button>
+                </div>
+              </ul>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="row">
       <ul>
         <li>
           <div v-for="category in recipes" :key="category">
-            <div :id="category" class="row">
+            <div :id="category.name" class="row">
               <h3>{{ category.name }}</h3>
             </div>
             <div class="row">
@@ -167,15 +211,21 @@ export default {
     currentUser() {
       return this.$store.state.auth.user;
     },
+    showFavorites() {
+      // TODO(): add a checkbox that lets users hide favs
+      return this.favoriteRecipes.length !== 0;
+    },
   },
   mounted() {
     if (!this.currentUser) {
       this.$router.push("/login");
     }
+    this.getFavoriteRecipes();
   },
   data() {
     return {
       recipes: [],
+      favoriteRecipes: [],
       searchString: "",
       sortByFilters: ["A-Z", "Z-A", "Cuisine", "Diet", "Meal type"],
       selected: "A-Z",
@@ -263,6 +313,30 @@ export default {
         }
       );
       this.message = "Loading...";
+    },
+
+    getFavoriteRecipes() {
+      this.$store.dispatch("favrecipe/getAll").then(
+        (response) => {
+          console.log(response);
+          // Each key in parsed is a recipe name
+          let parsed = [];
+          for (let i = 0; i < response.length; i++) {
+            response[i].name = util.capitalizeFirstLetter(response[i].name);
+            parsed.push(response[i]);
+          }
+          // this.recipes = parsed;
+          // this.noMatchingRecipes = util.isEmptyJson(parsed);
+          // this.message = this.noMatchingRecipes
+          //   ? "No recipes match, please try searching for something else"
+          //   : "";
+          this.favoriteRecipes = parsed;
+          console.log(parsed);
+        },
+        (error) => {
+          this.message = util.getErrorString(error);
+        }
+      );
     },
   },
 };
