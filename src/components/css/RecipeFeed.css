@@ -1,0 +1,49 @@
+:root {
+  --type-color: lightgrey;
+  --text-color: white;
+}
+
+.type-of-recipe {
+  width: 10vw;
+  height: 5vw;
+  border-radius: 15px !important;
+  align-items: center;
+  color: black;
+  background-color: var(--type-color) !important;
+  margin: 15px !important;
+}
+
+.recipe-text {
+  text-align: left !important;
+  font-size: 1rem;
+  color: var(--text-color);
+  top: 30%;
+  padding: 8% !important;
+}
+
+.type-of-recipe,
+.recipe-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: normal;
+}
+
+.recipe-item {
+  width: 12vw;
+  height: 19vw;
+  border-radius: 15px !important;
+  background-size: auto;
+  background-image: linear-gradient(
+      to bottom,
+      rgb(255 255 255 / 0%),
+      rgb(0 0 0 / 73%)
+    ),
+    url("../../assets/food.png");
+  margin: 15px !important;
+  padding: 0 !important;
+}
+
+li {
+  list-style: none;
+}

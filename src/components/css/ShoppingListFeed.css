@@ -1,0 +1,63 @@
+:root {
+  --confirm-color: red;
+  --cancel-color: #33ff00;
+  --shopping-text: black;
+}
+
+.shopping-item {
+  width: 65vw;
+  height: 10vw;
+  border-radius: 15px !important;
+  padding: 0 !important;
+  display: flex;
+}
+
+.shopping-item-pic {
+  width: 10vw;
+  height: 10vw;
+  border-radius: 15px !important;
+  background-size: auto;
+  background-image: linear-gradient(
+      to bottom,
+      rgb(255 255 255 / 0%),
+      rgb(0 0 0 / 73%)
+    ),
+    url("../../assets/food.png");
+  padding: 0;
+}
+
+.shopping-text,
+.amount-needed {
+  display: contents;
+  text-align: left !important;
+  color: var(--shopping-text);
+  padding: 10px !important;
+}
+
+.shopping-text {
+  font-size: 1.5rem;
+}
+
+.amount-needed {
+  font-size: 1rem;
+}
+
+.dropdown-toggle-split {
+  width: 5vw;
+  border-radius: 15px !important;
+  font-size: 1.5rem;
+}
+
+.cancel:hover,
+.cancel:active,
+.cancel:focus {
+  background-color: var(--confirm-color) !important;
+  color: white !important;
+}
+
+.confirm:hover,
+.confirm:active,
+.confirm:focus {
+  background-color: var(--cancel-color) !important;
+  color: white !important;
+}

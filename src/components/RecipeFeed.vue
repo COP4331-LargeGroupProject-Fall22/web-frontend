@@ -40,7 +40,7 @@
             placeholder="Search Recipes..."
             v-model="searchString"
             type="text"
-            class="form-control"
+            class="form-control search-feeds"
           />
         </div>
         <!-- TODO(59): Add a button for search -->
@@ -74,7 +74,7 @@
                 <div v-for="(recipe, name) in types" :key="name">
                   <div class="col-md-auto">
                     <button type="button" class="btn recipe-item">
-                      <div class="col-md-auto text-center recipe-text">
+                      <div class="col-md-auto recipe-text">
                         {{ name }}
                       </div>
                     </button>
@@ -179,49 +179,10 @@ export default {
 <style scoped>
 /* TODO(41): If the styles for this and ingredient are identical, make them share
 css. If not, just extract this into a separate css file */
-.container {
-  padding: 0 !important;
-  margin: 0 !important;
-  background-color: #f9f9f9;
-  max-width: 100%;
-}
+@import "css/FeedStyles.css";
+@import "css/RecipeFeed.css";
 
-.btn {
-  background-color: white;
-  border-radius: 100px;
-  box-shadow: 0px 3px 3px #bdbdbd;
-}
-
-.tool-bar {
-  margin: 0 !important;
-  flex-wrap: wrap;
-  height: fit-content;
-  display: flex;
-  justify-content: space-between;
-}
-
-.form-outline {
-  padding-right: 20px;
-}
-.form-control {
-  border: none;
-  border-radius: 100px !important;
-  box-shadow: 0px 3px 3px #bdbdbd;
-  display: inline-block;
-}
-
-.tool-bar-container {
-  display: flex;
-  padding: 20px;
-}
-
-.btn-floating {
-  border-radius: 50%;
-  height: fit-content;
-  align-self: center;
-}
-
-.type-of-recipe {
+/* .type-of-recipe {
   width: 10vw;
   height: 5vw;
   border-radius: 15px;
@@ -250,7 +211,7 @@ css. If not, just extract this into a separate css file */
   width: 12vw;
   height: 19vw;
   border-radius: 15px;
-  /* TODO(40): Update this to display the image from the ingredient in inventory */
+  /* TODO(40): Update this to display the image from the ingredient in inventory
   background-size: auto;
   background-image: linear-gradient(
       to bottom,
@@ -262,21 +223,22 @@ css. If not, just extract this into a separate css file */
   padding: 0;
 }
 
+li {
+  list-style: none;
+} */
+
+/* 
 .col-md-auto {
   padding: 0;
   margin: 0;
-}
+} */
 
-li {
-  list-style: none;
-}
-
-.categories {
+/* .categories {
   list-style: none;
   display: flex;
-}
+} */
 
-ul {
+/* ul {
   margin: 0;
   display: flex;
   max-width: 80vw;
@@ -288,13 +250,13 @@ ul {
 h3 {
   padding-left: 15px;
   padding-top: 15px;
-}
+} */
 
-.dropdown-menu {
+/* .dropdown-menu {
   display: none;
-}
+} */
 
-.btn-sortBy {
+/* .btn-sortBy {
   color: black !important;
   background-color: white !important;
   border: none;
@@ -305,9 +267,9 @@ h3 {
 .btn-sortBy:focus {
   color: white !important;
   background-color: #008600 !important;
-}
+} */
 
-.dropdown-item.active,
+/* .dropdown-item.active,
 .dropdown-item:active {
   background-color: #008600;
 }
@@ -316,5 +278,5 @@ h3 {
   user-select: none;
   cursor: pointer;
   width: 100%;
-}
+} */
 </style>

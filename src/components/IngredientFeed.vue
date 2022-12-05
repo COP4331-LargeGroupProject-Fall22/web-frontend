@@ -39,7 +39,7 @@
             placeholder="Search Inventory..."
             v-model="searchString"
             type="text"
-            class="form-control"
+            class="form-control search-feeds"
           />
         </div>
         <button
@@ -298,7 +298,9 @@ export default {
 
 <style scoped>
 /* TODO(41): Extract css into separate file */
-.container {
+@import "css/FeedStyles.css";
+@import "css/IngredientFeed.css";
+/* .container {
   padding: 0 !important;
   margin: 0 !important;
   background-color: #f9f9f9;
@@ -338,9 +340,9 @@ export default {
   border-radius: 50%;
   height: fit-content;
   align-self: center;
-}
+} */
 
-.type-of-food {
+/* .type-of-food {
   width: 10vw;
   height: 5vw;
   border-radius: 15px;
@@ -378,19 +380,19 @@ export default {
     url("../assets/food.png");
   margin: 15px;
   padding: 0;
-}
+} */
 
-.col-md-auto {
+/* .col-md-auto {
   padding: 0;
   margin: 0;
-}
+} */
 
-.categories {
+/* .categories {
   list-style: none;
   display: flex;
-}
+} */
 
-ul {
+/* ul {
   margin: 0;
   display: flex;
   max-width: 80vw;
@@ -402,16 +404,18 @@ ul {
 h3 {
   padding-left: 15px;
   padding-top: 15px;
-}
+} */
 
-.dropdown-menu {
+/* .dropdown-menu {
   display: none;
-}
+} */
 
-.btn-sortBy {
+/* .btn-sortBy {
   color: black !important;
   background-color: white !important;
   border: none;
+  border-radius: 100px;
+  box-shadow: 0px 3px 3px #bdbdbd;
 }
 
 .btn-sortBy:hover,
@@ -419,9 +423,9 @@ h3 {
 .btn-sortBy:focus {
   color: white !important;
   background-color: #008600 !important;
-}
+} */
 
-.dropdown-item.active,
+/* .dropdown-item.active,
 .dropdown-item:active {
   background-color: #008600;
 }
@@ -430,5 +434,5 @@ h3 {
   user-select: none;
   cursor: pointer;
   width: 100%;
-}
+} */
 </style>

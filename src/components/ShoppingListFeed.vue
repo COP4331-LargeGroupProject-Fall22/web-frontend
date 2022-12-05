@@ -37,7 +37,7 @@
             placeholder="Search Shopping List..."
             v-model="searchString"
             type="text"
-            class="form-control"
+            class="form-control search-feeds"
           />
         </div>
         <button
@@ -367,49 +367,10 @@ export default {
 
 <style scoped>
 /* TODO(41): Extract css into separate file */
-.container {
-  padding: 0 !important;
-  margin: 0 !important;
-  background-color: #f9f9f9;
-  max-width: 100%;
-}
+@import "css/FeedStyles.css";
+@import "css/ShoppingListFeed.css";
 
-.btn {
-  background-color: white;
-  border-radius: 100px;
-  box-shadow: 0px 3px 3px #bdbdbd;
-}
-
-.tool-bar {
-  margin: 0 !important;
-  flex-wrap: wrap;
-  height: fit-content;
-  display: flex;
-  justify-content: space-between;
-}
-
-.form-outline {
-  padding-right: 20px;
-}
-.form-control {
-  border: none;
-  border-radius: 100px !important;
-  box-shadow: 0px 3px 3px #bdbdbd;
-  display: inline-block;
-}
-
-.tool-bar-container {
-  display: flex;
-  padding: 20px;
-}
-
-.btn-floating {
-  border-radius: 50%;
-  height: fit-content;
-  align-self: center;
-}
-
-ul {
+/* ul {
   margin: 0;
   display: flex;
   max-width: 80vw;
@@ -421,13 +382,13 @@ ul {
 h3 {
   padding-left: 15px;
   padding-top: 15px;
-}
+} */
 
-.dropdown-menu {
+/* .dropdown-menu {
   display: none;
-}
+} */
 
-.btn-sortBy {
+/* .btn-sortBy {
   color: black !important;
   background-color: white !important;
   border: none;
@@ -438,14 +399,14 @@ h3 {
 .btn-sortBy:focus {
   color: white !important;
   background-color: #008600 !important;
-}
+} */
 
-.dropdown-item.active,
+/* .dropdown-item.active,
 .dropdown-item:active {
   background-color: #008600;
-}
+} */
 
-.shopping-item {
+/* .shopping-item {
   width: 65vw;
   height: 10vw;
   border-radius: 15px;
@@ -506,11 +467,11 @@ h3 {
 .confirm:focus {
   background-color: #33ff00;
   color: white;
-}
+} */
 
-.options {
+/* .options {
   user-select: none;
   cursor: pointer;
   width: 100%;
-}
+} */
 </style>

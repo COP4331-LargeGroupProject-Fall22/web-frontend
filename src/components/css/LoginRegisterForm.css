@@ -1,3 +1,12 @@
+:root {
+  --our-green: #008600;
+  --error-color: red;
+  --login-register-btn-color: #006600;
+  --login-register-btn-color-hover: #005600;
+  --login-register-dont-have-account-color: white;
+  --login-register-dont-have-account-color-hover: lightgrey;
+}
+
 label {
   display: block;
   margin-top: 10px;
@@ -63,7 +72,7 @@ body,
 }
 
 .error-feedback {
-  color: red;
+  color: var(--error-color);
 }
 
 .content_center {
@@ -94,28 +103,34 @@ h1 {
 }
 
 .btn-primary {
-  background-color: #008600 !important;
-  border-color: #008600 !important;
+  background-color: var(--our-green) !important;
+  border-color: var(--our-green) !important;
+  box-shadow: none;
 }
 
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary:not(:disabled):not(.disabled).active,
 .show > .btn-primary.dropdown-toggle {
-  background-color: #006600 !important;
-  border-color: #005600 !important;
+  background-color: var(--login-register-btn-color) !important;
+  border-color: var(--login-register-btn-color-hover) !important;
+  font-weight: normal;
 }
 
 .btn-secondary {
-  color: #008600 !important;
-  background-color: white !important;
-  border-color: white !important;
+  color: var(--our-green) !important;
+  background-color: var(--login-register-dont-have-account-color) !important;
+  border-color: var(--login-register-dont-have-account-color) !important;
+  box-shadow: none;
 }
 
 .btn-secondary:hover,
 .btn-secondary:focus,
 .btn-secondary:not(:disabled):not(.disabled).active,
 .show > .btn-secondary.dropdown-toggle {
-  background-color: lightgrey !important;
-  border-color: lightgrey !important;
+  background-color: var(
+    --login-register-dont-have-account-color-hover
+  ) !important;
+  border-color: var(--login-register-dont-have-account-color-hover) !important;
+  font-weight: normal;
 }
