@@ -271,6 +271,7 @@ export default {
         // TODO(): Make it clear to the user when this done/while it's working.
         // add spinny wheel or something
         for (const ing of missing) {
+          ing.recipeId = this.recipeId;
           this.$store.dispatch("shoppinglist/post", ing).then(
             () => {},
             (error) => {
