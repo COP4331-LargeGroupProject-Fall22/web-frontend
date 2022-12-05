@@ -19,7 +19,4 @@ export const util = {
   isEmptyJson: (obj) => {
     return Object.keys(obj).length === 0;
   },
-  sleep: (ms) => {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
 }
