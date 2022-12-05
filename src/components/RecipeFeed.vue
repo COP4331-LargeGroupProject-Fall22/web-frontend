@@ -73,11 +73,28 @@
               <ul>
                 <div v-for="(recipe, name) in types" :key="name">
                   <div class="col-md-auto">
-                    <button type="button" class="btn recipe-item">
+                    <button type="button" class="btn recipe-item normal">
                       <div class="col-md-auto text-center recipe-text">
                         {{ name }}
                       </div>
                     </button>
+                    <!-- TODO when expiration is implemented a simple v-id for each of these should work-->
+                    <!-- <div class="isExpired">
+                      <button type="button" class="btn recipe-item">
+                        <div class="col-md-auto text-center recipe-text">
+                          {{ name }}
+                        </div>
+                      </button>
+                      <h5 class="expiration-notif">Expiried</h5>
+                    </div>
+                    <div class="isExpiring">
+                      <button type="button" class="btn recipe-item">
+                        <div class="col-md-auto text-center recipe-text">
+                          {{ name }}
+                        </div>
+                      </button>
+                      <h5 class="expiration-notif">Expiring Soon</h5>
+                    </div> -->
                   </div>
                 </div>
               </ul>
@@ -240,7 +257,8 @@ css. If not, just extract this into a separate css file */
 }
 
 .type-of-recipe,
-.recipe-text {
+.recipe-text,
+.expiration-notif {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -258,8 +276,11 @@ css. If not, just extract this into a separate css file */
       rgb(0 0 0 / 73%)
     ),
     url("../assets/food.png");
-  margin: 15px;
   padding: 0;
+}
+
+.normal {
+  margin: 15px;
 }
 
 .col-md-auto {
@@ -316,5 +337,27 @@ h3 {
   user-select: none;
   cursor: pointer;
   width: 100%;
+}
+
+.isExpired,
+.isExpiring {
+  width: 12vw;
+  border-radius: 15px;
+  padding: 0;
+  margin: 15px;
+}
+
+.isExpired {
+  background-color: red;
+}
+
+.isExpiring {
+  background-color: rgb(255 0 0 / 47%);
+}
+
+.expiration-notif {
+  color: white;
+  text-align: center;
+  padding: 10px;
 }
 </style>
