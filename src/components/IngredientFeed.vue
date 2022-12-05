@@ -117,7 +117,15 @@
               <h3>{{ category.name }}</h3>
             </div>
             <div class="row">
-              <ul>
+              <ul :id="category.name + 'scrollbar'">
+                <!-- TODO: Only have them appear when overflow -->
+                <div id="left-scroll-button" class="left-scroll btn scroll">
+                  <i
+                    class="fa fa-chevron-left"
+                    @click="scroll_left(category.name + 'scrollbar')"
+                    aria-hidden="true"
+                  ></i>
+                </div>
                 <div v-for="item in category.items" :key="item">
                   <div class="col-md-auto">
                     <button
@@ -141,6 +149,14 @@
                       </div>
                     </button>
                   </div>
+                </div>
+                <!-- TODO: Only have them appear when overflow -->
+                <div
+                  id="right-scroll-button"
+                  class="right-scroll btn scroll"
+                  @click="scroll_right(category.name + 'scrollbar')"
+                >
+                  <i class="fa fa-chevron-right" aria-hidden="true"></i>
                 </div>
               </ul>
             </div>
@@ -265,6 +281,14 @@ export default {
           this.message = util.getErrorString(error);
         }
       );
+    },
+    scroll_right(categoryToScroll) {
+      let content = document.getElementById(categoryToScroll);
+      content.scrollLeft += 500;
+    },
+    scroll_left(categoryToScroll) {
+      let content = document.getElementById(categoryToScroll);
+      content.scrollLeft -= 500;
     },
   },
   watch: {
@@ -397,6 +421,7 @@ ul {
   padding: 0;
   overflow: auto;
   overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 h3 {

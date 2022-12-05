@@ -70,11 +70,11 @@
               <h3>{{ name }}</h3>
             </div>
             <div class="row">
-              <ul class="containter">
+              <ul :id="name + 'scrollbar'">
                 <div id="left-scroll-button" class="left-scroll btn scroll">
                   <i
                     class="fa fa-chevron-left"
-                    @click="scroll_left"
+                    @click="scroll_left(name + 'scrollbar')"
                     aria-hidden="true"
                   ></i>
                 </div>
@@ -90,7 +90,7 @@
                 <div
                   id="right-scroll-button"
                   class="right-scroll btn scroll"
-                  @click="scroll_right"
+                  @click="scroll_right(name + 'scrollbar')"
                 >
                   <i class="fa fa-chevron-right" aria-hidden="true"></i>
                 </div>
@@ -113,12 +113,12 @@ export default {
     },
   },
   methods: {
-    scroll_right() {
-      let content = document.querySelector(".containter");
+    scroll_right(categoryToScroll) {
+      let content = document.getElementById(categoryToScroll);
       content.scrollLeft += 500;
     },
-    scroll_left() {
-      let content = document.querySelector(".containter");
+    scroll_left(categoryToScroll) {
+      let content = document.getElementById(categoryToScroll);
       content.scrollLeft -= 500;
     },
   },
@@ -366,6 +366,7 @@ ul {
   padding: 0;
   overflow: auto;
   overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 h3 {
