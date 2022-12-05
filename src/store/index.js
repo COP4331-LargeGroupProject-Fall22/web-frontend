@@ -2,6 +2,7 @@ import { createStore } from "vuex";
 import { auth } from "./auth.module";
 import { ingredients } from "./ingredients.module";
 import { inventory } from "./inventory.module";
+import { recipe } from "./recipe.module";
 import { shoppinglist } from "./shoppinglist.module";
 
 const store = createStore({
@@ -9,6 +10,7 @@ const store = createStore({
     auth,
     ingredients,
     inventory,
+    recipe,
     shoppinglist,
   },
 });

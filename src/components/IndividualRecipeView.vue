@@ -13,24 +13,67 @@
             <h5 class="modal-title" id="individualRecipeModalLabel">
               {{ modalTitle || "No title passed" }}
             </h5>
+            <!-- TODO(): style this to be toggled when is favorite is true -->
+            <button
+              type="button"
+              class="btn btn-primary btn-floating favorite-btn"
+              id="favoriteButton"
+              @click="handleFavorite"
+            >
+              <i class="fas fa-heart"></i>
+            </button>
           </div>
           <div class="modal-body">
             <!-- TODO(): fix style to better match figma -->
             <div class="row">
               <img v-bind:src="imageUrl" class="center-block" />
             </div>
-            <div class="row">Food type: {{ category }}</div>
+            <!-- <div class="row"><h3>{{ recipeInfo.name }}</h3></div> -->
+            <div v-if="recipeLoaded">
+              <div class="row">Cuisines: {{ cuisines }}</div>
+              <div class="row">Diets: {{ diets }}</div>
+              <div class="row">Meal type: {{ mealTypes }}</div>
+              <div class="row">Ingredients: {{ ingredients }}</div>
+              <div class="row">
+                Instructions: {{ recipeInfo.instruction.instructions }}
+              </div>
+              <!-- <div class="row">
+                Nutrition facts: {{ recipeInfo.nutritionFacts }}
+              </div> -->
+              <div class="row">
+                Number of servings: {{ recipeInfo.servings }}
+              </div>
+              <div class="row">
+                Cooking time in minutes: {{ recipeInfo.cookingTimeInMinutes }}
+              </div>
+              <div class="row">
+                Prep time in minute`s: {{ recipeInfo.preparationTimeInMinutes }}
+              </div>
+              <div class="row">Total cost: {{ recipeInfo.totalCost }}</div>
+              <div class="row">
+                Cost per serving: {{ recipeInfo.costPerServing }}
+              </div>
+              <!-- <div class="row">Food type: {{ recipeInfo.image }}</div> -->
+              <div class="row">Is favorite: {{ recipeInfo.isFavorite }}</div>
+              <div class="row">
+                Has any of user's allergens: {{ recipeInfo.hasAllergens }}
+              </div>
+            </div>
+            <div v-else>
+              <div class="row">
+                <h3>Loading recipe details...</h3>
+              </div>
+            </div>
           </div>
           <div class="modal-footer">
+            <!-- TODO(): Update this to actually show instruction steps page -->
+            <button type="button" class="btn btn-secondary">
+              Show instruction steps
+            </button>
             <button type="button" class="btn btn-secondary" @click="hideModal">
               Close
             </button>
-            <!-- TODO(56): Open a date picker and let the user specify expiration date -->
-            <button
-              type="button"
-              @click="handleEditExpirationDate"
-              class="btn btn-primary"
-            >
+            <button type="button" class="btn btn-primary">
               {{ modalButtonText || "?" }}
             </button>
           </div>
@@ -47,13 +90,16 @@ export default {
   data: () => ({
     modalInstance: null,
     recipeInfo: null,
-    modalButtonText: "buh",
+    modalButtonText: "Make recipe",
+    recipeLoaded: false,
   }),
   props: {
     showModal: Boolean,
     modalText: String,
     modalTitle: String,
     recipeId: Number,
+    imageUrl: String,
+    isFavorite: Boolean,
   },
   watch: {
     showModal(newValue) {
@@ -70,13 +116,34 @@ export default {
     },
   },
   computed: {
-    imageUrl() {
-      return this.recipeInfo == null
-        ? "https://github.com/COP4331-LargeGroupProject-Fall22/web-frontend/blob/main/src/assets/food.png?raw=true"
-        : this.recipeInfo.image.srcUrl;
-    },
     category() {
       return this.recipeInfo == null ? "N/A" : this.recipeInfo.category;
+    },
+    ingredients() {
+      if (this.recipeInfo == null) {
+        return "N/A";
+      }
+      return this.recipeInfo.ingredients
+        .map((recipe) => recipe.name)
+        .join(", ");
+    },
+    cuisines() {
+      if (this.recipeInfo == null || !this.recipeInfo.cuisines.length) {
+        return "N/A";
+      }
+      return this.recipeInfo.cuisines.join(", ");
+    },
+    mealTypes() {
+      if (this.recipeInfo == null || !this.recipeInfo.mealTypes.length) {
+        return "N/A";
+      }
+      return this.recipeInfo.mealTypes.join(", ");
+    },
+    diets() {
+      if (this.recipeInfo == null || !this.recipeInfo.diets.length) {
+        return "N/A";
+      }
+      return this.recipeInfo.diets.join(", ");
     },
   },
   methods: {
@@ -89,7 +156,7 @@ export default {
         }
       );
       this.modalInstance.show();
-      this.getrecipeInfo();
+      this.getRecipeInfo();
     },
     hideModal: function () {
       this.modalInstance.hide();
@@ -118,11 +185,16 @@ export default {
       console.log("UNIMPLEMENTED: delete from favs");
     },
     getRecipeInfo: function () {
-      this.$store.dispatch("recipes/get", this.recipeId).then(
+      this.$store.dispatch("recipe/get", this.recipeId).then(
         (response) => {
           this.recipeInfo = response.data;
+          this.recipeLoaded = true;
+          for (const val in this.recipeInfo) {
+            console.log(val);
+          }
         },
         (error) => {
+          this.recipeLoaded = false;
           console.log("failed to get info: " + error);
         }
       );
@@ -138,4 +210,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.btn-floating {
+  border-radius: 50%;
+  height: fit-content;
+  align-self: center;
+}
+</style>

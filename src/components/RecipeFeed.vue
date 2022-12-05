@@ -2,7 +2,6 @@
   <div class="container">
     <div class="tool-bar">
       <div class="tool-bar-container">
-        <!-- TODO(43): Connect to endpoint for sorting results -->
         <div class="btn-group">
           <button
             type="button"
@@ -32,6 +31,14 @@
         </div>
       </div>
       <div class="tool-bar-container">
+        <button
+          type="button"
+          class="btn btn-primary btn-floating"
+          id="searchRecipesButton"
+          @click="handleSearch"
+        >
+          <i class="fas fa-search"></i>
+        </button>
         <div class="form-outline">
           <input
             id="searchRecipes"
@@ -43,26 +50,37 @@
             class="form-control"
           />
         </div>
-        <!-- TODO(59): Add a button for search -->
         <button
           type="button"
           class="btn btn-primary btn-floating"
-          id="addIngredient"
-          @click="handleSearch"
+          id="clearSearchButton"
+          @click="this.recipes = []"
         >
-          <i class="fas fa-search"></i>
+          <i class="fa-solid fa-x"></i>
         </button>
       </div>
+      <div class="container mt-3">
+        <div class="row">
+          <individual-recipe-view
+            @closeModal="showIndividualRecipe = false"
+            @saveChanges="showIndividualRecipe = false"
+            :showModal="showIndividualRecipe"
+            :modalTitle="individualRecipeTitle"
+            :recipeId="recipeId"
+            :imageUrl="imageUrl"
+          >
+          </individual-recipe-view>
+        </div>
+      </div>
     </div>
-    <!-- TODO(20) set up a scroll button -->
     <div class="row">
       <ul>
-        <li v-for="list in data" :key="list" class="categories">
-          <div v-for="(types, name) in list" :key="name">
+        <li v-for="category in recipes" :key="category" class="category">
+          <div>
             <div class="col-md-auto">
-              <a v-bind:href="'#' + name" class="">
+              <a v-bind:href="'#' + category.name" class="">
                 <button type="button" class="btn type-of-recipe">
-                  {{ name }}
+                  {{ category.name }}
                 </button>
               </a>
             </div>
@@ -71,22 +89,42 @@
       </ul>
     </div>
     <div class="row">
+      <div v-if="message.length">
+        <h3>{{ message }}</h3>
+      </div>
       <ul>
-        <li v-for="list in data" :key="list">
-          <div v-for="(types, name) in list" :key="name">
-            <div :id="name" class="row">
-              <h3>{{ name }}</h3>
+        <li>
+          <div v-for="category in recipes" :key="category">
+            <div :id="category" class="row">
+              <h3>{{ category.name }}</h3>
             </div>
             <div class="row">
               <ul>
-                <div v-for="(recipe, name) in types" :key="name">
-                  <div class="col-md-auto">
-                    <button type="button" class="btn recipe-item">
-                      <div class="col-md-auto text-center recipe-text">
-                        {{ name }}
-                      </div>
-                    </button>
-                  </div>
+                <div
+                  v-for="recipe in category.recipes"
+                  :key="recipe"
+                  class="col-md-auto"
+                >
+                  <button
+                    type="button"
+                    @click="
+                      showIndividualRecipe = true;
+                      recipeId = recipe.id;
+                      individualRecipeTitle = recipe.name;
+                      imageUrl = recipe.image.srcUrl;
+                    "
+                    class="btn recipe-item"
+                    v-bind:style="{
+                      backgroundImage:
+                        'linear-gradient(to bottom,rgb(255 255 255 / 0%),rgb(0 0 0 /73%)),url(' +
+                        recipe.image.srcUrl +
+                        ')',
+                    }"
+                  >
+                    <div class="col-md-auto text-center recipe-text">
+                      {{ recipe.name }}
+                    </div>
+                  </button>
                 </div>
               </ul>
             </div>
@@ -98,9 +136,15 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import IndividualRecipeView from "@/components/IndividualRecipeView.vue";
+
+import { util } from "@/globals.js";
+
 export default {
   name: "RecipeFeed",
+  components: {
+    IndividualRecipeView,
+  },
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
@@ -112,74 +156,75 @@ export default {
     }
   },
   data() {
-    const data = ref([
-      {
-        Category1: {
-          Recipe1: {
-            recipeName: "Recipe1",
-            recipeType: "Category1",
-          },
-          RecipeNameVeryLong: {
-            recipeName: "RecipeNameVeryLong",
-            recipeType: "Category1",
-          },
-          Recipe3: {
-            recipeName: "Recipe3",
-            recipeType: "Category1",
-          },
-          Recipe4: {
-            recipeName: "Recipe4",
-            recipeType: "Category1",
-          },
-          Recipe5: {
-            recipeName: "Recipe5",
-            recipeType: "Category1",
-          },
-          Recipe6: {
-            recipeName: "Recipe6",
-            recipeType: "Category1",
-          },
-          Recipe7: {
-            recipeName: "Recipe7",
-            recipeType: "Category1",
-          },
-        },
-
-        Category2: {
-          Recipe1: {
-            recipeName: "Recipe1",
-            recipeType: "Category2",
-          },
-          Recipe2: {
-            recipeName: "Recipe2",
-            recipeType: "Category2",
-          },
-          Recipe3: {
-            recipeName: "Recipe3",
-            recipeType: "Category3",
-          },
-          Recipe4: {
-            recipeName: "Recipe4",
-            recipeType: "Category4",
-          },
-          Recipe5: {
-            recipeName: "Recipe5",
-            recipeType: "Category5",
-          },
-        },
-      },
-    ]);
     return {
-      data,
+      recipes: [],
       searchString: "",
-      sortByFilters: [
-        "Ingredient Expiration Date",
-        "Time To Cook",
-        "A-Z",
-        "Z-A",
-      ],
-      selected: "Ingredient Expiration Date",
+      sortByFilters: ["A-Z", "Z-A", "Cuisine", "Diet", "Meal type"],
+      selected: "A-Z",
+      noMatchingRecipes: true,
+      showIndividualRecipe: false,
+      recipeId: null,
+      individualRecipeTitle: "",
+      imageUrl:
+        "https://github.com/COP4331-LargeGroupProject-Fall22/web-frontend/blob/main/src/assets/food.png?raw=true",
+      message: "Try searching for a recipe :)",
     };
+  },
+  methods: {
+    handleSearch() {
+      this.recipes = [];
+      if (this.searchString.trim() === "") {
+        // TODO(): show all possible recipe categories as modal popup
+        this.message =
+          "No recipes match, please try searching for something else";
+        return;
+      }
+      // TODO(): Show a loading dialog while waiting for response
+      // TODO(): Update this to have params set by page
+      // TODO(): Set values based on options selected for dropdown and for checkbox (use
+      // inventory ingredients only for searching)
+      let params = {
+        recipeName: this.searchString.trim(),
+        resultsPerPage: 100,
+        page: 0,
+        intolerance: null,
+        hasIngredients: null,
+        cuisines: null,
+        diets: null,
+        mealTypes: null,
+        sortByLexicographicalOrder:
+          this.selected == "A-Z" || this.selected == "Z-A",
+        sortByMealTypes: this.selected == "Meal type",
+        sortByDiets: this.selected == "Diet",
+        sortByCuisines: this.selected == "Cuisine",
+        isReverse: this.selected == "Z-A",
+      };
+      this.$store.dispatch("recipe/getAll", params).then(
+        (response) => {
+          // Each key in parsed is a category name
+          let parsed = {};
+          for (let i = 0; i < response.results.length; i++) {
+            let category = util.capitalizeFirstLetter(response.results[i][0]);
+            let items = response.results[i][1];
+            if (!(category in parsed)) {
+              parsed[category] = {
+                name: category,
+                recipes: items,
+              };
+            }
+          }
+          this.recipes = parsed;
+          this.noMatchingRecipes = util.isEmptyJson(parsed);
+          this.message = this.noMatchingRecipes
+            ? "No recipes match, please try searching for something else"
+            : "";
+        },
+        (error) => {
+          this.message = util.getErrorString(error);
+        }
+      );
+      this.message = "Loading...";
+    },
   },
 };
 </script>
