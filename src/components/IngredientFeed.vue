@@ -120,7 +120,62 @@
               <ul>
                 <div v-for="item in category.items" :key="item">
                   <div class="col-md-auto">
+                    <div
+                      v-if="expiration(item.expirationDate) == 'expired'"
+                      class="isExpired"
+                    >
+                      <button
+                        id="individualIngredient"
+                        @click="
+                          showIndividualIngredient = true;
+                          ingredientId = item.id;
+                          individualIngredientTitle = item.name;
+                        "
+                        type="button"
+                        class="btn food-item"
+                        v-bind:style="{
+                          backgroundImage:
+                            'linear-gradient(to bottom,rgb(255 255 255 / 0%),rgb(0 0 0 /73%)),url(' +
+                            item.image.srcUrl +
+                            ')',
+                        }"
+                      >
+                        <div class="col-md-auto text-center food-text">
+                          {{ item.name }}
+                        </div>
+                      </button>
+                      <h5 class="expiration-notif">Expiried</h5>
+                    </div>
+                    <div
+                      v-else-if="
+                        expiration(item.expirationDate) == 'expires soon'
+                      "
+                      class="isExpiring"
+                    >
+                      <button
+                        id="individualIngredient"
+                        @click="
+                          showIndividualIngredient = true;
+                          ingredientId = item.id;
+                          individualIngredientTitle = item.name;
+                        "
+                        type="button"
+                        class="btn food-item"
+                        v-bind:style="{
+                          backgroundImage:
+                            'linear-gradient(to bottom,rgb(255 255 255 / 0%),rgb(0 0 0 /73%)),url(' +
+                            item.image.srcUrl +
+                            ')',
+                        }"
+                      >
+                        <div class="col-md-auto text-center food-text">
+                          {{ item.name }}
+                        </div>
+                      </button>
+                      <h5 class="expiration-notif">Expiring Soon</h5>
+                    </div>
                     <button
+                      v-else
                       id="individualIngredient"
                       @click="
                         showIndividualIngredient = true;
@@ -195,6 +250,20 @@ export default {
       return (
         this.searchString.length > 0 && util.isEmptyJson(this.filteredItems)
       );
+    },
+    expiration(itemExpirationDate) {
+      if (itemExpirationDate != 0) {
+        const expireDate = new Date(itemExpirationDate);
+        const today = new Date();
+        if (expireDate != "Invalid Date") {
+          if (expireDate.getTime() < today.getTime()) {
+            return "expired";
+          } else if ((expireDate - today) / 86400000 <= 10) {
+            return "expires soon";
+          }
+        }
+      }
+      return "";
     },
   },
   mounted() {
@@ -412,6 +481,7 @@ h3 {
   color: black !important;
   background-color: white !important;
   border: none;
+  height: fit-content;
 }
 
 .btn-sortBy:hover,
@@ -430,5 +500,36 @@ h3 {
   user-select: none;
   cursor: pointer;
   width: 100%;
+}
+
+.isExpired,
+.isExpiring,
+.hasAllergin,
+.both-allergin-expired-layout,
+.hasAllergin-and-expiration,
+.both-allergin-expiringsoon-layout {
+  width: 12vw;
+  border-radius: 15px;
+  padding: 0;
+}
+
+.isExpired,
+.isExpiring {
+  margin: 15px;
+}
+
+.isExpired {
+  background-color: red;
+}
+
+.isExpiring {
+  background-color: rgb(255 0 0 / 47%);
+}
+
+.expiration-notif {
+  color: white;
+  text-align: center;
+  padding: 10px;
+  margin-bottom: 0;
 }
 </style>
