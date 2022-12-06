@@ -503,11 +503,7 @@ h3 {
 }
 
 .isExpired,
-.isExpiring,
-.hasAllergin,
-.both-allergin-expired-layout,
-.hasAllergin-and-expiration,
-.both-allergin-expiringsoon-layout {
+.isExpiring {
   width: 12vw;
   border-radius: 15px;
   padding: 0;
