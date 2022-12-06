@@ -73,13 +73,52 @@
               <ul>
                 <div v-for="(recipe, name) in types" :key="name">
                   <div class="col-md-auto">
-                    <button type="button" class="btn recipe-item normal">
-                      <div class="col-md-auto text-center recipe-text">
-                        {{ name }}
+                    <!-- IF EXPIRED and has Allergin -->
+                    <div
+                      v-if="
+                        expiration(recipe.expirationDate) == 'expired' &&
+                        recipe.hasAllergin == 'true'
+                      "
+                      class="both-allergin-expired-layout"
+                    >
+                      <div class="hasAllergin-and-expiration">
+                        <button type="button" class="btn recipe-item">
+                          <div class="col-md-auto text-center recipe-text">
+                            {{ name }}
+                          </div>
+                        </button>
+                        <h5 class="allergin-notif">Allergin</h5>
                       </div>
-                    </button>
-                    <!-- TODO when expiration is implemented a simple v-id for each of these should work-->
-                    <!-- <div class="isExpired">
+                      <h5 class="expiration-notif">Expired</h5>
+                    </div>
+
+                    <!-- IF EXPIRING SOON and has Allergin -->
+                    <div
+                      v-else-if="
+                        expiration(recipe.expirationDate) == 'expires soon' &&
+                        recipe.hasAllergin == 'true'
+                      "
+                      class="both-allergin-expiringsoon-layout"
+                    >
+                      <div class="hasAllergin-and-expiration">
+                        <button type="button" class="btn recipe-item">
+                          <div class="col-md-auto text-center recipe-text">
+                            {{ name }}
+                          </div>
+                        </button>
+                        <h5 class="allergin-notif">Allergin</h5>
+                      </div>
+                      <h5 class="expiration-notif">Expiring Soon</h5>
+                    </div>
+
+                    <!-- IF EXPIRED -->
+                    <div
+                      v-else-if="
+                        expiration(recipe.expirationDate) == 'expired' &&
+                        recipe.hasAllergin == 'false'
+                      "
+                      class="isExpired"
+                    >
                       <button type="button" class="btn recipe-item">
                         <div class="col-md-auto text-center recipe-text">
                           {{ name }}
@@ -87,14 +126,43 @@
                       </button>
                       <h5 class="expiration-notif">Expiried</h5>
                     </div>
-                    <div class="isExpiring">
+                    <!-- IF HAS ALLERGIN -->
+                    <div
+                      v-else-if="
+                        expiration(recipe.expirationDate) == '' &&
+                        recipe.hasAllergin == 'true'
+                      "
+                      class="hasAllergin"
+                    >
+                      <button type="button" class="btn recipe-item">
+                        <div class="col-md-auto text-center recipe-text">
+                          {{ name }}
+                        </div>
+                      </button>
+                      <h5 class="allergin-notif">Allergin</h5>
+                    </div>
+
+                    <!-- If Expires Soon -->
+                    <div
+                      v-else-if="
+                        expiration(recipe.expirationDate) == 'expires soon' &&
+                        recipe.hasAllergin == 'false'
+                      "
+                      class="isExpiring"
+                    >
                       <button type="button" class="btn recipe-item">
                         <div class="col-md-auto text-center recipe-text">
                           {{ name }}
                         </div>
                       </button>
                       <h5 class="expiration-notif">Expiring Soon</h5>
-                    </div> -->
+                    </div>
+
+                    <button v-else type="button" class="btn recipe-item normal">
+                      <div class="col-md-auto text-center recipe-text">
+                        {{ name }}
+                      </div>
+                    </button>
                   </div>
                 </div>
               </ul>
@@ -120,6 +188,42 @@ export default {
       this.$router.push("/login");
     }
   },
+  methods: {
+    expiration(expirationDate) {
+      const expireDate = new Date(expirationDate);
+      const today = new Date();
+      if (expireDate != "Invalid Date") {
+        // console.log(expireDate);
+        // console.log(today);
+        // const formatedexpireDate = `${
+        //   expireDate.getMonth() + 1
+        // }/${expireDate.getDate()}/${expireDate.getFullYear()}`;
+
+        // const formatedtoday = `${
+        //   today.getMonth() + 1
+        // }/${today.getDate()}/${today.getFullYear()}`;
+        // console.log(formatedexpireDate);
+        // console.log(formatedtoday);
+        // console.log("-------------------");
+
+        if (expireDate.getTime() < today.getTime()) {
+          console.log(expireDate.getTime());
+          console.log(today.getTime());
+          console.log(expireDate - today);
+          return "expired";
+        } else if ((expireDate - today) / 86400000 <= 10) {
+          console.log(expireDate.getTime());
+          console.log(today.getTime());
+          console.log(expireDate - today);
+          return "expires soon";
+        }
+      } else {
+        console.log("No Expiration Date");
+      }
+
+      return "";
+    },
+  },
   data() {
     const data = ref([
       {
@@ -127,22 +231,32 @@ export default {
           Recipe1: {
             recipeName: "Recipe1",
             recipeType: "Category1",
+            expirationDate: "12/12/2022",
+            hasAllergin: "false",
           },
           RecipeNameVeryLong: {
             recipeName: "RecipeNameVeryLong",
             recipeType: "Category1",
+            expirationDate: "12/5/2022",
+            hasAllergin: "false",
           },
           Recipe3: {
             recipeName: "Recipe3",
             recipeType: "Category1",
+            expirationDate: "12/30/2022",
+            hasAllergin: "false",
           },
           Recipe4: {
             recipeName: "Recipe4",
             recipeType: "Category1",
+            expirationDate: "12/5/2022",
+            hasAllergin: "true",
           },
           Recipe5: {
             recipeName: "Recipe5",
             recipeType: "Category1",
+            expirationDate: "12/10/2022",
+            hasAllergin: "true",
           },
           Recipe6: {
             recipeName: "Recipe6",
@@ -340,24 +454,44 @@ h3 {
 }
 
 .isExpired,
-.isExpiring {
+.isExpiring,
+.hasAllergin,
+.both-allergin-expired-layout,
+.hasAllergin-and-expiration,
+.both-allergin-expiringsoon-layout {
   width: 12vw;
   border-radius: 15px;
   padding: 0;
+}
+
+.isExpired,
+.isExpiring,
+.hasAllergin,
+.both-allergin-expired-layout,
+.both-allergin-expiringsoon-layout {
   margin: 15px;
 }
 
-.isExpired {
+.isExpired,
+.both-allergin-expired-layout {
   background-color: red;
 }
 
-.isExpiring {
+.isExpiring,
+.both-allergin-expiringsoon-layout {
   background-color: rgb(255 0 0 / 47%);
 }
 
-.expiration-notif {
+.hasAllergin,
+.hasAllergin-and-expiration {
+  background-color: purple;
+}
+
+.expiration-notif,
+.allergin-notif {
   color: white;
   text-align: center;
   padding: 10px;
+  margin-bottom: 0;
 }
 </style>
