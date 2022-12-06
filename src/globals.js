@@ -18,5 +18,5 @@ export const util = {
   },
   isEmptyJson: (obj) => {
     return Object.keys(obj).length === 0;
-  }
+  },
 }

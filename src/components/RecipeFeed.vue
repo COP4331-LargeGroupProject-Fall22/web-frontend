@@ -2,7 +2,6 @@
   <div class="container">
     <div class="tool-bar">
       <div class="tool-bar-container">
-        <!-- TODO(43): Connect to endpoint for sorting results -->
         <div class="btn-group">
           <button
             type="button"
@@ -32,6 +31,27 @@
         </div>
       </div>
       <div class="tool-bar-container">
+        <!-- TODO(82): when this is clicked, it should open a modal that lets
+        users pick all the ingredients from their inventory that they want to
+        use. something like "advanced search options" that lets them specify all
+        the extra stuff like items to use, etc, cuisines, diets,
+        meal types, intolerance set by user allergens if checkbox clicked -->
+        <label class="switch" title="Search using inventory ingredients">
+          <input
+            type="checkbox"
+            id="checkbox"
+            v-model="useInventoryIngredientsForSearch"
+          />
+          <span class="slider round"></span>
+        </label>
+        <button
+          type="button"
+          class="btn btn-primary btn-floating"
+          id="searchRecipesButton"
+          @click="handleSearch"
+        >
+          <i class="fas fa-search"></i>
+        </button>
         <div class="form-outline">
           <input
             id="searchRecipes"
@@ -43,18 +63,41 @@
             class="form-control"
           />
         </div>
-        <!-- TODO(59): Add a button for search -->
+        <button
+          type="button"
+          class="btn btn-primary btn-floating"
+          id="clearSearchButton"
+          @click="
+            this.recipes = [];
+            this.message = 'Try searching for a recipe :)';
+          "
+        >
+          <i class="fa-solid fa-x"></i>
+        </button>
+      </div>
+      <div class="container mt-3">
+        <div class="row">
+          <individual-recipe-view
+            @closeModal="showIndividualRecipe = false"
+            @saveChanges="showIndividualRecipe = false"
+            :showModal="showIndividualRecipe"
+            :modalTitle="individualRecipeTitle"
+            :recipeId="recipeId"
+            :imageUrl="imageUrl"
+            :favorite="isFavorite"
+          >
+          </individual-recipe-view>
+        </div>
       </div>
     </div>
-    <!-- TODO(20) set up a scroll button -->
     <div class="row">
       <ul>
-        <li v-for="list in data" :key="list" class="categories">
-          <div v-for="(types, name) in list" :key="name">
+        <li v-for="category in recipes" :key="category" class="category">
+          <div>
             <div class="col-md-auto">
-              <a v-bind:href="'#' + name" class="">
+              <a v-bind:href="'#' + category.name" class="">
                 <button type="button" class="btn type-of-recipe">
-                  {{ name }}
+                  {{ category.name }}
                 </button>
               </a>
             </div>
@@ -63,22 +106,87 @@
       </ul>
     </div>
     <div class="row">
+      <div v-if="message.length" class="col-12 d-flex justify-content-center">
+        <h2>{{ message }}</h2>
+      </div>
+    </div>
+    <div v-if="showFavorites" class="row">
       <ul>
-        <li v-for="list in data" :key="list">
-          <div v-for="(types, name) in list" :key="name">
-            <div :id="name" class="row">
-              <h3>{{ name }}</h3>
+        <li>
+          <div>
+            <div class="row">
+              <h3>Your Favorite Recipes</h3>
             </div>
             <div class="row">
               <ul>
-                <div v-for="(recipe, name) in types" :key="name">
-                  <div class="col-md-auto">
-                    <button type="button" class="btn recipe-item">
-                      <div class="col-md-auto text-center recipe-text">
-                        {{ name }}
-                      </div>
-                    </button>
-                  </div>
+                <div
+                  v-for="recipe in favoriteRecipes"
+                  :key="recipe"
+                  class="col-md-auto"
+                >
+                  <button
+                    type="button"
+                    @click="
+                      showIndividualRecipe = true;
+                      recipeId = recipe.id;
+                      individualRecipeTitle = recipe.name;
+                      imageUrl = recipe.image.srcUrl;
+                      isFavorite = recipe.isFavorite;
+                    "
+                    class="btn recipe-item"
+                    v-bind:style="{
+                      backgroundImage:
+                        'linear-gradient(to bottom,rgb(255 255 255 / 0%),rgb(0 0 0 /73%)),url(' +
+                        recipe.image.srcUrl +
+                        ')',
+                    }"
+                  >
+                    <div class="col-md-auto text-center recipe-text">
+                      {{ recipe.name }}
+                    </div>
+                  </button>
+                </div>
+              </ul>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="row">
+      <ul>
+        <li>
+          <div v-for="category in recipes" :key="category">
+            <div :id="category.name" class="row">
+              <h3>{{ category.name }}</h3>
+            </div>
+            <div class="row">
+              <ul>
+                <div
+                  v-for="recipe in category.recipes"
+                  :key="recipe"
+                  class="col-md-auto"
+                >
+                  <button
+                    type="button"
+                    @click="
+                      showIndividualRecipe = true;
+                      recipeId = recipe.id;
+                      individualRecipeTitle = recipe.name;
+                      imageUrl = recipe.image.srcUrl;
+                      isFavorite = recipe.isFavorite;
+                    "
+                    class="btn recipe-item"
+                    v-bind:style="{
+                      backgroundImage:
+                        'linear-gradient(to bottom,rgb(255 255 255 / 0%),rgb(0 0 0 /73%)),url(' +
+                        recipe.image.srcUrl +
+                        ')',
+                    }"
+                  >
+                    <div class="col-md-auto text-center recipe-text">
+                      {{ recipe.name }}
+                    </div>
+                  </button>
                 </div>
               </ul>
             </div>
@@ -90,88 +198,146 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import IndividualRecipeView from "@/components/IndividualRecipeView.vue";
+
+import { util } from "@/globals.js";
+
 export default {
   name: "RecipeFeed",
+  components: {
+    IndividualRecipeView,
+  },
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
+    },
+    showFavorites() {
+      // TODO(85): add a checkbox that lets users hide favs
+      return this.favoriteRecipes.length !== 0;
     },
   },
   mounted() {
     if (!this.currentUser) {
       this.$router.push("/login");
     }
+    this.getFavoriteRecipes();
   },
   data() {
-    const data = ref([
-      {
-        Category1: {
-          Recipe1: {
-            recipeName: "Recipe1",
-            recipeType: "Category1",
-          },
-          RecipeNameVeryLong: {
-            recipeName: "RecipeNameVeryLong",
-            recipeType: "Category1",
-          },
-          Recipe3: {
-            recipeName: "Recipe3",
-            recipeType: "Category1",
-          },
-          Recipe4: {
-            recipeName: "Recipe4",
-            recipeType: "Category1",
-          },
-          Recipe5: {
-            recipeName: "Recipe5",
-            recipeType: "Category1",
-          },
-          Recipe6: {
-            recipeName: "Recipe6",
-            recipeType: "Category1",
-          },
-          Recipe7: {
-            recipeName: "Recipe7",
-            recipeType: "Category1",
-          },
-        },
-
-        Category2: {
-          Recipe1: {
-            recipeName: "Recipe1",
-            recipeType: "Category2",
-          },
-          Recipe2: {
-            recipeName: "Recipe2",
-            recipeType: "Category2",
-          },
-          Recipe3: {
-            recipeName: "Recipe3",
-            recipeType: "Category3",
-          },
-          Recipe4: {
-            recipeName: "Recipe4",
-            recipeType: "Category4",
-          },
-          Recipe5: {
-            recipeName: "Recipe5",
-            recipeType: "Category5",
-          },
-        },
-      },
-    ]);
     return {
-      data,
+      recipes: [],
+      favoriteRecipes: [],
       searchString: "",
-      sortByFilters: [
-        "Ingredient Expiration Date",
-        "Time To Cook",
-        "A-Z",
-        "Z-A",
-      ],
-      selected: "Ingredient Expiration Date",
+      sortByFilters: ["A-Z", "Z-A", "Cuisine", "Diet", "Meal type"],
+      selected: "A-Z",
+      noMatchingRecipes: true,
+      showIndividualRecipe: false,
+      recipeId: null,
+      individualRecipeTitle: "",
+      imageUrl:
+        "https://github.com/COP4331-LargeGroupProject-Fall22/web-frontend/blob/main/src/assets/food.png?raw=true",
+      message: "Try searching for a recipe :)",
+      useInventoryIngredientsForSearch: false,
+      isFavorite: false,
     };
+  },
+  methods: {
+    async handleSearch() {
+      this.recipes = [];
+      if (
+        this.searchString.trim() === "" &&
+        !this.useInventoryIngredientsForSearch
+      ) {
+        // TODO(82): show all possible recipe categories as modal popup
+        this.message =
+          "No recipes match, please try searching for something else";
+        return;
+      }
+      let ingredients = null;
+      if (this.useInventoryIngredientsForSearch) {
+        let ingredientsResponse = await this.$store.dispatch(
+          "inventory/getAll",
+          {}
+        );
+        ingredients = "";
+        // TODO(82): add option for selecting checkbox of which ingredients to
+        // use from inventory rather than all at once
+        for (let i = 0; i < ingredientsResponse.length; i++) {
+          const items = ingredientsResponse[i][1];
+          // Each element is 2-tuple of 1) category name, 2) data
+          if (!items.length) continue;
+          for (const ingredient of items) {
+            ingredients += ingredient.name + ",";
+          }
+        }
+      }
+
+      // TODO(82): Update this to have params set by page
+      let params = {
+        recipeName: this.searchString.trim(),
+        resultsPerPage: 100,
+        page: 0,
+        intolerance: null,
+        hasIngredients: ingredients,
+        cuisines: null,
+        diets: null,
+        mealTypes: null,
+        sortByLexicographicalOrder:
+          this.selected == "A-Z" || this.selected == "Z-A",
+        sortByMealTypes: this.selected == "Meal type",
+        sortByDiets: this.selected == "Diet",
+        sortByCuisines: this.selected == "Cuisine",
+        isReverse: this.selected == "Z-A",
+      };
+      this.$store.dispatch("recipe/getAll", params).then(
+        (response) => {
+          // Each key in parsed is a category name
+          let parsed = {};
+          for (let i = 0; i < response.results.length; i++) {
+            let category = util.capitalizeFirstLetter(response.results[i][0]);
+            let items = response.results[i][1];
+            if (!(category in parsed)) {
+              parsed[category] = {
+                name: category,
+                recipes: items,
+              };
+            }
+          }
+          this.recipes = parsed;
+          this.noMatchingRecipes = util.isEmptyJson(parsed);
+          this.message = this.noMatchingRecipes
+            ? "No recipes match, please try searching for something else"
+            : "";
+        },
+        (error) => {
+          this.message = util.getErrorString(error);
+        }
+      );
+      this.message = "Loading...";
+    },
+
+    getFavoriteRecipes() {
+      this.$store.dispatch("favrecipe/getAll").then(
+        (response) => {
+          console.log(response);
+          // Each key in parsed is a recipe name
+          let parsed = [];
+          for (let i = 0; i < response.length; i++) {
+            response[i].name = util.capitalizeFirstLetter(response[i].name);
+            parsed.push(response[i]);
+          }
+          // this.recipes = parsed;
+          // this.noMatchingRecipes = util.isEmptyJson(parsed);
+          // this.message = this.noMatchingRecipes
+          //   ? "No recipes match, please try searching for something else"
+          //   : "";
+          this.favoriteRecipes = parsed;
+          console.log(parsed);
+        },
+        (error) => {
+          this.message = util.getErrorString(error);
+        }
+      );
+    },
   },
 };
 </script>
@@ -201,6 +367,7 @@ css. If not, just extract this into a separate css file */
 }
 
 .form-outline {
+  padding-left: 20px;
   padding-right: 20px;
 }
 .form-control {
@@ -316,5 +483,66 @@ h3 {
   user-select: none;
   cursor: pointer;
   width: 100%;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  margin-right: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #2196f3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }
 </style>
