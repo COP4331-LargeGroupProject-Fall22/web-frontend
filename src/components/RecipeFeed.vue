@@ -31,7 +31,7 @@
         </div>
       </div>
       <div class="tool-bar-container">
-        <!-- TODO(): when this is clicked, it should open a modal that lets
+        <!-- TODO(82): when this is clicked, it should open a modal that lets
         users pick all the ingredients from their inventory that they want to
         use. something like "advanced search options" that lets them specify all
         the extra stuff like items to use, etc, cuisines, diets,
@@ -212,7 +212,7 @@ export default {
       return this.$store.state.auth.user;
     },
     showFavorites() {
-      // TODO(): add a checkbox that lets users hide favs
+      // TODO(85): add a checkbox that lets users hide favs
       return this.favoriteRecipes.length !== 0;
     },
   },
@@ -247,7 +247,7 @@ export default {
         this.searchString.trim() === "" &&
         !this.useInventoryIngredientsForSearch
       ) {
-        // TODO(): show all possible recipe categories as modal popup
+        // TODO(82): show all possible recipe categories as modal popup
         this.message =
           "No recipes match, please try searching for something else";
         return;
@@ -259,7 +259,7 @@ export default {
           {}
         );
         ingredients = "";
-        // TODO(): add option for selecting checkbox of which ingredients to
+        // TODO(82): add option for selecting checkbox of which ingredients to
         // use from inventory rather than all at once
         for (let i = 0; i < ingredientsResponse.length; i++) {
           const items = ingredientsResponse[i][1];
@@ -271,7 +271,7 @@ export default {
         }
       }
 
-      // TODO(): Update this to have params set by page
+      // TODO(82): Update this to have params set by page
       let params = {
         recipeName: this.searchString.trim(),
         resultsPerPage: 100,

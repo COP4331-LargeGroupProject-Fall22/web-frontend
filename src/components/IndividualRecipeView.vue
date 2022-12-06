@@ -13,7 +13,6 @@
             <h5 class="modal-title" id="individualRecipeModalLabel">
               {{ modalTitle || "No title passed" }}
             </h5>
-            <!-- TODO(): style this to be toggled when is favorite is true -->
             <button
               type="button"
               class="btn btn-primary btn-floating favorite-btn"
@@ -26,7 +25,6 @@
             </button>
           </div>
           <div class="modal-body">
-            <!-- TODO(): fix style to better match figma -->
             <div class="row">
               <img v-bind:src="imageUrl" class="center-block" />
             </div>
@@ -36,28 +34,16 @@
                   <h3>Instructions: Step {{ instructionPageNum + 1 }}</h3>
                 </div>
                 <div class="row">
-                  {{
-                    recipeInfo.instructionSteps[instructionPageNum].instructions
-                  }}
+                  {{ instructionPageInstructions }}
                 </div>
-                <div
-                  v-if="
-                    recipeInfo.instructionSteps[instructionPageNum].ingredients
-                      .length !== 0
-                  "
-                  class="row"
-                >
+                <div v-if="instructionPageHasIngredients" class="row">
                   Ingredients needed:
-                  {{
-                    recipeInfo.instructionSteps[instructionPageNum].ingredients
-                      .map((ing) => ing.name)
-                      .join(", ")
-                  }}
+                  {{ instructionPageIngredients }}
                 </div>
                 <div class="row">
                   <div class="col-6 text-left">
                     <div class="previous">
-                      <div v-if="instructionPageNum > 0">
+                      <div v-if="hasPrevPage">
                         <button
                           type="button"
                           @click="instructionPageNum--"
@@ -71,12 +57,7 @@
                   </div>
                   <div class="col-6 text-right">
                     <div class="next">
-                      <div
-                        v-if="
-                          instructionPageNum <
-                          recipeInfo.instructionSteps.length - 1
-                        "
-                      >
+                      <div v-if="hasNextPage">
                         <button
                           type="button"
                           @click="instructionPageNum++"
@@ -95,9 +76,10 @@
                 <div class="row">Diets: {{ diets }}</div>
                 <div class="row">Meal type: {{ mealTypes }}</div>
                 <div class="row">Ingredients: {{ ingredients }}</div>
+                <!-- TODO(86): Think of use for nutrition facts -->
                 <!-- <div class="row">
-                Nutrition facts: {{ recipeInfo.nutritionFacts }}
-              </div> -->
+                  Nutrition facts: {{ recipeInfo.nutritionFacts }}
+                </div> -->
                 <div class="row">
                   Number of servings: {{ recipeInfo.servings }}
                 </div>
@@ -122,7 +104,6 @@
             </div>
           </div>
           <div class="modal-footer">
-            <!-- TODO(): Update this to actually show instruction steps page -->
             <button
               type="button"
               class="btn btn-secondary"
@@ -233,6 +214,37 @@ export default {
       }
       return this.formatter.format(this.recipeInfo.costPerServing / 100);
     },
+    hasPrevPage() {
+      return this.instructionPageNum > 0;
+    },
+    hasNextPage() {
+      if (this.recipeInfo == null) {
+        return false;
+      }
+      return (
+        this.instructionPageNum < this.recipeInfo.instructionSteps.length - 1
+      );
+    },
+    instructionPageHasIngredients() {
+      if (this.recipeInfo == null) return false;
+      return (
+        this.recipeInfo.instructionSteps[this.instructionPageNum].ingredients
+          .length !== 0
+      );
+    },
+    instructionPageIngredients() {
+      if (this.recipeInfo == null) return "";
+      return this.recipeInfo.instructionSteps[
+        this.instructionPageNum
+      ].ingredients
+        .map((ing) => ing.name)
+        .join(", ");
+    },
+    instructionPageInstructions() {
+      if (this.recipeInfo == null) return "";
+      return this.recipeInfo.instructionSteps[this.instructionPageNum]
+        .instructions;
+    },
   },
   methods: {
     modalActive: function () {
@@ -304,7 +316,8 @@ export default {
         console.log("Recipe info isn't loaded yet...");
         return;
       }
-      // TODO(): Should also check that shopping list doesn't already have
+      // TODO(69): Should also check that shopping list doesn't already have or
+      // has enough quantity or something
       let invIngredients = await this.getInventoryIngredientsList();
       let recipeIngredients = this.recipeInfo.ingredients;
       console.log(recipeIngredients);
@@ -326,9 +339,9 @@ export default {
             ". Do you want to add these to your shopping list?"
         )
       ) {
-        // TODO(): Make this more robust to only add certain ingredients, let
+        // TODO(84): Make this more robust to only add certain ingredients, let
         // user select.
-        // TODO(): Make it clear to the user when this done/while it's working.
+        // TODO(83): Make it clear to the user when this done/while it's working.
         // add spinny wheel or something
         for (const ing of missing) {
           ing.recipeId = this.recipeId;
@@ -362,9 +375,9 @@ export default {
             ". Do you want to make the recipe anyway?"
         )
       ) {
-        // TODO(): Make this more robust to not remove all ingredients and let
+        // TODO(84): Make this more robust to not remove all ingredients and let
         // user select what to get rid of.
-        // TODO(): Make it clear to the user when this done/while it's working.
+        // TODO(83): Make it clear to the user when this done/while it's working.
         // add spinny wheel or something
         let used = recipeIngredients.filter((recIng) =>
           invIngredients.find((invIng) => invIng.id == recIng.id)
