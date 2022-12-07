@@ -2,51 +2,38 @@
   <div class="container">
     <div class="row">
       <div class="col-md-6 no-float">
-        <div class="banner">
-          <div class="d-flex justify-content-center fill">
-            <div
-              class="content_center my-class position-absolute top-50 start-50 translate-middle"
-            >
-              <h2>
-                If your account is not verified, please check your email for a
-                verification code. Otherwise please
-                <a href="/register">register</a>, <a href="/login">login</a>, or
-                <a href="/forgot">reset your password</a>.
-              </h2>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 no-float">
         <div class="card card-container">
-          <h2>You're almost there, just verify your email!</h2>
-          <div v-if="showSubmit">
+          <h2>You're almost there, just confirm your password!</h2>
+          <div v-if="showConfirm">
             <Form @submit="handleSubmit" :validation-schema="verifySchema">
               <div class="form-group">
-                <label for="username">Username</label>
-                <Field name="username" type="text" class="form-control" />
-                <ErrorMessage name="username" class="error-feedback" />
+                <label for="email">Email</label>
+                <Field name="email" type="text" class="form-control" />
+                <ErrorMessage name="email" class="error-feedback" />
+              </div>
+              <div class="form-group">
+                <label for="password">New password</label>
+                <Field name="password" type="password" class="form-control" />
+                <ErrorMessage name="password" class="error-feedback" />
               </div>
               <div class="form-group">
                 <label for="code">Verification code</label>
                 <Field name="code" type="code" class="form-control" />
                 <ErrorMessage name="code" class="error-feedback" />
               </div>
-
               <div class="form-group">
                 <button class="btn btn-primary btn-block" :disabled="loading">
                   <span
                     v-show="loading"
                     class="spinner-border spinner-border-sm"
                   ></span>
-                  <span>Verify code</span>
+                  <span>Update password</span>
                 </button>
               </div>
               <div class="form-group">
                 <div v-if="message" class="alert alert-danger" role="alert">
                   {{ message }}
                 </div>
-                <!-- TODO(34): style this to make it look better/not error -->
                 <div
                   v-if="successMessage"
                   class="alert alert-danger"
@@ -58,23 +45,22 @@
             </Form>
             <button
               class="btn btn-secondary btn-block"
-              @click="showSubmit = false"
+              @click="showConfirm = false"
               :disabled="loading"
             >
               <span
                 v-show="loading"
                 class="spinner-border spinner-border-sm"
               ></span>
-              <span>Resend code?</span>
+              <span>Send code?</span>
             </button>
           </div>
-
-          <div v-if="!showSubmit">
+          <div v-else>
             <Form @submit="handleResend" :validation-schema="resendSchema">
               <div class="form-group">
-                <label for="username">Username</label>
-                <Field name="username" type="text" class="form-control" />
-                <ErrorMessage name="username" class="error-feedback" />
+                <label for="email">Email</label>
+                <Field name="email" type="text" class="form-control" />
+                <ErrorMessage name="email" class="error-feedback" />
               </div>
               <div class="form-group">
                 <button class="btn btn-primary btn-block" :disabled="loading">
@@ -82,7 +68,7 @@
                     v-show="loading"
                     class="spinner-border spinner-border-sm"
                   ></span>
-                  <span>Resend code</span>
+                  <span>Send code</span>
                 </button>
               </div>
               <div class="form-group">
@@ -101,7 +87,7 @@
             </Form>
             <button
               class="btn btn-secondary btn-block"
-              @click="toggleForm"
+              @click="showConfirm = true"
               :disabled="loading"
             >
               <span
@@ -110,6 +96,22 @@
               ></span>
               <span>Verify code?</span>
             </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 no-float">
+        <div class="banner">
+          <div class="d-flex justify-content-center fill">
+            <div
+              class="content_center my-class position-absolute top-50 start-50 translate-middle"
+            >
+              <h2>
+                If you requested a password reset, please check your email for a
+                verification code. If you didn't mean to reset your password,
+                try <a href="/register">registering</a> or
+                <a href="/login">logging in</a>.
+              </h2>
+            </div>
           </div>
         </div>
       </div>
@@ -123,7 +125,7 @@ import * as yup from "yup";
 import { util } from "@/globals.js";
 
 export default {
-  name: "VerifyEmailView",
+  name: "PasswordResetView",
   computed: {
     loggedIn() {
       return this.$store.state.auth.status.loggedIn;
@@ -141,7 +143,16 @@ export default {
   },
   data() {
     const verifySchema = yup.object().shape({
-      username: yup.string().required("Username is required!"),
+      email: yup
+        .string()
+        .required("Email is required!")
+        .email("Email is invalid!")
+        .max(50, "Must be maximum 50 characters!"),
+      password: yup
+        .string()
+        .required("Password is required!")
+        .min(6, "Must be at least 6 characters!")
+        .max(40, "Must be maximum 40 characters!"),
       code: yup
         .number()
         .required("Verification code is required!")
@@ -150,7 +161,11 @@ export default {
     });
 
     const resendSchema = yup.object().shape({
-      username: yup.string().required("Username is required!"),
+      email: yup
+        .string()
+        .required("Email is required!")
+        .email("Email is invalid!")
+        .max(50, "Must be maximum 50 characters!"),
     });
 
     return {
@@ -159,7 +174,7 @@ export default {
       successMessage: "",
       verifySchema,
       resendSchema,
-      showSubmit: true,
+      showConfirm: true,
     };
   },
   created() {
@@ -168,13 +183,14 @@ export default {
     }
   },
   methods: {
-    handleSubmit(user) {
+    handleResend(email) {
       this.loading = true;
 
-      this.$store.dispatch("auth/confirmVerificationCode", user).then(
+      this.$store.dispatch("auth/requestPasswordReset", email).then(
         () => {
           this.loading = false;
-          this.successMessage = "Verification succeeded! Please log in.";
+          this.successMessage =
+            "Verification code resent! Please check your email.";
         },
         (error) => {
           this.loading = false;
@@ -182,20 +198,23 @@ export default {
         }
       );
     },
-    handleResend(user) {
-      this.$store.dispatch("auth/sendVerificationCode", user).then(
+    handleSubmit(params) {
+      this.loading = true;
+
+      var navigate = this.$router;
+      this.$store.dispatch("auth/confirmNewPassword", params).then(
         () => {
-          this.message = "Verification sent, please check your email";
+          this.loading = false;
+          this.message = "Success, redirecting to login screen...";
+          setTimeout(function () {
+            navigate.push("/login");
+          }, 3 * 1000);
         },
         (error) => {
+          this.loading = false;
           this.message = util.getErrorString(error);
         }
       );
-    },
-    toggleForm() {
-      this.showSubmit = !this.showSubmit;
-      this.message = "";
-      this.successMessage = "";
     },
   },
 };

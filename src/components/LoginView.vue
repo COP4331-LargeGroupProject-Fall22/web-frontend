@@ -20,6 +20,7 @@
         <div class="card card-container">
           <!-- TODO(): Add profile pic of user here -->
           <Form @submit="handleLogin" :validation-schema="schema">
+            <h2>Welcome back to SmartChef!</h2>
             <div class="form-group">
               <label for="username">Username</label>
               <Field name="username" type="text" class="form-control" />
@@ -40,13 +41,25 @@
                 <span>Login</span>
               </button>
             </div>
-
+            <!-- TODO(): add a forgo password button that relinks to forgot pass
+           view -->
             <div class="form-group">
               <div v-if="message" class="alert alert-danger" role="alert">
                 {{ message }}
               </div>
             </div>
           </Form>
+
+          <!-- TODO(): fix style -->
+          <router-link to="/forgot" class="btn btn-secondary btn-block">
+            <button class="btn btn-secondary btn-block" :disabled="loading">
+              <span
+                v-show="loading"
+                class="spinner-border spinner-border-sm"
+              ></span>
+              <span>Forgot password?</span>
+            </button>
+          </router-link>
         </div>
       </div>
     </div>
@@ -101,7 +114,15 @@ export default {
             this.$router.push("/confirm");
           }
           this.loading = false;
-          this.message = util.getErrorString(error);
+          if (error.response.status === 400) {
+            this.message = "Incorrect Request Format";
+          } else if (error.response.status === 401) {
+            this.message = "User Credentials Invalid";
+          } else if (error.response.status === 404) {
+            this.message = "User Not Found";
+          } else {
+            this.message = util.getErrorString(error);
+          }
         }
       );
     },
@@ -111,6 +132,7 @@ export default {
 
 <style scoped>
 @import "css/LoginRegisterForm.css";
+
 .card-container.card {
   padding: 25% 25%;
 }

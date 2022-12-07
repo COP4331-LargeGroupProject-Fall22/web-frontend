@@ -4,6 +4,7 @@
       <div class="card card-container">
         <!-- TODO(): Add profile pic of user here -->
         <Form @submit="handleRegister" :validation-schema="schema">
+          <h2>Welcome to SmartChef!</h2>
           <div v-if="!successful">
             <div class="form-group">
               <label for="firstName">First Name</label>
@@ -52,7 +53,7 @@
         </div>
       </div>
     </div>
-    <!-- TODO(#8): Animate the banner to move to the other side when register is pushed -->
+    <!-- TODO(8): Animate the banner to move to the other side when register is pushed -->
     <div class="col-md-6">
       <div class="banner">
         <div class="d-flex justify-content-center fill">
@@ -61,8 +62,6 @@
           >
             <h2>Already have an account?</h2>
             <router-link to="/login" class="nav-link">
-              <!-- TODO: Fix button to be same width as button above -->
-              <!-- <font-awesome-icon icon="user-plus" /> Sign Up -->
               <button class="btn btn-secondary btn-block">Login</button>
             </router-link>
           </div>
@@ -131,6 +130,7 @@ export default {
           this.successful = true;
           this.loading = false;
 
+          var navigate = this.$router;
           this.$store
             .dispatch("auth/sendVerificationCode", { username: user.username })
             .then(() => {
@@ -138,12 +138,17 @@ export default {
                 "Verification sent, please check your email.\nRedirecting to confirmation page...";
               // Redirect to confirmation page after 3 seconds
               setTimeout(function () {
-                this.router.push("/confirm");
+                navigate.push("/confirm");
               }, 3 * 1000);
             });
         },
         (error) => {
-          this.message = util.getErrorString(error);
+          if (error.response.status === 400) {
+            this.message = "Username Already Exists";
+          } else {
+            this.message = util.getErrorString(error);
+          }
+          this.loading = false;
         }
       );
     },
