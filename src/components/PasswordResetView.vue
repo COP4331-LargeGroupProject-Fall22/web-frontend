@@ -34,18 +34,14 @@
                 <div v-if="message" class="alert alert-danger" role="alert">
                   {{ message }}
                 </div>
-                <div
-                  v-if="successMessage"
-                  class="alert alert-danger"
-                  role="alert"
-                >
-                  {{ successMessage }}
-                </div>
               </div>
             </Form>
             <button
               class="btn btn-secondary btn-block"
-              @click="showConfirm = false"
+              @click="
+                showConfirm = false;
+                this.message = '';
+              "
               :disabled="loading"
             >
               <span
@@ -74,20 +70,16 @@
               <div class="form-group">
                 <div v-if="message" class="alert alert-danger" role="alert">
                   {{ message }}
-                </div>
-                <!-- TODO(34): style this to make it look better/not error -->
-                <div
-                  v-if="successMessage"
-                  class="alert alert-danger"
-                  role="alert"
-                >
-                  {{ successMessage }}
+                  <!-- TODO(34): style this to make it look better if not error -->
                 </div>
               </div>
             </Form>
             <button
               class="btn btn-secondary btn-block"
-              @click="showConfirm = true"
+              @click="
+                showConfirm = true;
+                this.message = '';
+              "
               :disabled="loading"
             >
               <span
@@ -171,7 +163,6 @@ export default {
     return {
       loading: false,
       message: "",
-      successMessage: "",
       verifySchema,
       resendSchema,
       showConfirm: true,
@@ -184,13 +175,13 @@ export default {
   },
   methods: {
     handleResend(email) {
+      this.message = "";
       this.loading = true;
 
       this.$store.dispatch("auth/requestPasswordReset", email).then(
         () => {
           this.loading = false;
-          this.successMessage =
-            "Verification code resent! Please check your email.";
+          this.message = "Verification code resent! Please check your email.";
         },
         (error) => {
           this.loading = false;

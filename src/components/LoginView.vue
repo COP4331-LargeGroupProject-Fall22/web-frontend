@@ -106,6 +106,7 @@ export default {
 
       this.$store.dispatch("auth/login", user).then(
         () => {
+          this.message = "";
           this.$router.push("/home");
         },
         (error) => {
