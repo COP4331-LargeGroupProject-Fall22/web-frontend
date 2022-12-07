@@ -132,7 +132,7 @@
                           individualIngredientTitle = item.name;
                         "
                         type="button"
-                        class="btn food-item"
+                        class="btn food-item expirelayout"
                         v-bind:style="{
                           backgroundImage:
                             'linear-gradient(to bottom,rgb(255 255 255 / 0%),rgb(0 0 0 /73%)),url(' +
@@ -158,7 +158,7 @@
                           individualIngredientTitle = item.name;
                         "
                         type="button"
-                        class="btn food-item"
+                        class="btn food-item expirelayout"
                         v-bind:style="{
                           backgroundImage:
                             'linear-gradient(to bottom,rgb(255 255 255 / 0%),rgb(0 0 0 /73%)),url(' +
@@ -276,9 +276,15 @@ export default {
   },
   methods: {
     itemIsExpired(expirationDate) {
+      if (expirationDate == 0) {
+        return false;
+      }
       return Date.now() / 1000 > expirationDate;
     },
     itemExpiresSoon(expirationDate) {
+      if (expirationDate == 0) {
+        return false;
+      }
       let todayInSeconds = Date.now() / 1000;
       // 1 week from today
       let expSoonCutoff = todayInSeconds + 604800;
@@ -520,5 +526,9 @@ h3 {
   text-align: center;
   padding: 10px;
   margin-bottom: 0;
+}
+
+.expirelayout {
+  margin: 0 !important;
 }
 </style>
