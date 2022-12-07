@@ -72,10 +72,18 @@
                 </div>
               </div>
               <div v-else>
-                <div class="row">Cuisines: {{ cuisines }}</div>
-                <div class="row">Diets: {{ diets }}</div>
-                <div class="row">Meal type: {{ mealTypes }}</div>
-                <div class="row">Ingredients: {{ ingredients }}</div>
+                <div v-if="cuisines() != 'N/A'" class="row">
+                  Cuisines: {{ cuisines }}
+                </div>
+                <div v-if="diets() != 'N/A'" class="row">
+                  Diets: {{ diets }}
+                </div>
+                <div v-if="mealTypes() != 'N/A'" class="row">
+                  Meal type: {{ mealTypes }}
+                </div>
+                <div v-if="ingredients() != 'N/A'" class="row">
+                  Ingredients: {{ ingredients }}
+                </div>
                 <!-- TODO(86): Think of use for nutrition facts -->
                 <!-- <div class="row">
                   Nutrition facts: {{ recipeInfo.nutritionFacts }}
