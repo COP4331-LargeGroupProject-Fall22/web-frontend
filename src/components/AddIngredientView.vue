@@ -31,16 +31,11 @@
       <div v-if="searchResults.length">
         <div v-for="item in searchResults" :key="item.id">
           <div class="row">
-            <div class="col-md-1 mb-4">
+            <div class="search-results col-md-1 mb-4">
               <input type="checkbox" v-model="item.shouldAdd" :key="item.id" />
             </div>
-            <div class="col-md-9 mb-4 toCapitalFirst">
+            <div class="search-results col-md-9 mb-4 toCapitalFirst">
               <span :class="{ done: item.shouldAdd }">{{ item.name }}</span>
-            </div>
-            <div class="col-md-2 mb-4">
-              <button class="btn-primary" @click="removeItemFromResults(item)">
-                X
-              </button>
             </div>
           </div>
         </div>
@@ -164,5 +159,9 @@ export default {
 
 .next {
   text-align: right;
+}
+
+.search-results {
+  width: fit-content;
 }
 </style>

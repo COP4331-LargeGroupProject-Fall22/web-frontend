@@ -5,7 +5,6 @@ import RegisterView from "./components/RegisterView.vue";
 import VerifyEmailView from "./components/VerifyEmailView.vue";
 // lazy-loaded
 const ProfileView = () => import("./components/ProfileView.vue");
-const RecipeView = () => import("./components/RecipeView.vue");
 
 const routes = [
   {
@@ -34,12 +33,6 @@ const routes = [
     name: "User profile",
     // lazy-loaded
     component: ProfileView,
-  },
-  {
-    path: "/recipes/:id",
-    name: "Recipe",
-    // lazy-loaded
-    component: RecipeView,
   },
 ];
 

@@ -9,19 +9,17 @@
     >
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="shoppingListIngredientModalLabel">
-              {{ modalTitle || "No title passed" }}
-            </h5>
-          </div>
           <div class="modal-body">
             <!-- TODO(71): fix style to better match figma. show more info about
            item, price, date added, etc. -->
             <div class="row">
               <img v-bind:src="imageUrl" class="center-block" />
             </div>
-            <div class="row">Food type: {{ category }}</div>
-            <div class="row">Quantity: {{ quantity }}</div>
+            <h5 class="modal-title" id="shoppingListIngredientModalLabel">
+              {{ modalTitle || "No title passed" }}
+            </h5>
+            <div class="row ingredient-details">Food type: {{ category }}</div>
+            <div class="row ingredient-details">Quantity: {{ quantity }}</div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" @click="hideModal">
@@ -133,4 +131,23 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.modal-body {
+  padding: 0;
+}
+
+img {
+  width: 100%;
+  height: 45vh;
+  object-fit: contain;
+  border-radius: 0.3rem;
+}
+
+.modal-title {
+  padding: 15px;
+}
+
+.ingredient-details {
+  padding-left: 15px;
+}
+</style>

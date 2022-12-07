@@ -159,7 +159,7 @@ export default {
 }
 
 img {
-  widows: 100%;
+  width: 100%;
   height: 45vh;
   object-fit: contain;
   border-radius: 0.3rem;
@@ -170,6 +170,6 @@ img {
 }
 
 .ingredient-details {
-  padding: 15px;
+  padding-left: 15px;
 }
 </style>
