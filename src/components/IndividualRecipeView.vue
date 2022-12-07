@@ -445,4 +445,14 @@ img {
   color: red;
   scale: 1.5;
 }
+
+.favorite-btn:hover,
+.favorite-btn:focus,
+.favorite-btn:active {
+  color: red;
+}
+
+.favorite-btn:focus {
+  box-shadow: none;
+}
 </style>

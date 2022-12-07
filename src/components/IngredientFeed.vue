@@ -39,7 +39,7 @@
             placeholder="Search Inventory..."
             v-model="searchString"
             type="text"
-            class="form-control"
+            class="form-control search-bar"
           />
         </div>
         <button
@@ -526,6 +526,12 @@ h3 {
   text-align: center;
   padding: 10px;
   margin-bottom: 0;
+}
+
+.search-bar {
+  border: solid;
+  border-color: #008600;
+  border-width: 2px;
 }
 
 .expirelayout {

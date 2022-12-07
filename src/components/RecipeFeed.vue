@@ -60,7 +60,7 @@
             placeholder="Search Recipes..."
             v-model="searchString"
             type="text"
-            class="form-control"
+            class="form-control search-bar"
           />
         </div>
         <button
@@ -549,5 +549,11 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+.search-bar {
+  border: solid;
+  border-color: #008600;
+  border-width: 2px;
 }
 </style>
