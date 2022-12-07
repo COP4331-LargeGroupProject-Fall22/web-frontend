@@ -21,6 +21,10 @@
             <div class="row ingredient-details">
               Expiration date: {{ expirationDate }}
             </div>
+            <Datepicker
+              v-model="expirationDateSelection"
+              :enable-time-picker="false"
+            />
           </div>
           <div class="modal-footer">
             <button
@@ -39,6 +43,7 @@
               type="button"
               @click="handleEditExpirationDate"
               class="btn btn-primary"
+              :disabled="expirationDateSelection == null"
             >
               {{ modalButtonText || "?" }}
             </button>
@@ -56,7 +61,8 @@ export default {
   data: () => ({
     modalInstance: null,
     ingredientInfo: null,
-    modalButtonText: "Edit expiration date",
+    modalButtonText: "Set new expiration date",
+    expirationDateSelection: null,
   }),
   props: {
     showModal: Boolean,
@@ -81,10 +87,15 @@ export default {
       return this.ingredientInfo == null ? "N/A" : this.ingredientInfo.category;
     },
     expirationDate() {
-      return this.ingredientInfo == null ||
-        this.ingredientInfo.expirationDate == null
-        ? "N/A"
-        : this.ingredientInfo.expirationDate;
+      if (
+        this.ingredientInfo == null ||
+        this.ingredientInfo.expirationDate == null ||
+        this.ingredientInfo.expirationDate === 0
+      ) {
+        return "N/A";
+      }
+      var date = new Date(this.ingredientInfo.expirationDate * 1000);
+      return date.toLocaleDateString();
     },
   },
   methods: {
@@ -103,19 +114,25 @@ export default {
       this.modalInstance.hide();
       this.$emit("closeModal");
     },
-    handleEditExpirationDate: function (newDate) {
-      console.log("UNIMPLEMENTED: implement edit expiration date", newDate);
-      // TODO(56): Uncomment and validate below after adding datepicker to choose new date
-      // this.ingredientInfo.expirationDate = newDate;
-      // this.$store.dispatch("inventory/put", this.ingredientId).then(
-      //   (response) => {
-      //     this.ingredientInfo = response;
-      //     console.log(success);
-      //   },
-      //   (error) => {
-      //     console.log("failed to update: " + error);
-      //   }
-      // );
+    handleEditExpirationDate: function () {
+      let expInSeconds = Math.round(
+        this.expirationDateSelection.getTime() / 1000
+      );
+      this.ingredientInfo.expirationDate = expInSeconds;
+
+      this.$store
+        .dispatch("inventory/put", {
+          id: this.ingredientId,
+          exp: this.ingredientInfo.expirationDate,
+        })
+        .then(
+          () => {
+            this.expirationDateSelection = null;
+          },
+          (error) => {
+            console.log("failed to update: " + error);
+          }
+        );
     },
     removeFromInventory: function () {
       this.$store.dispatch("inventory/delete", this.ingredientId).then(

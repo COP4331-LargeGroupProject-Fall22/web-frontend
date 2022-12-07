@@ -18,8 +18,8 @@
             <h5 class="modal-title" id="shoppingListIngredientModalLabel">
               {{ modalTitle || "No title passed" }}
             </h5>
-            <div class="row">Food type: {{ category }}</div>
-            <div class="row">Quantity: {{ quantity }}</div>
+            <div class="row ingredient-details">Food type: {{ category }}</div>
+            <div class="row ingredient-details">Quantity: {{ quantity }}</div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" @click="hideModal">

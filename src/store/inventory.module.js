@@ -39,8 +39,8 @@ export const inventory = {
       );
     },
 
-    put({ commit }, id, updatedItem) {
-      return InventoryService.put(id, updatedItem).then(
+    put({ commit }, params) {
+      return InventoryService.put(params.id, params.exp).then(
         response => {
           return Promise.resolve(response);
         },

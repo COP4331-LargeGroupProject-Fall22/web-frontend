@@ -72,13 +72,11 @@
                   </div>
                 </div>
               </div>
-              <div v-else>
+              <div class="recipe-details" v-else>
                 <div v-if="cuisines != 'N/A'" class="row">
                   Cuisines: {{ cuisines }}
                 </div>
-                <div v-if="diets != 'N/A'" class="row">
-                  Diets: {{ diets }}
-                </div>
+                <div v-if="diets != 'N/A'" class="row">Diets: {{ diets }}</div>
                 <div v-if="mealTypes != 'N/A'" class="row">
                   Meal type: {{ mealTypes }}
                 </div>

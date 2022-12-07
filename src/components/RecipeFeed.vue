@@ -492,7 +492,9 @@ h3 {
   display: inline-block;
   width: 60px;
   height: 34px;
+  margin: 0;
   margin-right: 20px;
+  margin-top: 5px;
 }
 
 .switch input {
