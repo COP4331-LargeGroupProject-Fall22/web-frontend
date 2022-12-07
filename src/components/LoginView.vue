@@ -101,7 +101,15 @@ export default {
             this.$router.push("/confirm");
           }
           this.loading = false;
-          this.message = util.getErrorString(error);
+          if (error.response.status === 400) {
+            this.message = "Incorrect Request Format";
+          } else if (error.response.status === 401) {
+            this.message = "User Credentials Invalid";
+          } else if (error.response.status === 404) {
+            this.message = "User Not Found";
+          } else {
+            this.message = util.getErrorString(error);
+          }
         }
       );
     },

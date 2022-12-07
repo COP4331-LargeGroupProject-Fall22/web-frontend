@@ -143,7 +143,11 @@ export default {
             });
         },
         (error) => {
-          this.message = util.getErrorString(error);
+          if (error.response.status === 400) {
+            this.message = "Username Already Exists";
+          } else {
+            this.message = util.getErrorString(error);
+          }
         }
       );
     },
