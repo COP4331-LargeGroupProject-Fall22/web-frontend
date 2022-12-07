@@ -22,9 +22,9 @@ class InventoryService {
     return (header === null) ? null : axios.get(API_URL + "/" + id, { headers: header });
   }
 
-  async put(id, updatedFood) {
+  async put(id, newExpDate) {
     const header = await authHeader();
-    return (header === null) ? null : axios.get(API_URL + "/" + id, updatedFood, { headers: header });
+    return (header === null) ? null : axios.put(API_URL + "/" + id, { expirationDate: newExpDate }, { headers: header });
   }
 
   async delete(id) {
