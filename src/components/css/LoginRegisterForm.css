@@ -34,7 +34,6 @@ body,
 }
 
 .card-container.card {
-  padding: 70px 25%;
   height: 100%;
   border: none;
 }
@@ -86,7 +85,7 @@ h1 {
 
 .banner {
   width: 100%;
-  height: calc(100vh);
+  height: 100%;
   display: table;
   table-layout: fixed;
   width: 100%;
