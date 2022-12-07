@@ -224,6 +224,7 @@ export default {
       this.$router.push("/login");
     }
     this.getFavoriteRecipes();
+    this.handleSearch();
   },
   data() {
     return {
@@ -243,18 +244,15 @@ export default {
       isFavorite: false,
     };
   },
+  watch: {
+    selected() {
+      this.handleSearch();
+    },
+  },
   methods: {
     async handleSearch() {
       this.recipes = [];
-      if (
-        this.searchString.trim() === "" &&
-        !this.useInventoryIngredientsForSearch
-      ) {
-        // TODO(82): show all possible recipe categories as modal popup
-        this.message =
-          "No recipes match, please try searching for something else";
-        return;
-      }
+      // TODO(82): show all possible recipe categories as modal popup
       let ingredients = null;
       if (this.useInventoryIngredientsForSearch) {
         let ingredientsResponse = await this.$store.dispatch(
