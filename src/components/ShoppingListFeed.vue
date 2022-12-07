@@ -112,11 +112,10 @@
                       ></div>
                       <div class="shopping-text">
                         {{ item.name }}
-                      </div>
-                      <br />
-                      <div class="amount-needed">
-                        Amount needed: {{ item.quantity.value }}
-                        {{ item.quantity.unit }}
+                        <div class="amount-needed">
+                          Amount needed: {{ item.quantity.value }}
+                          {{ item.quantity.unit }}
+                        </div>
                       </div>
                     </button>
                     <button
@@ -430,7 +429,9 @@ h3 {
 .btn-sortBy {
   color: black !important;
   background-color: white !important;
-  border: none;
+  border: solid;
+  border-color: #008600;
+  border-width: 2px;
 }
 
 .btn-sortBy:hover,
@@ -456,6 +457,9 @@ h3 {
 .btn-group {
   margin: 15px;
   border-radius: 15px !important;
+  border: solid;
+  border-width: 2px;
+  border-color: lightgray;
 }
 
 .shopping-item-pic {
@@ -474,14 +478,16 @@ h3 {
 
 .shopping-text,
 .amount-needed {
-  display: contents;
+  display: flex;
   text-align: left !important;
-  color: black;
-  padding: 10px;
+  color: #000;
+  flex-flow: column;
+  padding-top: 5px;
 }
 
 .shopping-text {
   font-size: 1.5rem;
+  padding-left: 10px;
 }
 
 .amount-needed {
