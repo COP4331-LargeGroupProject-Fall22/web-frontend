@@ -2,6 +2,7 @@
   <div class="row">
     <div class="col-md-6">
       <div class="card card-container">
+        <!-- TODO(): Add profile pic of user here -->
         <Form @submit="handleRegister" :validation-schema="schema">
           <div v-if="!successful">
             <div class="form-group">
