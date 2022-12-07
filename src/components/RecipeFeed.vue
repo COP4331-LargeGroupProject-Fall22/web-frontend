@@ -78,7 +78,10 @@
       <div class="container mt-3">
         <div class="row">
           <individual-recipe-view
-            @closeModal="showIndividualRecipe = false"
+            @closeModal="
+              showIndividualRecipe = false;
+              this.getFavoriteRecipes();
+            "
             @saveChanges="showIndividualRecipe = false"
             :showModal="showIndividualRecipe"
             :modalTitle="individualRecipeTitle"

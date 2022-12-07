@@ -350,54 +350,50 @@ export default {
     // TODO(62): Update this to be a modal instead with more ingredient info
     // matching figma design
     deleteItem(item) {
-      var result = confirm(
-        "Are you sure you want to delete " +
-          item.name +
-          " from your shopping list?"
+      this.loading = true;
+      this.errorMessage = "";
+      this.$store.dispatch("shoppinglist/delete", item.itemID).then(
+        () => {
+          this.loading = false;
+          this.getShoppingListItems(this.getSortByParams(this.selected));
+        },
+        (error) => {
+          this.loading = false;
+          this.errorMessage = error;
+          console.log("failed to delete: " + error);
+        }
       );
-      if (result) {
-        this.errorMessage = "";
-        this.$store.dispatch("shoppinglist/delete", item.itemID).then(
-          () => {
-            this.getShoppingListItems(this.getSortByParams(this.selected));
-          },
-          (error) => {
-            console.log("failed to delete: " + error);
-          }
-        );
-      }
     },
     // TODO(70): Update this to be a modal instead with more ingredient info
     // matching figma design
-    addItemToInventory(item) {
-      var result = confirm(
-        "Are you sure you want to add " + item.name + " to your inventory?"
+    async addItemToInventory(item) {
+      this.loading = true;
+      this.errorMessage = "";
+      this.$store.dispatch("shoppinglist/delete", item.itemID).then(
+        () => {
+          let inventoryItem = {};
+          inventoryItem["id"] = item.id;
+          inventoryItem["name"] = item.name;
+          inventoryItem["category"] = item.category;
+          inventoryItem["image"] = item.image;
+          // TODO(50): update to get exp date when adding to inventory
+          inventoryItem["expirationDate"] = null;
+          this.$store.dispatch("inventory/post", inventoryItem).then(
+            () => {
+              this.loading = false;
+              this.getShoppingListItems(this.getSortByParams(this.selected));
+            },
+            (error) => {
+              this.loading = false;
+              console.log("failed to delete: " + error);
+            }
+          );
+        },
+        (error) => {
+          this.loading = false;
+          console.log("failed to delete: " + error);
+        }
       );
-      if (result) {
-        this.errorMessage = "";
-        this.$store.dispatch("shoppinglist/delete", item.itemID).then(
-          () => {
-            let inventoryItem = {};
-            inventoryItem["id"] = item.id;
-            inventoryItem["name"] = item.name;
-            inventoryItem["category"] = item.category;
-            inventoryItem["image"] = item.image;
-            // TODO(50): update to get exp date when adding to inventory
-            inventoryItem["expirationDate"] = null;
-            this.$store.dispatch("inventory/post", inventoryItem).then(
-              () => {
-                this.getShoppingListItems(this.getSortByParams(this.selected));
-              },
-              (error) => {
-                console.log("failed to delete: " + error);
-              }
-            );
-          },
-          (error) => {
-            console.log("failed to delete: " + error);
-          }
-        );
-      }
     },
     async addAllToInventory() {
       if (util.isEmptyJson(this.shoppingListItems)) {
@@ -430,35 +426,28 @@ export default {
           }
         }
         this.loading = false;
-        this.deleteAll(true);
+        this.deleteAll();
       }
     },
-    async deleteAll(confirmDelete = false) {
+    async deleteAll() {
       if (util.isEmptyJson(this.shoppingListItems)) {
         return;
       }
 
-      if (!confirmDelete) {
-        confirmDelete = confirm(
-          "Are you sure you want to delete everything from your shopping list?"
-        );
-      }
-      if (confirmDelete) {
-        this.loading = true;
-        for (const cat in this.shoppingListItems) {
-          for (const item of this.shoppingListItems[cat].items) {
-            await this.$store.dispatch("shoppinglist/delete", item.itemID).then(
-              () => {
-                this.getShoppingListItems(this.getSortByParams(this.selected));
-              },
-              (error) => {
-                console.log("failed to delete: " + error);
-              }
-            );
-          }
+      this.loading = true;
+      for (const cat in this.shoppingListItems) {
+        for (const item of this.shoppingListItems[cat].items) {
+          await this.$store.dispatch("shoppinglist/delete", item.itemID).then(
+            () => {
+              this.getShoppingListItems(this.getSortByParams(this.selected));
+            },
+            (error) => {
+              console.log("failed to delete: " + error);
+            }
+          );
         }
-        this.loading = false;
       }
+      this.loading = false;
     },
   },
   beforeMount() {
