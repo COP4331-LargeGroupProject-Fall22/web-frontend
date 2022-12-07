@@ -112,11 +112,10 @@
                       ></div>
                       <div class="shopping-text">
                         {{ item.name }}
-                      </div>
-                      <br />
-                      <div class="amount-needed">
-                        Amount needed: {{ item.quantity.value }}
-                        {{ item.quantity.unit }}
+                        <div class="amount-needed">
+                          Amount needed: {{ item.quantity.value }}
+                          {{ item.quantity.unit }}
+                        </div>
                       </div>
                     </button>
                     <button
@@ -474,14 +473,16 @@ h3 {
 
 .shopping-text,
 .amount-needed {
-  display: contents;
+  display: flex;
   text-align: left !important;
-  color: black;
-  padding: 10px;
+  color: #000;
+  flex-flow: column;
+  padding-top: 5px;
 }
 
 .shopping-text {
   font-size: 1.5rem;
+  padding-left: 10px;
 }
 
 .amount-needed {
