@@ -59,6 +59,19 @@ class AuthService {
         return null;
       });
   }
+
+  requestPasswordReset(email) {
+    return axios.post(API_PREFIX + 'auth/request-password-reset', email );
+  }
+
+  /**
+   * 
+   * @param {email, password, verification code} params 
+   * @returns 
+   */
+  confirmNewPassword(params) {
+    return axios.post(API_PREFIX + 'auth/perform-password-reset', params );
+  }
 }
 
 export default new AuthService();

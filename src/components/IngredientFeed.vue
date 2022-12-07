@@ -276,7 +276,6 @@ export default {
   },
   methods: {
     itemIsExpired(expirationDate) {
-      console.log(expirationDate);
       return Date.now() / 1000 > expirationDate;
     },
     itemExpiresSoon(expirationDate) {

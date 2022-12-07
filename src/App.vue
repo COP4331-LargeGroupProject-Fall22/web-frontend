@@ -8,6 +8,11 @@
 
       <div v-if="!currentUser" class="navbar-nav ml-auto">
         <li class="nav-item">
+          <router-link to="/forgot" class="nav-link">
+            <i class="fas fa-question"></i> Forgot password
+          </router-link>
+        </li>
+        <li class="nav-item">
           <router-link to="/confirm" class="nav-link">
             <font-awesome-icon icon="check" /> Confirm email
           </router-link>
