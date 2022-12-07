@@ -165,6 +165,6 @@ img {
 }
 
 .ingredient-details {
-  padding: 15px;
+  padding-left: 15px;
 }
 </style>

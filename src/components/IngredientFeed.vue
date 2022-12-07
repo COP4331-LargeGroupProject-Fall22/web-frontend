@@ -480,8 +480,9 @@ h3 {
 .btn-sortBy {
   color: black !important;
   background-color: white !important;
-  border: none;
-  height: fit-content;
+  border: solid;
+  border-color: #008600;
+  border-width: 2px;
 }
 
 .btn-sortBy:hover,

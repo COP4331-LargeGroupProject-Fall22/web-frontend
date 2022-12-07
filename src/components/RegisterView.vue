@@ -2,11 +2,7 @@
   <div class="row">
     <div class="col-md-6">
       <div class="card card-container">
-        <img
-          id="profile-img"
-          src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-          class="profile-img-card"
-        />
+        <!-- TODO(): Add profile pic of user here -->
         <Form @submit="handleRegister" :validation-schema="schema">
           <div v-if="!successful">
             <div class="form-group">
@@ -157,4 +153,7 @@ export default {
 
 <style scoped>
 @import "css/LoginRegisterForm.css";
+.card-container.card {
+  padding: 10% 25%;
+}
 </style>

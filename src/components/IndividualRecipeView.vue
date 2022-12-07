@@ -9,13 +9,16 @@
     >
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-body">
+            <div class="row">
+              <img v-bind:src="imageUrl" class="center-block" />
+            </div>
             <h5 class="modal-title" id="individualRecipeModalLabel">
               {{ modalTitle || "No title passed" }}
             </h5>
             <button
               type="button"
-              class="btn btn-primary btn-floating favorite-btn"
+              class="btn favorite-btn"
               id="favoriteButton"
               @click="toggleFavorite"
             >
@@ -23,20 +26,18 @@
                 v-bind:class="isFavorite ? 'fas fa-heart' : 'far fa-heart'"
               ></i>
             </button>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-              <img v-bind:src="imageUrl" class="center-block" />
-            </div>
             <div v-if="recipeLoaded">
-              <div v-if="showInstructionSteps">
+              <div class="recipe-details" v-if="showInstructionSteps">
                 <div class="row">
                   <h3>Instructions: Step {{ instructionPageNum + 1 }}</h3>
                 </div>
                 <div class="row">
                   {{ instructionPageInstructions }}
                 </div>
-                <div v-if="instructionPageHasIngredients" class="row">
+                <div
+                  v-if="instructionPageHasIngredients"
+                  class="row ingredientsNeeded"
+                >
                   Ingredients needed:
                   {{ instructionPageIngredients }}
                 </div>
@@ -72,10 +73,18 @@
                 </div>
               </div>
               <div v-else>
-                <div class="row">Cuisines: {{ cuisines }}</div>
-                <div class="row">Diets: {{ diets }}</div>
-                <div class="row">Meal type: {{ mealTypes }}</div>
-                <div class="row">Ingredients: {{ ingredients }}</div>
+                <div v-if="cuisines != 'N/A'" class="row">
+                  Cuisines: {{ cuisines }}
+                </div>
+                <div v-if="diets != 'N/A'" class="row">
+                  Diets: {{ diets }}
+                </div>
+                <div v-if="mealTypes != 'N/A'" class="row">
+                  Meal type: {{ mealTypes }}
+                </div>
+                <div v-if="ingredients != 'N/A'" class="row">
+                  Ingredients: {{ ingredients }}
+                </div>
                 <!-- TODO(86): Think of use for nutrition facts -->
                 <!-- <div class="row">
                   Nutrition facts: {{ recipeInfo.nutritionFacts }}
@@ -344,7 +353,8 @@ export default {
         // TODO(83): Make it clear to the user when this done/while it's working.
         // add spinny wheel or something
         for (const ing of missing) {
-          ing.recipeId = this.recipeId;
+          ing.recipeID = this.recipeId;
+          ing.recipeName = this.recipeInfo.name;
           ing.price = ing.price.price;
           ing.dateAdded = Date.now();
           await this.$store.dispatch("shoppinglist/post", ing).then(
@@ -415,5 +425,39 @@ export default {
   border-radius: 50%;
   height: fit-content;
   align-self: center;
+}
+
+.ingredientsNeeded {
+  padding-top: 10px;
+}
+
+.modal-body {
+  padding: 0;
+}
+
+img {
+  width: 100%;
+  height: 60vh;
+  object-fit: cover;
+  border-radius: 0.3rem;
+}
+
+.modal-title {
+  margin-bottom: 0;
+  line-height: 1.5;
+  width: fit-content;
+  display: inline-flex;
+  padding: 15px;
+}
+
+.recipe-details {
+  padding-left: 15px;
+}
+
+.favorite-btn {
+  float: right;
+  margin: 10px;
+  color: red;
+  scale: 1.5;
 }
 </style>
