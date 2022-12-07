@@ -121,7 +121,7 @@
                 <div v-for="item in category.items" :key="item">
                   <div class="col-md-auto">
                     <div
-                      v-if="expiration(item.expirationDate) == 'expired'"
+                      v-if="itemIsExpired(item.expirationDate)"
                       class="isExpired"
                     >
                       <button
@@ -144,12 +144,10 @@
                           {{ item.name }}
                         </div>
                       </button>
-                      <h5 class="expiration-notif">Expiried</h5>
+                      <h5 class="expiration-notif">Expired</h5>
                     </div>
                     <div
-                      v-else-if="
-                        expiration(item.expirationDate) == 'expires soon'
-                      "
+                      v-else-if="itemExpiresSoon(item.expirationDate)"
                       class="isExpiring"
                     >
                       <button
@@ -251,20 +249,6 @@ export default {
         this.searchString.length > 0 && util.isEmptyJson(this.filteredItems)
       );
     },
-    expiration(itemExpirationDate) {
-      if (itemExpirationDate != 0) {
-        const expireDate = new Date(itemExpirationDate);
-        const today = new Date();
-        if (expireDate != "Invalid Date") {
-          if (expireDate.getTime() < today.getTime()) {
-            return "expired";
-          } else if ((expireDate - today) / 86400000 <= 10) {
-            return "expires soon";
-          }
-        }
-      }
-      return "";
-    },
   },
   mounted() {
     if (!this.currentUser) {
@@ -291,6 +275,16 @@ export default {
     };
   },
   methods: {
+    itemIsExpired(expirationDate) {
+      console.log(expirationDate);
+      return Date.now() / 1000 > expirationDate;
+    },
+    itemExpiresSoon(expirationDate) {
+      let todayInSeconds = Date.now() / 1000;
+      // 1 week from today
+      let expSoonCutoff = todayInSeconds + 604800;
+      return todayInSeconds < expirationDate && expirationDate < expSoonCutoff;
+    },
     handleAddToInventory() {
       const newFoods = JSON.parse(
         JSON.stringify(this.$refs.add_ingredient_ref.ingredientsToAdd)
