@@ -70,7 +70,7 @@
           <shopping-list-ingredient-view
             @closeModal="
               showIndividualIngredient = false;
-              this.getShoppingListItems();
+              this.getShoppingListItems(this.getSortByParams(this.selected));
             "
             @saveChanges="showIndividualIngredient = false"
             :showModal="showIndividualIngredient"
@@ -227,36 +227,33 @@ export default {
   },
   watch: {
     selected(newVal) {
-      switch (newVal) {
-        case "Category":
-          this.getShoppingListItems();
-          break;
-        case "Recipe":
-          this.getShoppingListItems({ sortByRecipe: true });
-          break;
-        case "Added First":
-          this.getShoppingListItems({
-            sortByDate: true,
-          });
-          break;
-        case "Added Last":
-          this.getShoppingListItems({ sortByDate: true, isReverse: true });
-          break;
-        case "A-Z":
-          this.getShoppingListItems({ sortByLexicographicalOrder: true });
-          break;
-        case "Z-A":
-          this.getShoppingListItems({
-            sortByLexicographicalOrder: true,
-            isReverse: true,
-          });
-          break;
-        default:
-          console.log("this should not happen. gg");
-      }
+      this.getShoppingListItems(this.getSortByParams(newVal));
     },
   },
   methods: {
+    getSortByParams(newVal) {
+      switch (newVal) {
+        case "Category":
+          return { sortByCategory: true };
+        case "Recipe":
+          return { sortByRecipe: true };
+        case "Added First":
+          return {
+            sortByDate: true,
+          };
+        case "Added Last":
+          return { sortByDate: true, isReverse: true };
+        case "A-Z":
+          return { sortByLexicographicalOrder: true };
+        case "Z-A":
+          return {
+            sortByLexicographicalOrder: true,
+            isReverse: true,
+          };
+        default:
+          return {};
+      }
+    },
     handleAddToShoppingList() {
       const newFoods = JSON.parse(
         JSON.stringify(this.$refs.add_ingredient_ref.ingredientsToAdd)
@@ -272,7 +269,9 @@ export default {
               // TODO(69): Specify quantity here
               this.$store.dispatch("shoppinglist/post", response.data).then(
                 () => {
-                  this.getShoppingListItems();
+                  this.getShoppingListItems(
+                    this.getSortByParams(this.selected)
+                  );
                 },
                 (error) => {
                   this.message = util.getErrorString(error);
@@ -286,7 +285,7 @@ export default {
         }
       }
     },
-    getShoppingListItems(params = { sortByCategory: true }) {
+    getShoppingListItems(params) {
       this.$store.dispatch("shoppinglist/getAll", params).then(
         (response) => {
           // Each key in parsed is a category name
@@ -318,7 +317,7 @@ export default {
       if (result) {
         this.$store.dispatch("shoppinglist/delete", item.itemID).then(
           () => {
-            this.getShoppingListItems();
+            this.getShoppingListItems(this.getSortByParams(this.selected));
           },
           (error) => {
             console.log("failed to delete: " + error);
@@ -344,7 +343,7 @@ export default {
             inventoryItem["expirationDate"] = null;
             this.$store.dispatch("inventory/post", inventoryItem).then(
               () => {
-                this.getShoppingListItems();
+                this.getShoppingListItems(this.getSortByParams(this.selected));
               },
               (error) => {
                 console.log("failed to delete: " + error);
@@ -359,7 +358,7 @@ export default {
     },
   },
   beforeMount() {
-    this.getShoppingListItems();
+    this.getShoppingListItems(this.getSortByParams(this.selected));
   },
 };
 </script>

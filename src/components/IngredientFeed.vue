@@ -72,7 +72,7 @@
           <inventory-ingredient-view
             @closeModal="
               showIndividualIngredient = false;
-              this.getInventoryItems();
+              this.getInventoryItems(this.getSortByParams(this.selected));
             "
             @saveChanges="showIndividualIngredient = false"
             :showModal="showIndividualIngredient"
@@ -233,7 +233,7 @@ export default {
           food.expirationDate = null;
           this.$store.dispatch("inventory/post", food).then(
             () => {
-              this.getInventoryItems();
+              this.getInventoryItems(this.getSortByParams(this.selected));
             },
             (error) => {
               // TODO(65): If item is already in inventory, prompt user to let
@@ -244,7 +244,7 @@ export default {
         }
       }
     },
-    getInventoryItems(params = { sortByCategory: true }) {
+    getInventoryItems(params) {
       this.$store.dispatch("inventory/getAll", params).then(
         (response) => {
           // Each key in parsed is a category name
@@ -266,32 +266,31 @@ export default {
         }
       );
     },
-  },
-  watch: {
-    selected(newVal) {
+    getSortByParams(newVal) {
       switch (newVal) {
         case "Category":
-          this.getInventoryItems();
-          break;
+          return { sortByCategory: true };
         case "Expiration Date":
-          this.getInventoryItems({ sortByExpirationDate: true });
-          break;
+          return { sortByExpirationDate: true };
         case "A-Z":
-          this.getInventoryItems({ sortByLexicographicalOrder: true });
-          break;
+          return { sortByLexicographicalOrder: true };
         case "Z-A":
-          this.getInventoryItems({
+          return {
             sortByLexicographicalOrder: true,
             isReverse: true,
-          });
-          break;
+          };
         default:
-          console.log("this should not happen. gg");
+          return {};
       }
     },
   },
+  watch: {
+    selected(newVal) {
+      this.getInventoryItems(this.getSortByParams(newVal));
+    },
+  },
   beforeMount() {
-    this.getInventoryItems();
+    this.getInventoryItems(this.getSortByParams(this.selected));
   },
 };
 </script>
