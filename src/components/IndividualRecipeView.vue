@@ -9,13 +9,16 @@
     >
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-body">
+            <div class="row">
+              <img v-bind:src="imageUrl" class="center-block" />
+            </div>
             <h5 class="modal-title" id="individualRecipeModalLabel">
               {{ modalTitle || "No title passed" }}
             </h5>
             <button
               type="button"
-              class="btn btn-primary btn-floating favorite-btn"
+              class="btn favorite-btn"
               id="favoriteButton"
               @click="toggleFavorite"
             >
@@ -23,13 +26,8 @@
                 v-bind:class="isFavorite ? 'fas fa-heart' : 'far fa-heart'"
               ></i>
             </button>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-              <img v-bind:src="imageUrl" class="center-block" />
-            </div>
             <div v-if="recipeLoaded">
-              <div v-if="showInstructionSteps">
+              <div class="recipe-details" v-if="showInstructionSteps">
                 <div class="row">
                   <h3>Instructions: Step {{ instructionPageNum + 1 }}</h3>
                 </div>
@@ -71,7 +69,7 @@
                   </div>
                 </div>
               </div>
-              <div v-else>
+              <div class="recipe-details" v-else>
                 <div class="row">Cuisines: {{ cuisines }}</div>
                 <div class="row">Diets: {{ diets }}</div>
                 <div class="row">Meal type: {{ mealTypes }}</div>
@@ -416,5 +414,35 @@ export default {
   border-radius: 50%;
   height: fit-content;
   align-self: center;
+}
+
+.modal-body {
+  padding: 0;
+}
+
+img {
+  width: 100%;
+  height: 60vh;
+  object-fit: cover;
+  border-radius: 0.3rem;
+}
+
+.modal-title {
+  margin-bottom: 0;
+  line-height: 1.5;
+  width: fit-content;
+  display: inline-flex;
+  padding: 15px;
+}
+
+.recipe-details {
+  padding-left: 15px;
+}
+
+.favorite-btn {
+  float: right;
+  margin: 10px;
+  color: red;
+  scale: 1.5;
 }
 </style>
