@@ -430,7 +430,9 @@ h3 {
 .btn-sortBy {
   color: black !important;
   background-color: white !important;
-  border: none;
+  border: solid;
+  border-color: #008600;
+  border-width: 2px;
 }
 
 .btn-sortBy:hover,
@@ -456,6 +458,9 @@ h3 {
 .btn-group {
   margin: 15px;
   border-radius: 15px !important;
+  border: solid;
+  border-width: 2px;
+  border-color: lightgray;
 }
 
 .shopping-item-pic {
