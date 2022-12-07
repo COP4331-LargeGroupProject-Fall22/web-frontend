@@ -3,6 +3,7 @@ import HomeView from "./components/HomeView.vue";
 import LoginView from "./components/LoginView.vue";
 import RegisterView from "./components/RegisterView.vue";
 import VerifyEmailView from "./components/VerifyEmailView.vue";
+import PasswordResetView from "./components/PasswordResetView.vue";
 // lazy-loaded
 const ProfileView = () => import("./components/ProfileView.vue");
 
@@ -27,6 +28,11 @@ const routes = [
     path: "/confirm",
     name: "Confirm email",
     component: VerifyEmailView,
+  },
+  {
+    path: "/forgot",
+    name: "Forgot password",
+    component: PasswordResetView,
   },
   {
     path: "/profile",

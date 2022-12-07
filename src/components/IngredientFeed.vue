@@ -279,7 +279,6 @@ export default {
       if (expirationDate == 0) {
         return false;
       }
-      console.log(expirationDate);
       return Date.now() / 1000 > expirationDate;
     },
     itemExpiresSoon(expirationDate) {
