@@ -276,10 +276,16 @@ export default {
   },
   methods: {
     itemIsExpired(expirationDate) {
+      if (expirationDate == 0) {
+        return false;
+      }
       console.log(expirationDate);
       return Date.now() / 1000 > expirationDate;
     },
     itemExpiresSoon(expirationDate) {
+      if (expirationDate == 0) {
+        return false;
+      }
       let todayInSeconds = Date.now() / 1000;
       // 1 week from today
       let expSoonCutoff = todayInSeconds + 604800;
