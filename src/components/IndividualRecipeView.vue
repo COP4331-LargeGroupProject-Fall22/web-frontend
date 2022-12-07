@@ -334,18 +334,17 @@ export default {
       );
 
       if (missing.length === 0) {
-        confirm("No missing ingredients :)");
+        // TODO(): notify that there are no missing
+        // confirm("No missing ingredients :)");
         return;
       }
 
-      if (
-        missing.length !== 0 &&
-        confirm(
-          "You are missing ingredients: " +
-            missing.map((ing) => ing.name).join(", ") +
-            ". Do you want to add these to your shopping list?"
-        )
-      ) {
+      // TODO(): add modal equivalent that does something like this
+      // confirm(
+      //   "You are missing ingredients: " +
+      //     missing.map((ing) => ing.name).join(", ") +
+      //     ". Do you want to add these to your shopping list?")
+      if (missing.length !== 0) {
         // TODO(84): Make this more robust to only add certain ingredients, let
         // user select.
         // TODO(83): Make it clear to the user when this done/while it's working.
@@ -372,38 +371,26 @@ export default {
       let invIngredients = await this.getInventoryIngredientsList();
       let recipeIngredients = this.recipeInfo.ingredients;
 
-      let missing = recipeIngredients.filter(
-        (recIng) => !invIngredients.find((invIng) => invIng.id == recIng.id)
+      // TODO(84): Make this more robust to not remove all ingredients and let
+      // user select what to get rid of.
+      // TODO(83): Make it clear to the user when this done/while it's working.
+      // add spinny wheel or something
+      let used = recipeIngredients.filter((recIng) =>
+        invIngredients.find((invIng) => invIng.id == recIng.id)
       );
       if (
-        missing.length === 0 ||
         confirm(
-          "You are missing ingredients: " +
-            missing.map((ing) => ing.name).join(", ") +
-            ". Do you want to make the recipe anyway?"
+          "Remove ingredients used for this recipe from inventory? " +
+            used.map((ing) => ing.name).join(", ")
         )
       ) {
-        // TODO(84): Make this more robust to not remove all ingredients and let
-        // user select what to get rid of.
-        // TODO(83): Make it clear to the user when this done/while it's working.
-        // add spinny wheel or something
-        let used = recipeIngredients.filter((recIng) =>
-          invIngredients.find((invIng) => invIng.id == recIng.id)
-        );
-        if (
-          confirm(
-            "Remove ingredients used for this recipe from inventory? " +
-              used.map((ing) => ing.name).join(", ")
-          )
-        ) {
-          for (const ing of used) {
-            await this.$store.dispatch("inventory/delete", ing.id).then(
-              () => {},
-              (error) => {
-                console.log("failed to delete: " + error);
-              }
-            );
-          }
+        for (const ing of used) {
+          await this.$store.dispatch("inventory/delete", ing.id).then(
+            () => {},
+            (error) => {
+              console.log("failed to delete: " + error);
+            }
+          );
         }
       }
     },
