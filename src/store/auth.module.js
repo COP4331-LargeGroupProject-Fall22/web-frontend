@@ -71,6 +71,28 @@ export const auth = {
           return Promise.reject(error);
         }
       );
+    },
+    requestPasswordReset({ commit }, email) {
+      return AuthService.requestPasswordReset(email).then(
+        response => {
+          return Promise.resolve(response);
+        },
+        error => {
+          commit('JWTfailure');
+          return Promise.reject(error);
+        }
+      );
+    },
+    confirmNewPassword({ commit }, params) {
+      return AuthService.confirmNewPassword(params).then(
+        response => {
+          return Promise.resolve(response);
+        },
+        error => {
+          commit('JWTfailure');
+          return Promise.reject(error);
+        }
+      );
     }
   },
   mutations: {
