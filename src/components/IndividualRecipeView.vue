@@ -36,7 +36,10 @@
                 <div class="row">
                   {{ instructionPageInstructions }}
                 </div>
-                <div v-if="instructionPageHasIngredients" class="row">
+                <div
+                  v-if="instructionPageHasIngredients"
+                  class="row ingredientsNeeded"
+                >
                   Ingredients needed:
                   {{ instructionPageIngredients }}
                 </div>
@@ -415,5 +418,9 @@ export default {
   border-radius: 50%;
   height: fit-content;
   align-self: center;
+}
+
+.ingredientsNeeded {
+  padding-top: 10px;
 }
 </style>
