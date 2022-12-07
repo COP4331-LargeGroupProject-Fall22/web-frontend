@@ -120,7 +120,60 @@
               <ul>
                 <div v-for="item in category.items" :key="item">
                   <div class="col-md-auto">
+                    <div
+                      v-if="itemIsExpired(item.expirationDate)"
+                      class="isExpired"
+                    >
+                      <button
+                        id="individualIngredient"
+                        @click="
+                          showIndividualIngredient = true;
+                          ingredientId = item.id;
+                          individualIngredientTitle = item.name;
+                        "
+                        type="button"
+                        class="btn food-item"
+                        v-bind:style="{
+                          backgroundImage:
+                            'linear-gradient(to bottom,rgb(255 255 255 / 0%),rgb(0 0 0 /73%)),url(' +
+                            item.image.srcUrl +
+                            ')',
+                        }"
+                      >
+                        <div class="col-md-auto text-center food-text">
+                          {{ item.name }}
+                        </div>
+                      </button>
+                      <h5 class="expiration-notif">Expired</h5>
+                    </div>
+                    <div
+                      v-else-if="itemExpiresSoon(item.expirationDate)"
+                      class="isExpiring"
+                    >
+                      <button
+                        id="individualIngredient"
+                        @click="
+                          showIndividualIngredient = true;
+                          ingredientId = item.id;
+                          individualIngredientTitle = item.name;
+                        "
+                        type="button"
+                        class="btn food-item"
+                        v-bind:style="{
+                          backgroundImage:
+                            'linear-gradient(to bottom,rgb(255 255 255 / 0%),rgb(0 0 0 /73%)),url(' +
+                            item.image.srcUrl +
+                            ')',
+                        }"
+                      >
+                        <div class="col-md-auto text-center food-text">
+                          {{ item.name }}
+                        </div>
+                      </button>
+                      <h5 class="expiration-notif">Expiring Soon</h5>
+                    </div>
                     <button
+                      v-else
                       id="individualIngredient"
                       @click="
                         showIndividualIngredient = true;
@@ -222,6 +275,16 @@ export default {
     };
   },
   methods: {
+    itemIsExpired(expirationDate) {
+      console.log(expirationDate);
+      return Date.now() / 1000 > expirationDate;
+    },
+    itemExpiresSoon(expirationDate) {
+      let todayInSeconds = Date.now() / 1000;
+      // 1 week from today
+      let expSoonCutoff = todayInSeconds + 604800;
+      return todayInSeconds < expirationDate && expirationDate < expSoonCutoff;
+    },
     handleAddToInventory() {
       const newFoods = JSON.parse(
         JSON.stringify(this.$refs.add_ingredient_ref.ingredientsToAdd)
@@ -431,5 +494,32 @@ h3 {
   user-select: none;
   cursor: pointer;
   width: 100%;
+}
+
+.isExpired,
+.isExpiring {
+  width: 12vw;
+  border-radius: 15px;
+  padding: 0;
+}
+
+.isExpired,
+.isExpiring {
+  margin: 15px;
+}
+
+.isExpired {
+  background-color: red;
+}
+
+.isExpiring {
+  background-color: rgb(255 0 0 / 47%);
+}
+
+.expiration-notif {
+  color: white;
+  text-align: center;
+  padding: 10px;
+  margin-bottom: 0;
 }
 </style>
