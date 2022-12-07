@@ -37,7 +37,7 @@
             placeholder="Search Shopping List..."
             v-model="searchString"
             type="text"
-            class="form-control"
+            class="form-control search-bar"
           />
         </div>
         <button
@@ -517,5 +517,11 @@ h3 {
   user-select: none;
   cursor: pointer;
   width: 100%;
+}
+
+.search-bar {
+  border: solid;
+  border-color: #008600;
+  border-width: 2px;
 }
 </style>
