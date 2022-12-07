@@ -28,6 +28,27 @@
           </ul>
         </div>
       </div>
+
+      <div class="tool-bar-container">
+        <button
+          type="button"
+          class="btn btn-danger"
+          id="deleteAllIngredients"
+          @click="deleteAll"
+        >
+          Delete all shopping list items?
+        </button>
+        <div class="divider" />
+        <button
+          type="button"
+          class="btn btn-primary"
+          id="deleteAllIngredients"
+          @click="addAllToInventory"
+        >
+          Add all shopping list items to inventory?
+        </button>
+      </div>
+
       <div class="tool-bar-container">
         <div class="form-outline">
           <input
@@ -139,8 +160,8 @@
           </div>
         </li>
       </ul>
-      <div v-if="isEmptyShoppingList">
-        <h3>Your shopping list is empty, try adding some items!</h3>
+      <div v-if="message != ''">
+        <h3>{{ message }}</h3>
       </div>
       <div v-if="!isEmptyShoppingList && noMatchesForSearchString">
         <h3>No items matching search string: "{{ searchString }}"</h3>
@@ -194,6 +215,18 @@ export default {
         this.searchString.length > 0 && util.isEmptyJson(this.filteredItems)
       );
     },
+    message() {
+      if (this.errorMessage != "") {
+        return this.errorMessage;
+      }
+      if (this.loading) {
+        return "Loading...";
+      }
+      if (this.isEmptyShoppingList) {
+        return "Your shopping list is empty, try adding some items!";
+      }
+      return "";
+    },
   },
   mounted() {
     if (!this.currentUser) {
@@ -223,6 +256,8 @@ export default {
         "Z-A",
       ],
       selected: "Category",
+      loading: false,
+      errorMessage: "",
     };
   },
   watch: {
@@ -254,13 +289,15 @@ export default {
           return {};
       }
     },
-    handleAddToShoppingList() {
+    async handleAddToShoppingList() {
       const newFoods = JSON.parse(
         JSON.stringify(this.$refs.add_ingredient_ref.ingredientsToAdd)
       );
       if (newFoods.length) {
+        this.loading = true;
+        this.errorMessage = "";
         for (const food of newFoods) {
-          this.$store.dispatch("ingredients/get", food.id).then(
+          await this.$store.dispatch("ingredients/get", food.id).then(
             (response) => {
               let foodDetails = response.data;
               // Flatten, remove currency units - only USD
@@ -274,18 +311,21 @@ export default {
                   );
                 },
                 (error) => {
-                  this.message = util.getErrorString(error);
+                  this.errorMessage = util.getErrorString(error);
                 }
               );
             },
             (error) => {
-              this.message = util.getErrorString(error);
+              this.errorMessage = util.getErrorString(error);
             }
           );
         }
+        this.loading = false;
       }
     },
     getShoppingListItems(params) {
+      this.loading = true;
+      this.errorMessage = "";
       this.$store.dispatch("shoppinglist/getAll", params).then(
         (response) => {
           // Each key in parsed is a category name
@@ -300,9 +340,10 @@ export default {
           }
           this.shoppingListItems = parsed;
           this.isEmptyShoppingList = util.isEmptyJson(parsed);
+          this.loading = false;
         },
         (error) => {
-          this.message = util.getErrorString(error);
+          this.errorMessage = util.getErrorString(error);
         }
       );
     },
@@ -315,6 +356,7 @@ export default {
           " from your shopping list?"
       );
       if (result) {
+        this.errorMessage = "";
         this.$store.dispatch("shoppinglist/delete", item.itemID).then(
           () => {
             this.getShoppingListItems(this.getSortByParams(this.selected));
@@ -332,6 +374,7 @@ export default {
         "Are you sure you want to add " + item.name + " to your inventory?"
       );
       if (result) {
+        this.errorMessage = "";
         this.$store.dispatch("shoppinglist/delete", item.itemID).then(
           () => {
             let inventoryItem = {};
@@ -354,6 +397,67 @@ export default {
             console.log("failed to delete: " + error);
           }
         );
+      }
+    },
+    async addAllToInventory() {
+      if (util.isEmptyJson(this.shoppingListItems)) {
+        return;
+      }
+
+      var result = confirm(
+        "Are you sure you want to add all your shopping list items to your inventory?"
+      );
+      if (result) {
+        this.loading = true;
+        for (const cat in this.shoppingListItems) {
+          for (const item of this.shoppingListItems[cat].items) {
+            let inventoryItem = {};
+            inventoryItem["id"] = item.id;
+            inventoryItem["name"] = item.name;
+            inventoryItem["category"] = item.category;
+            inventoryItem["image"] = item.image;
+            // TODO(50): update to get exp date when adding to inventory
+            inventoryItem["expirationDate"] = null;
+            await this.$store.dispatch("inventory/post", inventoryItem).then(
+              () => {
+                this.getShoppingListItems(this.getSortByParams(this.selected));
+              },
+              (error) => {
+                this.loading = false;
+                console.log("failed to add: " + error);
+              }
+            );
+          }
+        }
+        this.loading = false;
+        this.deleteAll(true);
+      }
+    },
+    async deleteAll(confirmDelete = false) {
+      if (util.isEmptyJson(this.shoppingListItems)) {
+        return;
+      }
+
+      if (!confirmDelete) {
+        confirmDelete = confirm(
+          "Are you sure you want to delete everything from your shopping list?"
+        );
+      }
+      if (confirmDelete) {
+        this.loading = true;
+        for (const cat in this.shoppingListItems) {
+          for (const item of this.shoppingListItems[cat].items) {
+            await this.$store.dispatch("shoppinglist/delete", item.itemID).then(
+              () => {
+                this.getShoppingListItems(this.getSortByParams(this.selected));
+              },
+              (error) => {
+                console.log("failed to delete: " + error);
+              }
+            );
+          }
+        }
+        this.loading = false;
       }
     },
   },
@@ -517,5 +621,15 @@ h3 {
   user-select: none;
   cursor: pointer;
   width: 100%;
+}
+
+.btn-danger {
+  color: black;
+}
+
+.divider {
+  width: 20px;
+  height: auto;
+  display: inline-block;
 }
 </style>
