@@ -18,6 +18,7 @@
       </div>
       <div class="col-md-6 no-float">
         <div class="card card-container">
+          <!-- TODO(): Add profile pic of user here -->
           <Form @submit="handleLogin" :validation-schema="schema">
             <div class="form-group">
               <label for="username">Username</label>
