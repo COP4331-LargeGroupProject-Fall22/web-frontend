@@ -9,11 +9,7 @@
         (First Name, Last Name)
       </h2>
     </header>
-    <p>
-      <strong>Token:</strong>
-      {{ currentUserToken.substring(0, 20) }} ...
-      {{ currentUserToken.substr(currentUserToken.length - 20) }}
-    </p>
+    <img id="funny-img" src="@/assets/comebacklater.jpg" />
   </div>
 </template>
 

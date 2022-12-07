@@ -138,6 +138,7 @@ export default {
                 "Verification sent, please check your email.\nRedirecting to confirmation page...";
               // Redirect to confirmation page after 3 seconds
               setTimeout(function () {
+                this.message = "";
                 navigate.push("/confirm");
               }, 3 * 1000);
             });
